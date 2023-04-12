@@ -1,0 +1,1 @@
+{"version":3,"file":"custom.v1.css","mappings":";;;AAAA;EACE;AACF,C","sources":["webpack://purple-owl-store-shopify-theme-v1/./src/styles/main.scss"],"sourcesContent":["body.gradient {\r\n  background: magenta;\r\n}\r\n"],"names":[],"sourceRoot":""}
