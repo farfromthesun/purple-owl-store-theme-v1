@@ -1,39 +1,43 @@
 <header class="main-header">
   <div class="container">
-    <div class="main-header__logo">
-      <span class="main-header__logo-shop-name">
-        {{ shop.name }}
-      </span>
-    </div>
-    <div class="main-header__mobile-nav-trigger">
-      Button
-    </div>
-    <div class="main-header__nav">
-      <nav>
+    <div class="main-header__inner">
+      <div class="main-header__mobile-nav-trigger">
+        <a href="#" title="Navigation" class="mobile-nav-trigger">
+          <span class="mobile-nav-trigger__bar"></span>
+          <span class="mobile-nav-trigger__bar"></span>
+          <span class="mobile-nav-trigger__bar"></span>
+        </a>
+      </div>
+      <div class="main-header__logo">
+        <span class="logo-shop-name">Purple Owl</span>
+      </div>
+      <div class="main-header__nav">
+        <nav>
+          <ul>
+            <li>
+              <a href="/" title="Home" class="main-header__link">Home</a>
+            </li>
+            <li>
+              <a href="/shop" title="Shop" class="main-header__link">Shop</a>
+            </li>
+            <li>
+              <a href="/about" title="About" class="main-header__link">About</a>
+            </li>
+            <li>
+              <a href="/contact" title="Contact" class="main-header__link">Contact</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="main-header__icons">
         <ul>
           <li>
-            <a href="/" title="Home" class="main-header__link">Home</a>
-          </li>
-          <li>
-          <a href="/shop" title="Shop" class="main-header__link">Shop</a>
-          </li>
-          <li>
-            <a href="/about" title="About" class="main-header__link">About</a>
-          </li>
-          <li>
-            <a href="/contact" title="Contact" class="main-header__link">Contact</a>
+            <a href="#" title="Cart" class="main-header__icon-link">
+              {% render 'icon-shopping-cart' %}
+            </a>
           </li>
         </ul>
-      </nav>
-    </div>
-    <div class="main-header__icons">
-      <ul>
-        <li>
-          <a href="#" title="Cart" class="main-header__icon-link">
-            {% render 'icon-shopping-cart' %}
-          </a>
-        </li>
-      </ul>
+      </div>
     </div>
   </div>
 </header>
