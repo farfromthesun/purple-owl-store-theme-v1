@@ -1,4 +1,10 @@
 /*!*********************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/main.scss ***!
   \*********************************************************************************************************************************************************/
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1240px;
+  }
+}
 
+/*# sourceMappingURL=custom.v1.css.map*/

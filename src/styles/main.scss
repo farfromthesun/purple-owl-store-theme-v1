@@ -1,0 +1,7 @@
+// @import "bootstrap/scss/bootstrap";
+
+.container {
+  @media (min-width: 1400px) {
+    max-width: 1240px;
+  }
+}

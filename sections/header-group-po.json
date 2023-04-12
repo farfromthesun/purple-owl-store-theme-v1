@@ -1,0 +1,13 @@
+{
+  "name": "Main header group",
+  "type": "header",
+  "sections": {
+    "header": {
+      "type": "header-po",
+      "settings": {
+        "menu": "main-menu"
+      }
+    }
+  },
+  "order": ["header"]
+}
