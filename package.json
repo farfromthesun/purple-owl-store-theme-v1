@@ -29,6 +29,7 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
-    "bootstrap": "^5.2.3"
+    "bootstrap": "^5.2.3",
+    "material-symbols": "^0.5.5"
   }
 }

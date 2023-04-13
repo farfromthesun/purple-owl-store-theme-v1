@@ -2,16 +2,60 @@
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/main.scss ***!
   \*********************************************************************************************************************************************************/
 @import url(https://fonts.googleapis.com/css2?family=Bitter:wght@700;800&display=swap);
+/*!*********************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/material-symbols/rounded.css ***!
+  \*********************************************************************************************/
+@font-face {
+  font-family: "Material Symbols Rounded";
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: block;
+  src: url(0d6e3b98940e36861c2c.woff2) format("woff2");
+}
+.material-symbols-rounded {
+  font-family: "Material Symbols Rounded";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "liga";
+}
+
 /*!*************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/main.scss (1) ***!
   \*************************************************************************************************************************************************************/
 .container {
   padding: 0 20px;
 }
+@media (min-width: 768px) {
+  .container {
+    padding: 0 35px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    padding: 0 30px;
+    max-width: 1100px;
+    margin: auto;
+  }
+}
 @media (min-width: 1400px) {
   .container {
     max-width: 1240px;
-    margin: auto;
+  }
+}
+@media (min-width: 1600px) {
+  .container {
+    max-width: 1400px;
   }
 }
 
@@ -21,10 +65,70 @@
   font-family: "Bitter", serif;
   color: #cb13a9;
 }
+@media (min-width: 768px) {
+  .logo-shop-name {
+    font-size: 28px;
+  }
+}
+@media (min-width: 1200px) {
+  .logo-shop-name {
+    font-size: 38px;
+  }
+}
 
-.main-header__mobile-nav-trigger {
+.main-header {
+  position: relative;
+  z-index: 999;
+}
+.main-header .main-header__link {
+  text-transform: uppercase;
+  color: #222;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+.main-header .nav-mobile-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  background-color: #fff;
   display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  transform: translateX(-100%);
+  transition: all 0.3s ease;
+}
+@media (min-width: 1200px) {
+  .main-header .nav-mobile-container {
+    display: none;
+  }
+}
+.main-header .nav-mobile-container.show {
+  transform: translateX(0);
+}
+.main-header .nav-mobile-container ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+.main-header .nav-mobile-container ul li {
+  margin: 10px 0;
+}
+.main-header .nav-mobile-container ul li .main-header__link {
+  font-size: 30px;
+  font-weight: 700;
+}
+.main-header .nav-mobile-container .nav-mobile__close {
+  display: block;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  color: #222;
+}
+.main-header .nav-mobile-container .nav-mobile__close span {
+  font-size: 40px;
 }
 
 .main-header__inner {
@@ -32,33 +136,80 @@
   grid-template-columns: 25% 50% 25%;
   padding: 10px 0;
 }
-
-.mobile-nav-trigger {
+@media (min-width: 1200px) {
+  .main-header__inner {
+    padding: 15px 0;
+  }
+}
+.main-header__inner .mobile-nav-trigger-container {
   display: flex;
-  width: 38px;
-  height: 38px;
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
+  align-items: center;
 }
-
-.mobile-nav-trigger__bar {
+@media (min-width: 1200px) {
+  .main-header__inner .mobile-nav-trigger-container {
+    display: none;
+  }
+}
+.main-header__inner .mobile-nav-trigger-container .mobile-nav-trigger {
   display: block;
-  height: 2px;
-  background-color: #222;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #222;
 }
-
-.main-header__logo {
+.main-header__inner .mobile-nav-trigger-container .mobile-nav-trigger span {
+  display: block;
+  font-size: 40px;
+}
+.main-header__inner .logo-container {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
-.main-header__nav {
+@media (min-width: 1200px) {
+  .main-header__inner .logo-container {
+    justify-content: flex-start;
+  }
+}
+.main-header__inner .nav-desktop-container {
   display: none;
 }
-
-.main-header__icons ul {
+@media (min-width: 1200px) {
+  .main-header__inner .nav-desktop-container {
+    display: block;
+  }
+}
+.main-header__inner .nav-desktop-container nav {
+  height: 100%;
+}
+.main-header__inner .nav-desktop-container nav ul {
+  height: 100%;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 45px;
+}
+@media (min-width: 1600px) {
+  .main-header__inner .nav-desktop-container nav ul {
+    gap: 55px;
+  }
+}
+.main-header__inner .nav-desktop-container nav ul .main-header__link {
+  font-size: 20px;
+  text-transform: capitalize;
+  transition: all 0.3s ease;
+}
+@media (min-width: 1600px) {
+  .main-header__inner .nav-desktop-container nav ul .main-header__link {
+    font-size: 22px;
+  }
+}
+.main-header__inner .nav-desktop-container nav ul .main-header__link:hover {
+  color: #cb13a9;
+}
+.main-header__inner .icons-container ul {
   padding: 0;
   margin: 0;
   list-style-type: none;
@@ -67,12 +218,21 @@
   align-items: center;
   height: 100%;
 }
-
-.main-header__icon-link svg {
-  fill: #222;
+.main-header__inner .icons-container .icon-link {
   display: block;
-  height: auto;
-  width: 32px;
+  color: #222;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+@media (min-width: 1200px) {
+  .main-header__inner .icons-container .icon-link:hover {
+    color: #cb13a9;
+  }
+}
+.main-header__inner .icons-container .icon-link span {
+  display: block;
+  font-size: 30px;
 }
 
 /*# sourceMappingURL=custom.v1.css.map*/
