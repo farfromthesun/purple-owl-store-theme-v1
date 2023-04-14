@@ -11,6 +11,10 @@ $base-transition: all 0.3s ease;
 //   font-variation-settings: "FILL" 1;
 // }
 
+body {
+  background-color: #f7f7f7;
+}
+
 .container {
   padding: 0 20px;
 
@@ -42,6 +46,7 @@ $base-transition: all 0.3s ease;
 .main-header {
   position: relative;
   z-index: 999;
+  background-color: #fff;
 
   .nav-link {
     text-transform: uppercase;
@@ -214,5 +219,53 @@ $base-transition: all 0.3s ease;
         font-size: 40px;
       }
     }
+  }
+}
+
+.index-hero {
+  background: url("../../assets/index-hero-bg-mobile.jpg") no-repeat center top;
+  background-size: cover;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media (min-width: 768px) {
+    background: url("../../assets/index-hero-bg-desktop.jpg") no-repeat center
+      top;
+    height: 50vh;
+  }
+  @media (min-width: 768px) {
+    height: 80vh;
+  }
+
+  .index-hero-title {
+    font-size: 40px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1;
+    text-shadow: 0 0 10px #000;
+
+    @media (min-width: 768px) {
+      margin-bottom: 50px;
+    }
+  }
+
+  .index-hero-button {
+    border: 3px solid #fff;
+    width: 200px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    text-transform: uppercase;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    margin: auto;
   }
 }

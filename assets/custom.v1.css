@@ -33,6 +33,10 @@
 /*!*************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/main.scss (1) ***!
   \*************************************************************************************************************************************************************/
+body {
+  background-color: #f7f7f7;
+}
+
 .container {
   padding: 0 20px;
 }
@@ -69,6 +73,7 @@
 .main-header {
   position: relative;
   z-index: 999;
+  background-color: #fff;
 }
 .main-header .nav-link {
   text-transform: uppercase;
@@ -228,6 +233,56 @@
 }
 .main-header .nav-mobile-container .nav-mobile-close span {
   font-size: 40px;
+}
+
+.index-hero {
+  background: url(cbd86a85ca4fbacda728.jpg) no-repeat center top;
+  background-size: cover;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+@media (min-width: 768px) {
+  .index-hero {
+    background: url(31179e0f0a85f4ad49a7.jpg) no-repeat center top;
+    height: 50vh;
+  }
+}
+@media (min-width: 768px) {
+  .index-hero {
+    height: 80vh;
+  }
+}
+.index-hero .index-hero-title {
+  font-size: 40px;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1;
+  text-shadow: 0 0 10px #000;
+}
+@media (min-width: 768px) {
+  .index-hero .index-hero-title {
+    margin-bottom: 50px;
+  }
+}
+.index-hero .index-hero-button {
+  border: 3px solid #fff;
+  width: 200px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  text-transform: uppercase;
+  color: #fff;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  font-weight: 700;
+  margin: auto;
 }
 
 /*# sourceMappingURL=custom.v1.css.map*/
