@@ -33,8 +33,13 @@
 /*!*************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/main.scss (1) ***!
   \*************************************************************************************************************************************************************/
+img {
+  max-width: 100%;
+}
+
 body {
   background-color: #f7f7f7;
+  color: #222;
 }
 
 .container {
@@ -311,6 +316,115 @@ body {
   .index-hero .index-hero-inner .index-hero-content .index-hero-button:hover {
     background-color: #fff;
     color: #222;
+  }
+}
+
+.index-arrivals {
+  padding: 40px 0;
+}
+@media (min-width: 768px) {
+  .index-arrivals {
+    padding: 60px 0;
+  }
+}
+.index-arrivals .index-arrivals-title {
+  font-size: 26px;
+  margin-top: 0;
+  margin-bottom: 40px;
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .index-arrivals .index-arrivals-title {
+    font-size: 34px;
+    margin-bottom: 60px;
+  }
+}
+@media (min-width: 1200px) {
+  .index-arrivals .index-arrivals-title {
+    font-size: 38px;
+  }
+}
+@media (min-width: 1600px) {
+  .index-arrivals .index-arrivals-title {
+    font-size: 44px;
+  }
+}
+.index-arrivals .index-arrivals-products {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+  gap: 20px;
+}
+@media (min-width: 768px) {
+  .index-arrivals .index-arrivals-products {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 25px;
+  }
+}
+@media (min-width: 1200px) {
+  .index-arrivals .index-arrivals-products {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 25px;
+  }
+}
+
+.product-thumbnail {
+  display: block;
+  color: #222;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+@media (min-width: 1200px) {
+  .product-thumbnail:hover {
+    box-shadow: 0 0 15px #999;
+  }
+  .product-thumbnail:hover .product-thumbnail-img .product-thumbnail-img-file {
+    transform: scale(1.03);
+  }
+}
+.product-thumbnail .product-thumbnail-img {
+  overflow: hidden;
+}
+.product-thumbnail .product-thumbnail-img .product-thumbnail-img-file {
+  display: block;
+  transform: scale(1.01);
+  transition: transform 0.5s ease;
+}
+.product-thumbnail .product-thumbnail-info {
+  padding: 20px 0;
+  text-align: center;
+}
+.product-thumbnail .product-thumbnail-info .product-thumbnail-title {
+  display: block;
+  margin-top: 0;
+  line-height: 1.4;
+  margin-bottom: 5px;
+  font-weight: 500;
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  .product-thumbnail .product-thumbnail-info .product-thumbnail-title {
+    font-size: 18px;
+  }
+}
+@media (min-width: 1600px) {
+  .product-thumbnail .product-thumbnail-info .product-thumbnail-title {
+    font-size: 20px;
+  }
+}
+.product-thumbnail .product-thumbnail-info .produtc-thumbnail-prices {
+  font-size: 14px;
+  opacity: 0.7;
+}
+@media (min-width: 768px) {
+  .product-thumbnail .product-thumbnail-info .produtc-thumbnail-prices {
+    font-size: 16px;
+  }
+}
+@media (min-width: 1600px) {
+  .product-thumbnail .product-thumbnail-info .produtc-thumbnail-prices {
+    font-size: 18px;
   }
 }
 

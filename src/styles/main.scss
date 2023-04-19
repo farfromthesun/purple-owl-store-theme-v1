@@ -11,8 +11,13 @@ $base-transition: all 0.3s ease;
 //   font-variation-settings: "FILL" 1;
 // }
 
+img {
+  max-width: 100%;
+}
+
 body {
   background-color: #f7f7f7;
+  color: $main-dark;
 }
 
 .container {
@@ -293,6 +298,107 @@ body {
             color: $main-dark;
           }
         }
+      }
+    }
+  }
+}
+
+.index-arrivals {
+  padding: 40px 0;
+
+  @media (min-width: 768px) {
+    padding: 60px 0;
+  }
+
+  .index-arrivals-title {
+    font-size: 26px;
+    margin-top: 0;
+    margin-bottom: 40px;
+    text-align: center;
+
+    @media (min-width: 768px) {
+      font-size: 34px;
+      margin-bottom: 60px;
+    }
+    @media (min-width: 1200px) {
+      font-size: 38px;
+    }
+    @media (min-width: 1600px) {
+      font-size: 44px;
+    }
+  }
+
+  .index-arrivals-products {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+
+    @media (min-width: 768px) {
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 25px;
+    }
+    @media (min-width: 1200px) {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 25px;
+    }
+  }
+}
+
+.product-thumbnail {
+  display: block;
+  color: $main-dark;
+  text-decoration: none;
+  transition: $base-transition;
+
+  @media (min-width: 1200px) {
+    &:hover {
+      box-shadow: 0 0 15px #999;
+
+      .product-thumbnail-img {
+        .product-thumbnail-img-file {
+          transform: scale(1.03);
+        }
+      }
+    }
+  }
+
+  .product-thumbnail-img {
+    overflow: hidden;
+
+    .product-thumbnail-img-file {
+      display: block;
+      transform: scale(1.01);
+      transition: transform 0.5s ease;
+    }
+  }
+  .product-thumbnail-info {
+    padding: 20px 0;
+    text-align: center;
+
+    .product-thumbnail-title {
+      display: block;
+      margin-top: 0;
+      line-height: 1.4;
+      margin-bottom: 5px;
+      font-weight: 500;
+      font-size: 14px;
+
+      @media (min-width: 768px) {
+        font-size: 18px;
+      }
+      @media (min-width: 1600px) {
+        font-size: 20px;
+      }
+    }
+    .produtc-thumbnail-prices {
+      font-size: 14px;
+      opacity: 0.7;
+
+      @media (min-width: 768px) {
+        font-size: 16px;
+      }
+      @media (min-width: 1600px) {
+        font-size: 18px;
       }
     }
   }
