@@ -6,6 +6,9 @@
         "hero_main_text": "Hero text",
         "hero_button_text": "Shop nao!"
       }
+    },
+    "index_arrivals": {
+      "type": "index-arrivals"
     }
   },
   "order": ["index_hero"]

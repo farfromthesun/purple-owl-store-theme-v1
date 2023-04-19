@@ -71,9 +71,18 @@ body {
 }
 
 .main-header {
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 999;
-  background-color: #fff;
+  background-color: rgb(255, 255, 255);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+.scrolled .main-header {
+  background-color: rgba(255, 255, 255, 0.75);
 }
 .main-header .nav-link {
   text-transform: uppercase;
@@ -85,11 +94,10 @@ body {
   display: grid;
   grid-template-columns: 25% 50% 25%;
   padding: 10px 0;
+  transition: all 0.3s ease;
 }
-@media (min-width: 1200px) {
-  .main-header .main-header-inner {
-    padding: 10px 0;
-  }
+.scrolled .main-header .main-header-inner {
+  padding: 7px 0;
 }
 .main-header .main-header-inner .mobile-nav-trigger-container {
   display: flex;
@@ -238,24 +246,42 @@ body {
 .index-hero {
   background: url(cbd86a85ca4fbacda728.jpg) no-repeat center top;
   background-size: cover;
-  height: 80vh;
+}
+@media (min-width: 768px) {
+  .index-hero {
+    background: url(31179e0f0a85f4ad49a7.jpg) no-repeat center top;
+    background-size: cover;
+  }
+}
+.index-hero .index-hero-inner {
+  height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 @media (min-width: 768px) {
-  .index-hero {
-    background: url(31179e0f0a85f4ad49a7.jpg) no-repeat center top;
-    height: 50vh;
+  .index-hero .index-hero-inner {
+    height: 60vh;
   }
 }
-@media (min-width: 768px) {
-  .index-hero {
-    height: 80vh;
+@media (min-width: 1200px) {
+  .index-hero .index-hero-inner {
+    height: 90vh;
+    align-items: flex-end;
   }
 }
-.index-hero .index-hero-title {
+@media (min-width: 1300px) {
+  .index-hero .index-hero-inner {
+    height: 100vh;
+  }
+}
+.index-hero .index-hero-inner .index-hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.index-hero .index-hero-inner .index-hero-content .index-hero-title {
   font-size: 40px;
   color: #fff;
   text-transform: uppercase;
@@ -265,11 +291,17 @@ body {
   text-shadow: 0 0 10px #000;
 }
 @media (min-width: 768px) {
-  .index-hero .index-hero-title {
+  .index-hero .index-hero-inner .index-hero-content .index-hero-title {
     margin-bottom: 50px;
   }
 }
-.index-hero .index-hero-button {
+@media (min-width: 1200px) {
+  .index-hero .index-hero-inner .index-hero-content .index-hero-title {
+    font-size: 60px;
+    max-width: 550px;
+  }
+}
+.index-hero .index-hero-inner .index-hero-content .index-hero-button {
   border: 3px solid #fff;
   width: 200px;
   height: 50px;
@@ -282,7 +314,13 @@ body {
   -webkit-text-decoration: none;
   text-decoration: none;
   font-weight: 700;
-  margin: auto;
+  transition: all 0.3s ease;
+}
+@media (min-width: 1200px) {
+  .index-hero .index-hero-inner .index-hero-content .index-hero-button:hover {
+    background-color: #fff;
+    color: #222;
+  }
 }
 
 /*# sourceMappingURL=custom.v1.css.map*/
