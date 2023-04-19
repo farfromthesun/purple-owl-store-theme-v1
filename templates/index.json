@@ -11,5 +11,5 @@
       "type": "index-arrivals"
     }
   },
-  "order": ["index_hero"]
+  "order": ["index_hero", "index_arrivals"]
 }

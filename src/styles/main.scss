@@ -67,11 +67,6 @@ body {
     display: grid;
     grid-template-columns: 25% 50% 25%;
     padding: 10px 0;
-    transition: $base-transition;
-
-    .scrolled & {
-      padding: 7px 0;
-    }
 
     .mobile-nav-trigger-container {
       display: flex;
@@ -124,7 +119,6 @@ body {
 
         ul {
           height: 100%;
-
           list-style-type: none;
           padding: 0;
           margin: 0;
@@ -132,10 +126,6 @@ body {
           justify-content: center;
           align-items: center;
           gap: 45px;
-
-          @media (min-width: 1600px) {
-            gap: 65px;
-          }
 
           .nav-link {
             font-size: 16px;

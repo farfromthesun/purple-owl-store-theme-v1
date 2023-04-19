@@ -94,10 +94,6 @@ body {
   display: grid;
   grid-template-columns: 25% 50% 25%;
   padding: 10px 0;
-  transition: all 0.3s ease;
-}
-.scrolled .main-header .main-header-inner {
-  padding: 7px 0;
 }
 .main-header .main-header-inner .mobile-nav-trigger-container {
   display: flex;
@@ -158,11 +154,6 @@ body {
   justify-content: center;
   align-items: center;
   gap: 45px;
-}
-@media (min-width: 1600px) {
-  .main-header .main-header-inner .nav-desktop-container nav ul {
-    gap: 65px;
-  }
 }
 .main-header .main-header-inner .nav-desktop-container nav ul .nav-link {
   font-size: 16px;

@@ -1,0 +1,12 @@
+<section class="index-arrivals">
+  <div class="container">
+    <h2 class="index-arrivals-title">Discover new arrivals!</h2>
+    <div class="index-arrivals-products">
+      {% for product in collections.all.products limit: 20 %}
+        <p>
+          {{ product.type }}
+        </p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
