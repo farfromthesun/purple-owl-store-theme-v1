@@ -9,7 +9,10 @@
     },
     "index_arrivals": {
       "type": "index-arrivals"
+    },
+    "index_features": {
+      "type": "index-features"
     }
   },
-  "order": ["index_hero", "index_arrivals"]
+  "order": ["index_hero", "index_arrivals", "index_features"]
 }

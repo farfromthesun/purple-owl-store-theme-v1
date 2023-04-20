@@ -378,6 +378,7 @@ body {
 @media (min-width: 1200px) {
   .product-thumbnail:hover {
     box-shadow: 0 0 15px #999;
+    color: #cb13a9;
   }
   .product-thumbnail:hover .product-thumbnail-img .product-thumbnail-img-file {
     transform: scale(1.03);
@@ -426,6 +427,56 @@ body {
   .product-thumbnail .product-thumbnail-info .produtc-thumbnail-prices {
     font-size: 18px;
   }
+}
+
+.index-features {
+  padding: 50px 0;
+  background-color: #fff;
+}
+.index-features .index-features-inner {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 30px 15px;
+  gap: 30px 15px;
+}
+@media (min-width: 1600px) {
+  .index-features .index-features-inner {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+  }
+}
+.index-features .index-features-inner .index-feature {
+  display: inline-grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr;
+  -moz-column-gap: 15px;
+       column-gap: 15px;
+  row-gap: 5px;
+}
+.index-features .index-features-inner .index-feature .index-feature-icon span {
+  display: block;
+  font-size: 25px;
+}
+@media (min-width: 1200px) {
+  .index-features .index-features-inner .index-feature .index-feature-icon span {
+    font-size: 35px;
+  }
+}
+@media (min-width: 1600px) {
+  .index-features .index-features-inner .index-feature .index-feature-icon span {
+    font-size: 40px;
+  }
+}
+.index-features .index-features-inner .index-feature .index-feature-title {
+  font-size: 14px;
+  text-transform: uppercase;
+  line-height: 1.2;
+  align-self: center;
+}
+.index-features .index-features-inner .index-feature .index-feature-description {
+  grid-column: 2/3;
+  margin: 0;
+  line-height: 1.3;
 }
 
 /*# sourceMappingURL=custom.v1.css.map*/

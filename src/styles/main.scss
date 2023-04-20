@@ -353,6 +353,7 @@ body {
   @media (min-width: 1200px) {
     &:hover {
       box-shadow: 0 0 15px #999;
+      color: $main-purple;
 
       .product-thumbnail-img {
         .product-thumbnail-img-file {
@@ -399,6 +400,55 @@ body {
       }
       @media (min-width: 1600px) {
         font-size: 18px;
+      }
+    }
+  }
+}
+
+.index-features {
+  padding: 50px 0;
+  background-color: #fff;
+
+  .index-features-inner {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px 15px;
+
+    @media (min-width: 1600px) {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+
+    .index-feature {
+      display: inline-grid;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto 1fr;
+      column-gap: 15px;
+      row-gap: 5px;
+
+      .index-feature-icon {
+        span {
+          display: block;
+          font-size: 25px;
+
+          @media (min-width: 1200px) {
+            font-size: 35px;
+          }
+          @media (min-width: 1600px) {
+            font-size: 40px;
+          }
+        }
+      }
+      .index-feature-title {
+        font-size: 14px;
+        text-transform: uppercase;
+        line-height: 1.2;
+        align-self: center;
+      }
+      .index-feature-description {
+        grid-column: 2 / 3;
+        margin: 0;
+        line-height: 1.3;
       }
     }
   }
