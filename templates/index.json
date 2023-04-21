@@ -12,7 +12,10 @@
     },
     "index_features": {
       "type": "index-features"
+    },
+    "index_insta": {
+      "type": "index-insta"
     }
   },
-  "order": ["index_hero", "index_arrivals", "index_features"]
+  "order": ["index_hero", "index_arrivals", "index_features", "index_insta"]
 }

@@ -48,6 +48,26 @@ body {
   color: $main-purple;
 }
 
+.btn {
+  width: 200px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  color: $main-dark;
+  background-color: #fff;
+  text-decoration: none;
+  transition: $base-transition;
+
+  @media (min-width: 1200px) {
+    &:hover {
+      background-color: $main-purple;
+      color: #fff;
+    }
+  }
+}
+
 .main-header {
   position: fixed;
   top: 0;
@@ -280,18 +300,11 @@ body {
 
       .index-hero-button {
         border: 3px solid #fff;
-        width: 200px;
-        height: 50px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        background-color: transparent;
         font-size: 20px;
         text-transform: uppercase;
         color: #fff;
-        text-decoration: none;
         font-weight: 700;
-        transition: $base-transition;
-
         @media (min-width: 1200px) {
           &:hover {
             background-color: #fff;
@@ -309,6 +322,9 @@ body {
   @media (min-width: 768px) {
     padding: 60px 0;
   }
+  @media (min-width: 1200px) {
+    padding: 80px 0;
+  }
 
   .index-arrivals-title {
     font-size: 26px;
@@ -322,6 +338,7 @@ body {
     }
     @media (min-width: 1200px) {
       font-size: 38px;
+      margin-bottom: 80px;
     }
     @media (min-width: 1600px) {
       font-size: 44px;
@@ -414,9 +431,12 @@ body {
     grid-template-columns: repeat(2, 1fr);
     gap: 30px 15px;
 
-    @media (min-width: 1600px) {
+    @media (min-width: 768px) {
+      gap: 35px 50px;
+    }
+    @media (min-width: 1200px) {
       grid-template-columns: repeat(4, 1fr);
-      gap: 40px;
+      gap: 50px;
     }
 
     .index-feature {
@@ -426,11 +446,21 @@ body {
       column-gap: 15px;
       row-gap: 5px;
 
+      @media (min-width: 768px) {
+        column-gap: 20px;
+      }
+      @media (min-width: 1200px) {
+        row-gap: 10px;
+      }
+
       .index-feature-icon {
         span {
           display: block;
           font-size: 25px;
 
+          @media (min-width: 768px) {
+            font-size: 30px;
+          }
           @media (min-width: 1200px) {
             font-size: 35px;
           }
@@ -444,12 +474,49 @@ body {
         text-transform: uppercase;
         line-height: 1.2;
         align-self: center;
+
+        @media (min-width: 768px) {
+          font-size: 16px;
+        }
+        @media (min-width: 1200px) {
+          font-size: 18px;
+        }
       }
       .index-feature-description {
+        font-size: 14px;
         grid-column: 2 / 3;
         margin: 0;
         line-height: 1.3;
+
+        @media (min-width: 768px) {
+          font-size: 16px;
+        }
+        @media (min-width: 1200px) {
+          line-height: 1.4;
+        }
+        @media (min-width: 1600px) {
+          font-size: 18px;
+        }
       }
     }
+  }
+}
+
+.index-insta {
+  background: url("../../assets/index-insta-bg-mobile.jpg") no-repeat center top;
+  background-size: cover;
+
+  @media (min-width: 768px) {
+    background: url("../../assets/index-insta-bg-desktop.jpg") no-repeat center
+      top;
+    background-size: cover;
+  }
+
+  .index-insta-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 0;
   }
 }
