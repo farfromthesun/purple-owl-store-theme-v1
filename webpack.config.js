@@ -9,8 +9,8 @@ const config = {
   entry: path.resolve(__dirname, "src/index.js"),
   output: {
     path: path.resolve(__dirname, "assets"),
-    filename: 'custom.v1.js',
-    clean: true,
+    filename: "custom.v1.js",
+    // clean: true,
   },
   devtool: "source-map",
   module: {
