@@ -21,6 +21,9 @@ body {
   background-color: #f7f7f7;
   color: $main-dark;
   font-family: "Poppins", sans-serif;
+  letter-spacing: 0.06rem;
+  line-height: 1.8;
+  margin: 0;
 }
 
 .container {
@@ -115,7 +118,7 @@ body {
 
         span {
           display: block;
-          font-size: 40px;
+          font-size: 30px;
         }
       }
     }
@@ -198,7 +201,11 @@ body {
 
         span {
           display: block;
-          font-size: 30px;
+          font-size: 24px;
+
+          @media (min-width: 1200px) {
+            font-size: 30px;
+          }
         }
       }
     }
@@ -699,7 +706,3 @@ body {
     }
   }
 }
-
-// fix js:
-// - add scrolled class to body (if appropriate) after reload, not only on scroll
-// - add padding-top to body based on header size

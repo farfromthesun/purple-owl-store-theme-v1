@@ -63,7 +63,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_main_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles/main.scss */ "./src/styles/main.scss");
 
 "use strict";
-const bodyWidth = document.querySelector("body").offsetWidth;
+const _body = document.querySelector("body");
+const _mainHeader = document.querySelector(".main-header");
+const bodyWidth = _body.offsetWidth;
+const mainHeaderheight = _mainHeader.offsetHeight;
 function toggleMobileNav(button, action) {
   document.querySelector(button).addEventListener("click", function (e) {
     e.preventDefault();
@@ -77,24 +80,33 @@ function toggleMobileNav(button, action) {
     }
   });
 }
-if (bodyWidth <= 1200) {
-  toggleMobileNav(".mobile-nav-trigger", "add");
-  toggleMobileNav(".nav-mobile-close", "remove");
+function addBodyScrolled() {
+  if (window.scrollY > _body.offsetTop + mainHeaderheight) {
+    _body.classList.add("scrolled");
+  } else {
+    _body.classList.remove("scrolled");
+  }
 }
-function headerOnScroll() {
-  const _body = document.querySelector("body");
+function bodyPaddingTop() {
+  _body.style.paddingTop = mainHeaderheight + "px";
+}
+function onScroll() {
   document.addEventListener("scroll", function () {
-    if (window.scrollY > _body.offsetTop) {
-      _body.classList.add("scrolled");
-    } else {
-      _body.classList.remove("scrolled");
-    }
+    addBodyScrolled();
   });
 }
-headerOnScroll();
+function init() {
+  if (bodyWidth <= 1200) {
+    toggleMobileNav(".mobile-nav-trigger", "add");
+    toggleMobileNav(".nav-mobile-close", "remove");
+  }
+  bodyPaddingTop();
+  addBodyScrolled();
+  onScroll();
+}
+init();
 
 // fix js:
-// - add scrolled class to body (if appropriate) after reload, not only on scroll
 // - add padding-top to body based on header size
 }();
 /******/ })()

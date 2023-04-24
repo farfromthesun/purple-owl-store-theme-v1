@@ -45,6 +45,9 @@ body {
   background-color: #f7f7f7;
   color: #222;
   font-family: "Poppins", sans-serif;
+  letter-spacing: 0.06rem;
+  line-height: 1.8;
+  margin: 0;
 }
 
 .container {
@@ -146,7 +149,7 @@ body {
 }
 .main-header .main-header-inner .mobile-nav-trigger-container .mobile-nav-trigger span {
   display: block;
-  font-size: 40px;
+  font-size: 30px;
 }
 .main-header .main-header-inner .logo-container {
   display: flex;
@@ -221,7 +224,12 @@ body {
 }
 .main-header .main-header-inner .icons-container .icon-link span {
   display: block;
-  font-size: 30px;
+  font-size: 24px;
+}
+@media (min-width: 1200px) {
+  .main-header .main-header-inner .icons-container .icon-link span {
+    font-size: 30px;
+  }
 }
 .main-header .nav-mobile-container {
   position: absolute;
