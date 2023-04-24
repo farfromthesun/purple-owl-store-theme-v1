@@ -39,3 +39,7 @@ function headerOnScroll() {
 }
 
 headerOnScroll();
+
+// fix js:
+// - add scrolled class to body (if appropriate) after reload, not only on scroll
+// - add padding-top to body based on header size
