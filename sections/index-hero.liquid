@@ -1,10 +1,14 @@
-<div class="index-hero">
-  <div class="container">
-    <div class="index-hero-inner">
-      <div class="index-hero-content">
-        <h1 class="index-hero-title">stylist picks beat the heat</h1>
-        <a href="#" title="Shop now" class="btn index-hero-button">Shop now</a>
-      </div>
-    </div>
-  </div>
-</div>
+<style>
+  .index-hero {
+    background: url({{'index-hero-bg-mobile.jpg'|file_url}}) no-repeat center top;
+    background-size: cover;
+  }
+  @media (min-width: 768px) {
+    .index-hero {
+      background: url({{'index-hero-bg-desktop.jpg'|file_url}}) no-repeat center top;
+      background-size: cover;
+    }
+  }
+</style>
+
+{% render 'hero', classes: 'index-hero', title: 'stylist picks beat the heat', isButton: true, buttonText: 'Shop now' %}

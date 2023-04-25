@@ -90,6 +90,11 @@ function addBodyScrolled() {
 function bodyPaddingTop() {
   _body.style.paddingTop = mainHeaderheight + "px";
 }
+function indexHeroHeight() {
+  if (bodyWidth > 1200 && _body.dataset.template.includes("index")) {
+    document.querySelector(".index-hero .hero-inner").style.height = "calc(100vh - " + mainHeaderheight + "px)";
+  }
+}
 function onScroll() {
   document.addEventListener("scroll", function () {
     addBodyScrolled();
@@ -100,6 +105,7 @@ function init() {
     toggleMobileNav(".mobile-nav-trigger", "add");
     toggleMobileNav(".nav-mobile-close", "remove");
   }
+  indexHeroHeight();
   bodyPaddingTop();
   addBodyScrolled();
   onScroll();

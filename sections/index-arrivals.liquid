@@ -2,9 +2,7 @@
   <div class="container">
     <h2 class="index-arrivals-title">Discover new arrivals!</h2>
     <div class="index-arrivals-products">
-      {% for product in collections.all.products limit: 8 %}
-        {% include 'product-thumbnail-po' %}
-      {% endfor %}
+      {% render 'products-grid-po', limit: 8 %}
     </div>
   </div>
 </section>

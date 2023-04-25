@@ -1,0 +1,8 @@
+{% paginate collections.all.products by 16 %}
+  <div class="products-grid">
+    {% for product in collections.all.products limit: limit %}
+      {% render 'product-thumbnail-po', product: product %}
+    {% endfor %}
+  </div>
+  {{- paginate | default_pagination }}
+{% endpaginate %}

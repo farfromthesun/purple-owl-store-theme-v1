@@ -261,41 +261,48 @@ body {
   }
 }
 
-.index-hero {
-  background: url("../../assets/index-hero-bg-mobile.jpg") no-repeat center top;
-  background-size: cover;
+.hero {
+  position: relative;
+  // background: url("../../assets/index-hero-bg-mobile.jpg") no-repeat center top;
+  // background-size: cover;
 
-  @media (min-width: 768px) {
-    background: url("../../assets/index-hero-bg-desktop.jpg") no-repeat center
-      top;
-    background-size: cover;
+  // @media (min-width: 768px) {
+  //   background: url("../../assets/index-hero-bg-desktop.jpg") no-repeat center
+  //     top;
+  //   background-size: cover;
+  // }
+
+  .hero-dimmer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.25);
+    z-index: 1;
   }
 
-  .index-hero-inner {
-    height: 90vh;
+  .hero-inner {
+    height: 50vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    z-index: 2;
+    position: relative;
 
-    @media (min-width: 768px) {
-      height: 60vh;
-    }
     @media (min-width: 1200px) {
-      height: 90vh;
-      align-items: flex-end;
-    }
-    @media (min-width: 1300px) {
-      height: 100vh;
+      height: 40vh;
     }
 
-    .index-hero-content {
+    .hero-content {
       display: flex;
       flex-direction: column;
       align-items: center;
 
-      .index-hero-title {
-        font-size: 40px;
+      .hero-title {
+        font-size: 35px;
         color: #fff;
         text-transform: uppercase;
         font-weight: 700;
@@ -308,15 +315,15 @@ body {
           margin-bottom: 50px;
         }
         @media (min-width: 1200px) {
-          font-size: 60px;
+          font-size: 50px;
           max-width: 550px;
         }
       }
 
-      .index-hero-button {
+      .hero-button {
         border: 3px solid #fff;
         background-color: transparent;
-        font-size: 18px;
+        font-size: 16px;
         text-transform: uppercase;
         color: #fff;
         font-weight: 700;
@@ -328,6 +335,30 @@ body {
           }
         }
       }
+    }
+  }
+}
+
+.index-hero {
+  .hero-inner {
+    height: 80vh;
+
+    @media (min-width: 768px) {
+      height: 60vh;
+    }
+    @media (min-width: 1200px) {
+      align-items: flex-end;
+    }
+
+    .hero-title {
+      font-size: 40px;
+
+      @media (min-width: 1200px) {
+        font-size: 60px;
+      }
+    }
+    .hero-button {
+      font-size: 18px;
     }
   }
 }
@@ -361,20 +392,20 @@ body {
       font-size: 44px;
     }
   }
+}
 
-  .index-arrivals-products {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+.products-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 
-    @media (min-width: 768px) {
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 25px;
-    }
-    @media (min-width: 1200px) {
-      grid-template-columns: 1fr 1fr 1fr 1fr;
-      gap: 25px;
-    }
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 25px;
+  }
+  @media (min-width: 1200px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 25px;
   }
 }
 
@@ -520,14 +551,14 @@ body {
 }
 
 .index-insta {
-  background: url("../../assets/index-insta-bg-mobile.jpg") no-repeat center top;
-  background-size: cover;
+  // background: url("../../assets/index-insta-bg-mobile.jpg") no-repeat center top;
+  // background-size: cover;
 
-  @media (min-width: 768px) {
-    background: url("../../assets/index-insta-bg-desktop.jpg") no-repeat center
-      top;
-    background-size: cover;
-  }
+  // @media (min-width: 768px) {
+  //   background: url("../../assets/index-insta-bg-desktop.jpg") no-repeat center
+  //     top;
+  //   background-size: cover;
+  // }
 
   .index-insta-inner {
     display: flex;
@@ -705,4 +736,8 @@ body {
       }
     }
   }
+}
+
+.main-collection-products {
+  margin-top: 40px;
 }

@@ -1,0 +1,23 @@
+<div class="collection-filters">
+  <div class="container">
+    <div class="collection-filters-inner">
+      <div class="filter-by">Filter by</div>
+      <div class="sort-by">
+        <span class="">Sort by</span>
+        {% assign currentSortOption = collection.sort_by | default: collection.default_sort_by %}
+        <select>
+          {% for option in collection.sort_options %}
+            <option
+              value="{{ option.value }}"
+              {% if option.value == currentSortOption %}
+                selected="selected"
+              {% endif %}
+            >
+              {{ option.name }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

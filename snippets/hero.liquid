@@ -1,0 +1,15 @@
+<div class="hero {{ classes }}">
+  {% if isDimmer %}
+    <div class="hero-dimmer"></div>
+  {% endif %}
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <h1 class="hero-title">{{ title }}</h1>
+        {% if isButton %}
+          <a href="#" title="{{ buttonText }}" class="btn hero-button">{{ buttonText }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
