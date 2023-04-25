@@ -2,10 +2,10 @@
   <div class="container">
     <div class="collection-filters-inner">
       <div class="filter-by">Filter by</div>
-      <div class="sort-by">
-        <span class="">Sort by</span>
+      <div class="sort-by-container">
+        <span class="sort-by-title">Sort by</span>
         {% assign currentSortOption = collection.sort_by | default: collection.default_sort_by %}
-        <select>
+        <select id="sort-by-select" class="sort-by-select">
           {% for option in collection.sort_options %}
             <option
               value="{{ option.value }}"

@@ -95,6 +95,25 @@ function indexHeroHeight() {
     document.querySelector(".index-hero .hero-inner").style.height = "calc(100vh - " + mainHeaderheight + "px)";
   }
 }
+function sortProducts() {
+  const _sortBySelect = document.querySelector("#sort-by-select");
+  if (_sortBySelect) {
+    Shopify.queryParams = {};
+
+    // if any parameters are already provided - preserve them
+    if (location.search.length) {
+      const existingParamsArray = location.search.substring(1).split("&");
+      for (let i = 0; i < existingParamsArray.length; i++) {
+        const existingParamKeyAndValueArray = existingParamsArray[i].split("=");
+        Shopify.queryParams[existingParamKeyAndValueArray[0]] = existingParamKeyAndValueArray[1];
+      }
+    }
+    _sortBySelect.addEventListener("change", function (e) {
+      Shopify.queryParams.sort_by = e.target.value;
+      location.search = new URLSearchParams(Shopify.queryParams).toString();
+    });
+  }
+}
 function onScroll() {
   document.addEventListener("scroll", function () {
     addBodyScrolled();
@@ -105,15 +124,13 @@ function init() {
     toggleMobileNav(".mobile-nav-trigger", "add");
     toggleMobileNav(".nav-mobile-close", "remove");
   }
+  sortProducts();
   indexHeroHeight();
   bodyPaddingTop();
   addBodyScrolled();
   onScroll();
 }
 init();
-
-// fix js:
-// - add padding-top to body based on header size
 }();
 /******/ })()
 ;

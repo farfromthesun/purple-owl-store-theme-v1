@@ -1,8 +1,10 @@
-{% paginate collections.all.products by 16 %}
+{% paginate collections.all.products by paginateBy %}
   <div class="products-grid">
     {% for product in collections.all.products limit: limit %}
       {% render 'product-thumbnail-po', product: product %}
     {% endfor %}
   </div>
-  {{- paginate | default_pagination }}
+  {% if isPaginated %}
+    {{- paginate | default_pagination }}
+  {% endif %}
 {% endpaginate %}
