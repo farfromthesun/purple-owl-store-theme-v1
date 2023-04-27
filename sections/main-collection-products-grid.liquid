@@ -1,5 +1,13 @@
 <div class="main-collection-products">
   <div class="container">
-    {% render 'products-grid-po', isPaginated: true, paginateBy: 20 %}
+    {% paginate collection.products by 20 %}
+      {% comment %} {% assign myCollection = collections.all.products | sort: 'price' | reverse %} {% endcomment %}
+      <div class="products-grid">
+        {% for product in collection.products %}
+          {% render 'product-thumbnail-po', product: product %}
+        {% endfor %}
+      </div>
+      {{- paginate | default_pagination }}
+    {% endpaginate %}
   </div>
 </div>

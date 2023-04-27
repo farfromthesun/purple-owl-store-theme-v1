@@ -96,8 +96,8 @@ function indexHeroHeight() {
   }
 }
 function sortProducts() {
-  const _sortBySelect = document.querySelector("#sort-by-select");
-  if (_sortBySelect) {
+  const _selectSortBy = document.querySelector("#sort-by-select");
+  if (_selectSortBy) {
     Shopify.queryParams = {};
 
     // if any parameters are already provided - preserve them
@@ -108,7 +108,7 @@ function sortProducts() {
         Shopify.queryParams[existingParamKeyAndValueArray[0]] = existingParamKeyAndValueArray[1];
       }
     }
-    _sortBySelect.addEventListener("change", function (e) {
+    _selectSortBy.addEventListener("change", function (e) {
       Shopify.queryParams.sort_by = e.target.value;
       location.search = new URLSearchParams(Shopify.queryParams).toString();
     });
