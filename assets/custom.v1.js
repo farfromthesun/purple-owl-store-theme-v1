@@ -114,6 +114,18 @@ function sortProducts() {
     });
   }
 }
+async function fetchShopifySections(url) {
+  const response = await fetch(url);
+  const responseText = await response.text();
+  return responseText;
+}
+async function renderShopifySections(sections) {
+  let urlParams = location.search.substring(1);
+  urlParams !== "" && (urlParams = "&" + urlParams);
+  const url = `${window.location.pathname}?sections=${sections}${urlParams}`;
+  const fetchResponse = await fetchShopifySections(url);
+  console.log("fetchResponse ", fetchResponse);
+}
 function onScroll() {
   document.addEventListener("scroll", function () {
     addBodyScrolled();
@@ -126,6 +138,7 @@ function init() {
   }
   sortProducts();
   indexHeroHeight();
+  renderShopifySections("template--18682269630773__products-grid");
   bodyPaddingTop();
   addBodyScrolled();
   onScroll();

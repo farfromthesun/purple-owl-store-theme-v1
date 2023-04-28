@@ -8,6 +8,9 @@
         class="product-thumbnail-img-file"
       >
     </picture>
+    {% if product.available == false %}
+      <small class="product-thumbnail-sold-out-badge">Sold out</small>
+    {% endif %}
   </div>
   <div class="product-thumbnail-info">
     <strong class="product-thumbnail-title">{{ product.title }}</strong>

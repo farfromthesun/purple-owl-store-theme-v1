@@ -430,6 +430,7 @@ body {
 
   .product-thumbnail-img {
     overflow: hidden;
+    position: relative;
 
     .product-thumbnail-img-file {
       display: block;
@@ -467,6 +468,28 @@ body {
         font-size: 16px;
       }
     }
+  }
+}
+
+.product-thumbnail-sold-out-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  background: #222;
+  color: #fff;
+  font-size: 9px;
+  opacity: 0.8;
+  text-transform: uppercase;
+  color: #f7f7f7;
+  position: absolute;
+  bottom: 0;
+
+  @media (min-width: 1200px) {
+    font-size: 11px;
+    padding: 5px 15px;
+  }
+  @media (min-width: 1600px) {
+    font-size: 13px;
+    padding: 5px 15px;
   }
 }
 

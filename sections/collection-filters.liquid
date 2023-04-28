@@ -1,7 +1,91 @@
 <div class="collection-filters">
   <div class="container">
     <div class="collection-filters-inner">
-      <div class="filter-by">Filter by</div>
+      <div class="filter-by-container">
+        <span class="filter-by-title">Filter by</span>
+
+        <form class="filter-by-form">
+          {% for filter in collection.filters %}
+            <div class="filter-by-group">
+              <div class="filter-by-group-title">
+                # {{ filter.label }}
+                {% if filter.active_values.size > 0 %}
+                  ({{ filter.active_values.size }})
+                {% endif %}
+              </div>
+              <div class="filter-by-group-options">
+                {% case filter.type %}
+                  {% when 'bolean', 'list' %}
+                    <ul class="filter-by-group-list">
+                      {% for value in filter.values %}
+                        <li>
+                          <label for="input-{{ filter.param_name }}-{{ forloop.index }}">
+                            <input
+                              type="checkbox"
+                              name="{{ value.param_name }}"
+                              value="{{ value.value }}"
+                              id="input-{{ filter.param_name }}-{{ forloop.index }}"
+                              {% if value.active %}
+                                checked
+                              {% endif %}
+                              {% if value.count == 0 and value.active == false %}
+                                disabled
+                              {% endif %}
+                            >
+                            {{ value.label }}
+                          </label>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                    <div class="filter-by-group-submit">
+                      <button type="submit">Apply</button>
+                    </div>
+                  {% when 'price_range' %}
+                    <div class="filter-by-group-price-range">
+                      <div class="range-min">
+                        <label for="input-{{ filter.min_value.param_name }}">Min:</label>
+                        <span>{{ cart.currency.symbol }}</span>
+                        <input
+                          type="number"
+                          name="{{ filter.min_value.param_name }}"
+                          id="input-{{ filter.min_value.param_name }}"
+                          {% if filter.min_value.value %}
+                            value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                          {% endif %}
+                          placeholder="0"
+                          min="0"
+                          max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                        >
+                      </div>
+                      <div class="range-max">
+                        <label for="input-{{ filter.max_value.param_name }}">Max:</label>
+                        <span>{{ cart.currency.symbol }}</span>
+                        <input
+                          type="number"
+                          name="{{ filter.max_value.param_name }}"
+                          id="input-{{ filter.max_value.param_name }}"
+                          {% if filter.max_value.value %}
+                            value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                          {% endif %}
+                          placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                          min="0"
+                          max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                        >
+                      </div>
+                    </div>
+                    <div class="filter-by-group-submit">
+                      <button type="submit">Apply</button>
+                    </div>
+                {% endcase %}
+              </div>
+              {% if filter.active_values.size > 0 %}
+                <a href="{{filter.url_to_remove}}" class="filter-by-group-reset">reset</a>
+              {% endif %}
+            </div>
+            <br>
+          {% endfor %}
+        </form>
+      </div>
       <div class="sort-by-container">
         <span class="sort-by-title">Sort by</span>
         {% assign currentSortOption = collection.sort_by | default: collection.default_sort_by %}
