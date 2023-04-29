@@ -68,19 +68,24 @@ function sortProducts() {
   }
 }
 
-async function fetchShopifySections(url) {
+async function fetchShopifySection(url) {
   const response = await fetch(url);
   const responseText = await response.text();
   return responseText;
 }
 
-async function renderShopifySections(sections) {
+async function renderShopifySection(sectionId) {
+  const _shopifySection = document.getElementById(sectionId).dataset.sectionid;
   let urlParams = location.search.substring(1);
   urlParams !== "" && (urlParams = "&" + urlParams);
-  const url = `${window.location.pathname}?sections=${sections}${urlParams}`;
+  const url = `${window.location.pathname}?section_id=${_shopifySection}${urlParams}`;
 
-  const fetchResponse = await fetchShopifySections(url);
-  console.log("fetchResponse ", fetchResponse);
+  const fetchResponse = await fetchShopifySection(url);
+  const sectionHtmlToRender = new DOMParser()
+    .parseFromString(fetchResponse, "text/html")
+    .getElementById("products-grid-container").innerHTML;
+  // console.log("sectionHtmlToRender ", sectionHtmlToRender);
+  document.getElementById(sectionId).innerHTML = sectionHtmlToRender;
 }
 
 function onScroll() {
@@ -97,7 +102,18 @@ function init() {
   sortProducts();
   indexHeroHeight();
 
-  renderShopifySections("template--18682269630773__products-grid");
+  document
+    .querySelector(".filter-by-form")
+    .addEventListener("submit", function (e) {
+      e.preventDefault();
+      renderShopifySection("products-grid-container");
+
+      // static updateURLHash(searchParams) {
+      //   history.pushState({ searchParams }, '', `${window.location.pathname}${searchParams && '?'.concat(searchParams)}`);
+      // }
+
+      // debounce
+    });
 
   bodyPaddingTop();
   addBodyScrolled();
