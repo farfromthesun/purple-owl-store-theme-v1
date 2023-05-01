@@ -67,6 +67,7 @@ const _body = document.querySelector("body");
 const _mainHeader = document.querySelector(".main-header");
 const bodyWidth = _body.offsetWidth;
 const mainHeaderheight = _mainHeader.offsetHeight;
+const _selectSortBy = document.querySelector("#sort-by-select");
 function toggleMobileNav(button, action) {
   document.querySelector(button).addEventListener("click", function (e) {
     e.preventDefault();
@@ -96,7 +97,6 @@ function indexHeroHeight() {
   }
 }
 function sortProducts() {
-  const _selectSortBy = document.querySelector("#sort-by-select");
   if (_selectSortBy) {
     Shopify.queryParams = {};
 
@@ -126,9 +126,31 @@ async function renderShopifySection(sectionId) {
   const url = `${window.location.pathname}?section_id=${_shopifySection}${urlParams}`;
   const fetchResponse = await fetchShopifySection(url);
   const sectionHtmlToRender = new DOMParser().parseFromString(fetchResponse, "text/html").getElementById("products-grid-container").innerHTML;
-  // console.log("sectionHtmlToRender ", sectionHtmlToRender);
   document.getElementById(sectionId).innerHTML = sectionHtmlToRender;
 }
+function collectionFiltersFormHandler(e) {
+  const _form = e.target;
+  const formData = new FormData(_form);
+  const formSearchParams = new URLSearchParams(formData).toString();
+  const currentSortValue = "sort_by=" + _selectSortBy.value;
+  const newSearchParams = "?" + currentSortValue + "&" + formSearchParams;
+  console.log(newSearchParams);
+
+  // renderShopifySection("products-grid-container");
+
+  // static updateURLHash(searchParams) {
+  //   history.pushState({ searchParams }, '', `${window.location.pathname}${searchParams && '?'.concat(searchParams)}`);
+  // }
+
+  // debounce
+
+  // render from cache?
+
+  // fix sorting
+  // this wors -    http://127.0.0.1:9292/collections/all?sort_by=price-ascending&filter.v.availability=1&filter.v.availability=0&filter.v.price.gte=10&filter.v.price.lte=15
+  // this doesn't - http://127.0.0.1:9292/collections/all?sort_by=title-ascending&filter.v.availability=0&filter.v.price.gte=10&filter.v.price.lte=15
+}
+
 function onScroll() {
   document.addEventListener("scroll", function () {
     addBodyScrolled();
@@ -143,15 +165,8 @@ function init() {
   indexHeroHeight();
   document.querySelector(".filter-by-form").addEventListener("submit", function (e) {
     e.preventDefault();
-    renderShopifySection("products-grid-container");
-
-    // static updateURLHash(searchParams) {
-    //   history.pushState({ searchParams }, '', `${window.location.pathname}${searchParams && '?'.concat(searchParams)}`);
-    // }
-
-    // debounce
+    collectionFiltersFormHandler(e);
   });
-
   bodyPaddingTop();
   addBodyScrolled();
   onScroll();
