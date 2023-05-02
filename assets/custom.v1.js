@@ -98,19 +98,34 @@ function indexHeroHeight() {
 }
 function sortProducts() {
   if (_selectSortBy) {
-    Shopify.queryParams = {};
+    Shopify.queryParamsArray = [];
+    let sortByFlag = false;
 
     // if any parameters are already provided - preserve them
     if (location.search.length) {
       const existingParamsArray = location.search.substring(1).split("&");
       for (let i = 0; i < existingParamsArray.length; i++) {
         const existingParamKeyAndValueArray = existingParamsArray[i].split("=");
-        Shopify.queryParams[existingParamKeyAndValueArray[0]] = existingParamKeyAndValueArray[1];
+        Shopify.queryParamsArray[i] = [existingParamKeyAndValueArray[0] + "=", existingParamKeyAndValueArray[1] + `${i < existingParamsArray.length - 1 ? "&" : ""}`];
       }
     }
     _selectSortBy.addEventListener("change", function (e) {
-      Shopify.queryParams.sort_by = e.target.value;
-      location.search = new URLSearchParams(Shopify.queryParams).toString();
+      // Shopify.queryParams.sort_by = e.target.value;
+
+      if (Shopify.queryParamsArray.length > 0) {
+        for (let i = 0; i < Shopify.queryParamsArray.length; i++) {
+          if (Shopify.queryParamsArray[i][0].includes("sort_by")) {
+            Shopify.queryParamsArray[i][1] = e.target.value + `${i < Shopify.queryParamsArray.length - 1 ? "&" : ""}`;
+            sortByFlag = true;
+          }
+        }
+        location.search = new URLSearchParams(Shopify.queryParamsArray.toString().replaceAll(",", ""));
+      } else {
+        location.search = new URLSearchParams("sort_by=" + e.target.value);
+      }
+      if (sortByFlag === false) {
+        location.search = new URLSearchParams("sort_by=" + e.target.value + Shopify.queryParamsArray.toString().replaceAll(",", ""));
+      }
     });
   }
 }
@@ -146,9 +161,7 @@ function collectionFiltersFormHandler(e) {
 
   // render from cache?
 
-  // fix sorting
-  // this wors -    http://127.0.0.1:9292/collections/all?sort_by=price-ascending&filter.v.availability=1&filter.v.availability=0&filter.v.price.gte=10&filter.v.price.lte=15
-  // this doesn't - http://127.0.0.1:9292/collections/all?sort_by=title-ascending&filter.v.availability=0&filter.v.price.gte=10&filter.v.price.lte=15
+  // add active filters section above grid
 }
 
 function onScroll() {
