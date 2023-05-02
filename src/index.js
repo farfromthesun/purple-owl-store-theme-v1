@@ -100,10 +100,9 @@ async function fetchShopifySection(url) {
   return responseText;
 }
 
-async function renderShopifySection(sectionId) {
+async function renderShopifySection(sectionId, urlParams) {
   const _shopifySection = document.getElementById(sectionId).dataset.sectionid;
-  let urlParams = location.search.substring(1);
-  urlParams !== "" && (urlParams = "&" + urlParams);
+  urlParams === undefined ? (urlParams = "") : (urlParams = "&" + urlParams);
   const url = `${window.location.pathname}?section_id=${_shopifySection}${urlParams}`;
 
   const fetchResponse = await fetchShopifySection(url);
@@ -118,21 +117,19 @@ function collectionFiltersFormHandler(e) {
   const formData = new FormData(_form);
   const formSearchParams = new URLSearchParams(formData).toString();
   const currentSortValue = "sort_by=" + _selectSortBy.value;
+  // const newSearchParams = new URLSearchParams(currentSortValue + "&" + formSearchParams);
+  const newSearchParams = currentSortValue + "&" + formSearchParams;
 
-  const newSearchParams = "?" + currentSortValue + "&" + formSearchParams;
-
-  console.log(newSearchParams);
-
-  // renderShopifySection("products-grid-container");
+  renderShopifySection("products-grid-container", newSearchParams);
 
   // static updateURLHash(searchParams) {
   //   history.pushState({ searchParams }, '', `${window.location.pathname}${searchParams && '?'.concat(searchParams)}`);
   // }
 
+  // move collection filters to collection grid section so they can be re-rendered together with grid section after filters are applied
+  // change filters from on submit to on input change
   // debounce
-
   // render from cache?
-
   // add active filters section above grid
 }
 
@@ -154,7 +151,6 @@ function init() {
     .querySelector(".filter-by-form")
     .addEventListener("submit", function (e) {
       e.preventDefault();
-
       collectionFiltersFormHandler(e);
     });
 
