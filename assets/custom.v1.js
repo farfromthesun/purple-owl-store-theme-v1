@@ -96,40 +96,59 @@ function indexHeroHeight() {
     document.querySelector(".index-hero .hero-inner").style.height = "calc(100vh - " + mainHeaderheight + "px)";
   }
 }
-function sortProducts() {
-  if (_selectSortBy) {
-    Shopify.queryParamsArray = [];
-    let sortByFlag = false;
 
-    // if any parameters are already provided - preserve them
-    if (location.search.length) {
-      const existingParamsArray = location.search.substring(1).split("&");
-      for (let i = 0; i < existingParamsArray.length; i++) {
-        const existingParamKeyAndValueArray = existingParamsArray[i].split("=");
-        Shopify.queryParamsArray[i] = [existingParamKeyAndValueArray[0] + "=", existingParamKeyAndValueArray[1] + `${i < existingParamsArray.length - 1 ? "&" : ""}`];
-      }
-    }
-    _selectSortBy.addEventListener("change", function (e) {
-      // Shopify.queryParams.sort_by = e.target.value;
+// LEGACY FUNCTION THAT WORKS, BUT IS WAY UGLIER AND MESSIER THAN THE ONE CURRENTLY IN USE
+// function sortProducts() {
+//   if (_selectSortBy) {
+//     Shopify.queryParamsArray = [];
+//     let sortByFlag = false;
 
-      if (Shopify.queryParamsArray.length > 0) {
-        for (let i = 0; i < Shopify.queryParamsArray.length; i++) {
-          if (Shopify.queryParamsArray[i][0].includes("sort_by")) {
-            Shopify.queryParamsArray[i][1] = e.target.value + `${i < Shopify.queryParamsArray.length - 1 ? "&" : ""}`;
-            sortByFlag = true;
-          }
-        }
-        if (sortByFlag === true) {
-          location.search = new URLSearchParams(Shopify.queryParamsArray.toString().replaceAll(",", ""));
-        } else {
-          location.search = new URLSearchParams("sort_by=" + e.target.value + "&" + Shopify.queryParamsArray.toString().replaceAll(",", ""));
-        }
-      } else {
-        location.search = new URLSearchParams("sort_by=" + e.target.value);
-      }
-    });
-  }
-}
+//     // if any parameters are already provided - preserve them
+//     if (location.search.length) {
+//       const existingParamsArray = location.search.substring(1).split("&");
+
+//       for (let i = 0; i < existingParamsArray.length; i++) {
+//         const existingParamKeyAndValueArray = existingParamsArray[i].split("=");
+
+//         Shopify.queryParamsArray[i] = [
+//           existingParamKeyAndValueArray[0] + "=",
+//           existingParamKeyAndValueArray[1] +
+//             `${i < existingParamsArray.length - 1 ? "&" : ""}`,
+//         ];
+//       }
+//     }
+
+//     _selectSortBy.addEventListener("change", function (e) {
+//       // Shopify.queryParams.sort_by = e.target.value;
+
+//       if (Shopify.queryParamsArray.length > 0) {
+//         for (let i = 0; i < Shopify.queryParamsArray.length; i++) {
+//           if (Shopify.queryParamsArray[i][0].includes("sort_by")) {
+//             Shopify.queryParamsArray[i][1] =
+//               e.target.value +
+//               `${i < Shopify.queryParamsArray.length - 1 ? "&" : ""}`;
+//             sortByFlag = true;
+//           }
+//         }
+//         if (sortByFlag === true) {
+//           location.search = new URLSearchParams(
+//             Shopify.queryParamsArray.toString().replaceAll(",", "")
+//           );
+//         } else {
+//           location.search = new URLSearchParams(
+//             "sort_by=" +
+//               e.target.value +
+//               "&" +
+//               Shopify.queryParamsArray.toString().replaceAll(",", "")
+//           );
+//         }
+//       } else {
+//         location.search = new URLSearchParams("sort_by=" + e.target.value);
+//       }
+//     });
+//   }
+// }
+
 async function fetchShopifySection(url) {
   const response = await fetch(url);
   const responseText = await response.json();
@@ -175,6 +194,22 @@ function collectionFiltersFormHandler(e) {
   // section rendering on paginate
 }
 
+function collectionSortProductsHandler(e) {
+  const newSortValue = e.target.value;
+  const existingParams = new URLSearchParams(location.search);
+  const newParams = [];
+  if (location.search) {
+    for (let param of existingParams) {
+      let paramKey = param[0];
+      let paramValue = param[1];
+      paramKey !== "sort_by" && newParams.push(paramKey + "=" + paramValue);
+    }
+    newParams.unshift("sort_by=" + newSortValue);
+    location.search = new URLSearchParams(newParams.join("&"));
+  } else {
+    location.search = new URLSearchParams("sort_by=" + e.target.value);
+  }
+}
 function onScroll() {
   document.addEventListener("scroll", function () {
     addBodyScrolled();
@@ -185,11 +220,15 @@ function init() {
     toggleMobileNav(".mobile-nav-trigger", "add");
     toggleMobileNav(".nav-mobile-close", "remove");
   }
-  sortProducts();
+  // sortProducts();
   indexHeroHeight();
   document.querySelector(".filter-by-form").addEventListener("submit", function (e) {
     e.preventDefault();
     collectionFiltersFormHandler(e);
+  });
+  document.querySelector("#sort-by-select").addEventListener("change", function (e) {
+    e.preventDefault();
+    collectionSortProductsHandler(e);
   });
   bodyPaddingTop();
   addBodyScrolled();
