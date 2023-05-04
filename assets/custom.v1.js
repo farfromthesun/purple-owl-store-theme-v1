@@ -238,6 +238,11 @@ function sortFilterHandler(e) {
 // const formParams = new URLSearchParams(formData).toString();
 // formParams
 
+// const filtersForm = document.querySelector(".filter-by-form");
+// const filtersData = new FormData(filtersForm);
+// const filtersSearchParams = new URLSearchParams(filtersData).toString();
+// filtersSearchParams
+
 function onScroll() {
   document.addEventListener("scroll", function () {
     addBodyScrolled();
