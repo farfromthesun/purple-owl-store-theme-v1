@@ -811,4 +811,61 @@ body {
   margin-top: 40px;
 }
 
+.collection-filters {
+  padding: 30px 0;
+}
+
+.collection-filters-form {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  grid-gap: 50px;
+  gap: 50px;
+  font-size: 14px;
+}
+
+.filter-by-container {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.filter-by-group {
+  position: relative;
+}
+
+.filter-by-group-header {
+  display: flex;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.filter-by-group-header:hover {
+  color: #cb13a9;
+}
+
+.filter-by-group-options {
+  position: absolute;
+  top: calc(100% + 3px);
+  z-index: 1;
+  background-color: #f7f7f7;
+  border: 1px solid #dedede;
+  width: 350px;
+}
+
+.filter-by-group-options-header {
+  padding: 20px;
+  border-bottom: 1px solid #dedede;
+  display: flex;
+  justify-content: space-between;
+}
+
+.filter-by-group-list {
+  padding: 20px;
+  list-style-type: none;
+  margin: 0;
+}
+
+.filter-by-group-price-range {
+  padding: 20px;
+}
+
 /*# sourceMappingURL=custom.v1.css.map*/

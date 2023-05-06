@@ -219,20 +219,16 @@ function init() {
   // sortProducts();
   indexHeroHeight();
 
-  document
-    .querySelector(".filter-by-form")
-    .addEventListener("submit", function (e) {
-      e.preventDefault();
-      // collectionFiltersFormHandler(e);
-      sortFilterHandler(e);
-    });
+  // document
+  //   .querySelector(".filter-by-form")
+  //   .addEventListener("submit", function (e) {
+  //     e.preventDefault();
+  //   });
 
   document
     .querySelector("#sort-by-select")
     .addEventListener("change", function (e) {
       e.preventDefault();
-      // collectionSortProductsHandler(e);
-      sortFilterHandler(e);
     });
 
   bodyPaddingTop();

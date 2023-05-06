@@ -5,6 +5,7 @@ $material-symbols-font-path: "~material-symbols/";
 @import "material-symbols/rounded.css";
 
 $main-dark: #222;
+$main-bright: #f7f7f7;
 $main-purple: #cb13a9;
 $base-transition: all 0.3s ease;
 $font-poppins: "Poppins", sans-serif;
@@ -18,7 +19,7 @@ img {
 }
 
 body {
-  background-color: #f7f7f7;
+  background-color: $main-bright;
   color: $main-dark;
   font-family: "Poppins", sans-serif;
   letter-spacing: 0.06rem;
@@ -479,7 +480,7 @@ body {
   font-size: 9px;
   opacity: 0.8;
   text-transform: uppercase;
-  color: #f7f7f7;
+  color: $main-bright;
   position: absolute;
   bottom: 0;
 
@@ -763,4 +764,58 @@ body {
 
 .main-collection-products {
   margin-top: 40px;
+}
+
+.collection-filters {
+  padding: 30px 0;
+}
+
+.collection-filters-form {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 50px;
+  font-size: 14px;
+}
+
+.filter-by-container {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.filter-by-group {
+  position: relative;
+}
+.filter-by-group-header {
+  display: flex;
+  cursor: pointer;
+  transition: $base-transition;
+
+  &:hover {
+    color: $main-purple;
+  }
+}
+.filter-by-group-options {
+  position: absolute;
+  top: calc(100% + 3px);
+  z-index: 1;
+  background-color: $main-bright;
+  border: 1px solid #dedede;
+  // opacity: 0;
+  // visibility: hidden;
+  width: 350px;
+}
+.filter-by-group-options-header {
+  padding: 20px;
+  border-bottom: 1px solid #dedede;
+  display: flex;
+  justify-content: space-between;
+}
+.filter-by-group-list {
+  padding: 20px;
+  list-style-type: none;
+  margin: 0;
+}
+.filter-by-group-price-range {
+  padding: 20px;
 }
