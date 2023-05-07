@@ -196,14 +196,11 @@ function sortFilterHandler(e) {
   }
 }
 
-// const formData = new FormData(document.querySelector("#FacetFiltersForm"));
-// const formParams = new URLSearchParams(formData).toString();
-// formParams
+function filtersShowOptions(header) {
+  const _this = header;
 
-// const filtersForm = document.querySelector(".filter-by-form");
-// const filtersData = new FormData(filtersForm);
-// const filtersSearchParams = new URLSearchParams(filtersData).toString();
-// filtersSearchParams
+  _this.nextElementSibling.classList.toggle("show");
+}
 
 function onScroll() {
   document.addEventListener("scroll", function () {
@@ -216,8 +213,16 @@ function init() {
     toggleMobileNav(".mobile-nav-trigger", "add");
     toggleMobileNav(".nav-mobile-close", "remove");
   }
-  // sortProducts();
   indexHeroHeight();
+
+  const filterByGroupHeaders = document.querySelectorAll(
+    ".filter-by-group-header"
+  );
+  for (let i = 0; i < filterByGroupHeaders.length; i++) {
+    filterByGroupHeaders[i].addEventListener("click", function () {
+      filtersShowOptions(filterByGroupHeaders[i]);
+    });
+  }
 
   // document
   //   .querySelector(".filter-by-form")
@@ -225,11 +230,11 @@ function init() {
   //     e.preventDefault();
   //   });
 
-  document
-    .querySelector("#sort-by-select")
-    .addEventListener("change", function (e) {
-      e.preventDefault();
-    });
+  // document
+  //   .querySelector("#sort-by-select")
+  //   .addEventListener("change", function (e) {
+  //     e.preventDefault();
+  //   });
 
   bodyPaddingTop();
   addBodyScrolled();
