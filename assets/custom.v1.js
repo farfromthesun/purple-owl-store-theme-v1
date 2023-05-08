@@ -248,12 +248,19 @@ function init() {
     toggleMobileNav(".nav-mobile-close", "remove");
   }
   indexHeroHeight();
-  const filterByGroupHeaders = document.querySelectorAll(".filter-by-group-header");
-  for (let i = 0; i < filterByGroupHeaders.length; i++) {
-    filterByGroupHeaders[i].addEventListener("click", function () {
-      filtersShowOptions(filterByGroupHeaders[i]);
+  document.querySelectorAll(".filter-by-group-header").forEach(filterHeader => {
+    filterHeader.addEventListener("click", function () {
+      filtersShowOptions(filterHeader);
     });
-  }
+  });
+  document.body.addEventListener("click", function (e) {
+    const _this = e.target;
+    if (!_this.parentNode.classList.contains("filter-by-group-header")) {
+      document.querySelectorAll(".filter-by-group-options").forEach(filterHeader => {
+        filterHeader.classList.remove("show");
+      });
+    }
+  });
 
   // document
   //   .querySelector(".filter-by-form")
