@@ -192,6 +192,8 @@ function collectionFiltersFormHandler(e) {
   // add active filters section above grid
 
   // section rendering on paginate
+
+  // make if statements that check if filter event listeners are mounted only if elements are on the page (x.length > 0 or body.data-template = x)
 }
 
 function collectionSortProductsHandler(e) {
@@ -233,9 +235,18 @@ function sortFilterHandler(e) {
     }
   }
 }
-function filtersShowOptions(header) {
-  const _this = header;
-  _this.nextElementSibling.classList.toggle("show");
+function filterGroupHandler(e, group) {
+  const filterGroup = group;
+  const filterGroupOptions = filterGroup.querySelector(".filter-by-group-options");
+  if (filterGroup.classList.contains("open")) {
+    if (e.target.classList == filterGroup.classList) {
+      filterGroup.classList.remove("open");
+      filterGroupOptions.classList.remove("show");
+    }
+  } else {
+    filterGroup.classList.add("open");
+    filterGroupOptions.classList.add("show");
+  }
 }
 function onScroll() {
   document.addEventListener("scroll", function () {
@@ -248,32 +259,11 @@ function init() {
     toggleMobileNav(".nav-mobile-close", "remove");
   }
   indexHeroHeight();
-  document.querySelectorAll(".filter-by-group-header").forEach(filterHeader => {
-    filterHeader.addEventListener("click", function () {
-      filtersShowOptions(filterHeader);
+  document.querySelectorAll(".filter-by-group").forEach(filterGroup => {
+    filterGroup.addEventListener("click", function (e) {
+      filterGroupHandler(e, filterGroup);
     });
   });
-  document.body.addEventListener("click", function (e) {
-    const _this = e.target;
-    if (!_this.parentNode.classList.contains("filter-by-group-header")) {
-      document.querySelectorAll(".filter-by-group-options").forEach(filterHeader => {
-        filterHeader.classList.remove("show");
-      });
-    }
-  });
-
-  // document
-  //   .querySelector(".filter-by-form")
-  //   .addEventListener("submit", function (e) {
-  //     e.preventDefault();
-  //   });
-
-  // document
-  //   .querySelector("#sort-by-select")
-  //   .addEventListener("change", function (e) {
-  //     e.preventDefault();
-  //   });
-
   bodyPaddingTop();
   addBodyScrolled();
   onScroll();

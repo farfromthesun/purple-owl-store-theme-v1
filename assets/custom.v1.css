@@ -831,6 +831,20 @@ body {
 .filter-by-group {
   position: relative;
 }
+.filter-by-group.open:after {
+  content: "";
+  display: block;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+.filter-by-group.open .filter-by-group-header {
+  z-index: 3;
+  position: relative;
+}
 .filter-by-group .filter-by-group-header {
   display: flex;
   cursor: pointer;
@@ -842,7 +856,7 @@ body {
 .filter-by-group .filter-by-group-options {
   position: absolute;
   top: calc(100% + 5px);
-  z-index: 1;
+  z-index: 3;
   background-color: #f7f7f7;
   border: 1px solid #dedede;
   opacity: 0;
