@@ -190,10 +190,9 @@ function collectionFiltersFormHandler(e) {
   // debounce
   // render from cache?
   // add active filters section above grid
-
   // section rendering on paginate
-
   // make if statements that check if filter event listeners are mounted only if elements are on the page (x.length > 0 or body.data-template = x)
+  // mobile
 }
 
 function collectionSortProductsHandler(e) {

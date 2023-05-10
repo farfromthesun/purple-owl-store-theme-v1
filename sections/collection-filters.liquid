@@ -25,7 +25,10 @@
                   <ul class="filter-by-group-list">
                     {% for value in filter.values %}
                       <li>
-                        <label for="input-{{ filter.param_name }}-{{ forloop.index }}">
+                        <label
+                          for="input-{{ filter.param_name }}-{{ forloop.index }}"
+                          class="{% if value.count == 0 and value.active == false %}filter-disabled{% endif %}"
+                        >
                           <input
                             type="checkbox"
                             name="{{ value.param_name }}"
@@ -38,6 +41,10 @@
                               disabled
                             {% endif %}
                           >
+                          <div class="filter-by-list-custom-checkbox">
+                            <span class="material-symbols-rounded checkbox-outline">check_box_outline_blank</span>
+                            <span class="material-symbols-rounded checkbox-check">check</span>
+                          </div>
                           {{ value.label }} ({{ value.count }})
                         </label>
                       </li>
@@ -89,18 +96,21 @@
       <div class="sort-by-container">
         <span class="sort-by-title">Sort by: </span>
         {% assign currentSortOption = collection.sort_by | default: collection.default_sort_by %}
-        <select class="sort-by-select">
-          {% for option in collection.sort_options %}
-            <option
-              value="{{ option.value }}"
-              {% if option.value == currentSortOption %}
-                selected="selected"
-              {% endif %}
-            >
-              {{ option.name }}
-            </option>
-          {% endfor %}
-        </select>
+        <div class="sort-by-select-container">
+          <select class="sort-by-select">
+            {% for option in collection.sort_options %}
+              <option
+                value="{{ option.value }}"
+                {% if option.value == currentSortOption %}
+                  selected="selected"
+                {% endif %}
+              >
+                {{ option.name }}
+              </option>
+            {% endfor %}
+          </select>
+          <span class="material-symbols-rounded"> expand_more </span>
+        </div>
       </div>
       <div class="collection-filters-results-counter">
         {% if collection.products_count != collection.all_products_count %}

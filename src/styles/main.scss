@@ -774,6 +774,7 @@ body {
   display: grid;
   grid-template-columns: 1fr auto auto;
   gap: 50px;
+  align-items: center;
   font-size: 14px;
 
   .filter-by-container {
@@ -843,6 +844,51 @@ body {
       padding: 20px;
       list-style-type: none;
       margin: 0;
+
+      label {
+        display: flex;
+        cursor: pointer;
+
+        &.filter-disabled {
+          color: #999;
+        }
+
+        input {
+          visibility: hidden;
+          opacity: 0;
+          position: absolute;
+
+          &:checked + .filter-by-list-custom-checkbox span.checkbox-check {
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+
+        .filter-by-list-custom-checkbox {
+          display: grid;
+          grid-template-columns: auto;
+          margin-right: 5px;
+          align-items: center;
+          justify-content: center;
+
+          span[class^="material-symbols"] {
+            display: block;
+            grid-column-start: 1;
+            grid-row-start: 1;
+            text-align: center;
+
+            &.checkbox-outline {
+              font-size: 22px;
+            }
+            &.checkbox-check {
+              font-size: 13px;
+              opacity: 0;
+              visibility: hidden;
+              transition: $base-transition;
+            }
+          }
+        }
+      }
     }
     .filter-by-group-price-range {
       padding: 20px;
@@ -856,6 +902,35 @@ body {
         padding: 10px;
         width: 100px;
       }
+    }
+  }
+}
+
+.sort-by-container {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+
+  .sort-by-select-container {
+    position: relative;
+
+    .sort-by-select {
+      appearance: none;
+      border: none;
+      background-color: transparent;
+      font-family: "Poppins", sans-serif;
+      letter-spacing: 0.06rem;
+      font-size: 14px;
+      padding: 5px 25px 5px 5px;
+    }
+
+    span[class^="material-symbols"] {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
     }
   }
 }
