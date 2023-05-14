@@ -843,8 +843,7 @@ body {
   z-index: 2;
 }
 .filter-by-group.open .filter-by-group-header {
-  z-index: 3;
-  position: relative;
+  color: #cb13a9;
 }
 .filter-by-group .filter-by-group-header {
   display: flex;
@@ -951,6 +950,7 @@ body {
   letter-spacing: 0.06rem;
   font-size: 14px;
   padding: 5px 25px 5px 5px;
+  cursor: pointer;
 }
 .sort-by-container .sort-by-select-container span[class^=material-symbols] {
   position: absolute;

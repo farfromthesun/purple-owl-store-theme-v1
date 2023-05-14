@@ -800,8 +800,9 @@ body {
       z-index: 2;
     }
     .filter-by-group-header {
-      z-index: 3;
-      position: relative;
+      // z-index: 3;
+      // position: relative;
+      color: $main-purple;
     }
   }
 
@@ -922,6 +923,7 @@ body {
       letter-spacing: 0.06rem;
       font-size: 14px;
       padding: 5px 25px 5px 5px;
+      cursor: pointer;
     }
 
     span[class^="material-symbols"] {
