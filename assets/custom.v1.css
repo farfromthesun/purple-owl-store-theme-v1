@@ -961,4 +961,23 @@ body {
   align-items: center;
 }
 
+.collection-active-filters-inner {
+  display: flex;
+  gap: 20px;
+}
+
+.active-filter-button {
+  display: block;
+  padding: 10px;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  border: 1px solid #dedede;
+  color: #222;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+.active-filter-button:hover {
+  border-color: #222;
+}
+
 /*# sourceMappingURL=custom.v1.css.map*/

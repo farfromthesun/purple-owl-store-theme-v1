@@ -936,3 +936,21 @@ body {
     }
   }
 }
+
+.collection-active-filters-inner {
+  display: flex;
+  gap: 20px;
+}
+.active-filter-button {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  border: 1px solid #dedede;
+  color: $main-dark;
+  font-size: 14px;
+  transition: $base-transition;
+
+  &:hover {
+    border-color: $main-dark;
+  }
+}

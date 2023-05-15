@@ -126,3 +126,40 @@
     </form>
   </div>
 </div>
+<div class="collection-active-filters">
+  <div class="container">
+    <div class="collection-active-filters-inner">
+      {% for filter in collection.filters %}
+        {% for value in filter.active_values %}
+          <div class="active-filter-container">
+            <a
+              href="{{ value.url_to_remove }}"
+              role="button"
+              class="active-filter-button"
+            >
+              {{- filter.label }}: {{ value.label -}}
+            </a>
+          </div>
+        {% endfor %}
+
+        {% if filter.type == 'price_range' %}
+          {% if filter.min_value.value != null or filter.max_value.value != null %}
+            <div class="active-filter-container">
+              <a
+                href="{{ value.url_to_remove }}"
+                role="button"
+                class="active-filter-button"
+              >
+                {{ cart.currency.symbol -}}
+                {{- filter.min_value.value | money_without_currency | replace: ',', '' }}
+                -
+                {{ cart.currency.symbol -}}
+                {{- filter.max_value.value | money_without_currency | replace: ',', '' }}
+              </a>
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
