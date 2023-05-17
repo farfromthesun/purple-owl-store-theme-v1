@@ -924,6 +924,16 @@ body {
       font-size: 14px;
       padding: 5px 25px 5px 5px;
       cursor: pointer;
+      color: $main-dark;
+      transition: $base-transition;
+
+      &:hover {
+        color: $main-purple;
+
+        option {
+          color: $main-dark;
+        }
+      }
     }
 
     span[class^="material-symbols"] {
@@ -939,18 +949,37 @@ body {
 
 .collection-active-filters-inner {
   display: flex;
+  align-items: center;
   gap: 20px;
-}
-.active-filter-button {
-  display: block;
-  padding: 10px;
-  text-decoration: none;
-  border: 1px solid #dedede;
-  color: $main-dark;
-  font-size: 14px;
-  transition: $base-transition;
 
-  &:hover {
-    border-color: $main-dark;
+  .active-filter-button {
+    display: flex;
+    padding: 10px;
+    text-decoration: none;
+    border: 1px solid #dedede;
+    color: $main-dark;
+    font-size: 14px;
+    line-height: 1;
+    transition: $base-transition;
+    align-items: center;
+    gap: 10px;
+
+    &:hover {
+      border-color: $main-dark;
+    }
+
+    .active-filter-close-icon {
+      font-size: 16px;
+    }
+  }
+
+  .collection-active-filters-remove-all {
+    font-size: 14px;
+    color: $main-dark;
+    transition: $base-transition;
+
+    &:hover {
+      color: $main-purple;
+    }
   }
 }

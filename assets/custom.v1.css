@@ -951,6 +951,14 @@ body {
   font-size: 14px;
   padding: 5px 25px 5px 5px;
   cursor: pointer;
+  color: #222;
+  transition: all 0.3s ease;
+}
+.sort-by-container .sort-by-select-container .sort-by-select:hover {
+  color: #cb13a9;
+}
+.sort-by-container .sort-by-select-container .sort-by-select:hover option {
+  color: #222;
 }
 .sort-by-container .sort-by-select-container span[class^=material-symbols] {
   position: absolute;
@@ -963,21 +971,35 @@ body {
 
 .collection-active-filters-inner {
   display: flex;
+  align-items: center;
   gap: 20px;
 }
-
-.active-filter-button {
-  display: block;
+.collection-active-filters-inner .active-filter-button {
+  display: flex;
   padding: 10px;
   -webkit-text-decoration: none;
   text-decoration: none;
   border: 1px solid #dedede;
   color: #222;
   font-size: 14px;
+  line-height: 1;
+  transition: all 0.3s ease;
+  align-items: center;
+  gap: 10px;
+}
+.collection-active-filters-inner .active-filter-button:hover {
+  border-color: #222;
+}
+.collection-active-filters-inner .active-filter-button .active-filter-close-icon {
+  font-size: 16px;
+}
+.collection-active-filters-inner .collection-active-filters-remove-all {
+  font-size: 14px;
+  color: #222;
   transition: all 0.3s ease;
 }
-.active-filter-button:hover {
-  border-color: #222;
+.collection-active-filters-inner .collection-active-filters-remove-all:hover {
+  color: #cb13a9;
 }
 
 /*# sourceMappingURL=custom.v1.css.map*/

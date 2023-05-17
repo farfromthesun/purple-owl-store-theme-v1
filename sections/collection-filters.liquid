@@ -9,9 +9,11 @@
             <div class="filter-by-group-header">
               <span class="filter-by-group-title">
                 {{ filter.label }}
-                {% if filter.active_values.size > 0 %}
-                  ({{ filter.active_values.size }})
-                {% endif %}
+                {% comment %}
+                  {% if filter.active_values.size > 0 %}
+                    ({{ filter.active_values.size }})
+                  {% endif %}
+                {% endcomment %}
               </span>
               <span class="material-symbols-rounded"> expand_more </span>
             </div>
@@ -138,10 +140,10 @@
               class="active-filter-button"
             >
               {{- filter.label }}: {{ value.label -}}
+              <span class="material-symbols-rounded active-filter-close-icon">close</span>
             </a>
           </div>
         {% endfor %}
-
         {% if filter.type == 'price_range' %}
           {% if filter.min_value.value != null or filter.max_value.value != null %}
             <div class="active-filter-container">
@@ -155,11 +157,13 @@
                 -
                 {{ cart.currency.symbol -}}
                 {{- filter.max_value.value | money_without_currency | replace: ',', '' }}
+                <span class="material-symbols-rounded active-filter-close-icon">close</span>
               </a>
             </div>
           {% endif %}
         {% endif %}
       {% endfor %}
+      <a href="{{ collection.url }}" title="Remove all" class="collection-active-filters-remove-all">Remove all</a>
     </div>
   </div>
 </div>
