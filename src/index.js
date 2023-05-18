@@ -102,6 +102,26 @@ async function fetchShopifySection(url) {
   return responseText;
 }
 
+function sortFilterRenderSection(searchParams) {
+  searchParams === undefined
+    ? (searchParams = "")
+    : (searchParams = "&" + searchParams);
+  const sections = "someSectionsToRender";
+  const url = `${window.location.pathname}?sections=${sections}${searchParams}`;
+  console.log("url", url);
+}
+
+function sortFilterFormHandler(e, form) {
+  const clickedElement = e.target;
+  const formData = new FormData(form);
+  const formSearchParams = new URLSearchParams(formData).toString();
+
+  console.log("formSearchParams ", formSearchParams);
+  sortFilterRenderSection(formSearchParams);
+}
+
+//////////////////////////////////////////////////////////////
+
 async function renderShopifySections(sections, urlParams) {
   const sectionsIds = sections.split(",");
   let shopifySectionsIdsArray = [];
@@ -138,19 +158,6 @@ function collectionFiltersFormHandler(e) {
     "main-collection-products,collection-filters",
     newSearchParams
   );
-
-  // static updateURLHash(searchParams) {
-  //   history.pushState({ searchParams }, '', `${window.location.pathname}${searchParams && '?'.concat(searchParams)}`);
-  // }
-
-  // move collection filters to collection grid section so they can be re-rendered together with grid section after filters are applied
-  // change filters from on submit to on input change
-  // debounce
-  // render from cache?
-  // add active filters section above grid
-  // section rendering on paginate
-  // make if statements that check if filter event listeners are mounted only if elements are on the page (x.length > 0 or body.data-template = x)
-  // mobile
 }
 
 function collectionSortProductsHandler(e) {
@@ -233,9 +240,28 @@ function init() {
     });
   });
 
+  document
+    .querySelector(".collection-filters-form")
+    .addEventListener("input", function (e) {
+      sortFilterFormHandler(e, this);
+    });
+
   bodyPaddingTop();
   addBodyScrolled();
   onScroll();
 }
 
 init();
+
+// TODO
+
+// static updateURLHash(searchParams) {
+//   history.pushState({ searchParams }, '', `${window.location.pathname}${searchParams && '?'.concat(searchParams)}`);
+// }
+
+// change filters from on submit to on input change
+// debounce
+// render from cache?
+// section rendering on paginate
+// make if statements that check if filter event listeners are mounted only if elements are on the page (x.length > 0 or body.data-template = x)
+// mobile

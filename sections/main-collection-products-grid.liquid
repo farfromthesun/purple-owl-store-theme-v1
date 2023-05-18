@@ -9,6 +9,10 @@
         </div>
         {{- paginate | default_pagination }}
       {% endpaginate %}
+
+      {% if collection.products.size == 0 %}
+        <p class="main-collection-no-products-found">We are sorry, but no products were found.</p>
+      {% endif %}
     </div>
   </div>
 </div>

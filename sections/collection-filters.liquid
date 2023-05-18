@@ -1,3 +1,5 @@
+{% assign active_filters_count = 0 %}
+
 <div class="collection-filters" data-section-id="{{ section.id }}">
   <div class="container">
     <form class="collection-filters-form">
@@ -99,7 +101,10 @@
         <span class="sort-by-title">Sort by: </span>
         {% assign currentSortOption = collection.sort_by | default: collection.default_sort_by %}
         <div class="sort-by-select-container">
-          <select class="sort-by-select">
+          <select
+            class="sort-by-select"
+            name="sort_by"
+          >
             {% for option in collection.sort_options %}
               <option
                 value="{{ option.value }}"
@@ -126,29 +131,27 @@
         {% endif %}
       </div>
     </form>
-  </div>
-</div>
-<div class="collection-active-filters">
-  <div class="container">
-    <div class="collection-active-filters-inner">
+
+    <div class="collection-active-filters">
       {% for filter in collection.filters %}
-        {% for value in filter.active_values %}
+        {% for active_value in filter.active_values %}
           <div class="active-filter-container">
             <a
-              href="{{ value.url_to_remove }}"
+              href="{{ active_value.url_to_remove }}"
               role="button"
               class="active-filter-button"
             >
-              {{- filter.label }}: {{ value.label -}}
+              {{- filter.label }}: {{ active_value.label -}}
               <span class="material-symbols-rounded active-filter-close-icon">close</span>
             </a>
           </div>
+          {% assign active_filters_count = active_filters_count | plus: 1 %}
         {% endfor %}
         {% if filter.type == 'price_range' %}
           {% if filter.min_value.value != null or filter.max_value.value != null %}
             <div class="active-filter-container">
               <a
-                href="{{ value.url_to_remove }}"
+                href="{{ filter.url_to_remove }}"
                 role="button"
                 class="active-filter-button"
               >
@@ -160,10 +163,13 @@
                 <span class="material-symbols-rounded active-filter-close-icon">close</span>
               </a>
             </div>
+            {% assign active_filters_count = active_filters_count | plus: 1 %}
           {% endif %}
         {% endif %}
       {% endfor %}
-      <a href="{{ collection.url }}" title="Remove all" class="collection-active-filters-remove-all">Remove all</a>
+      {% if active_filters_count > 0 %}
+        <a href="{{ collection.url }}" title="Remove all" class="collection-active-filters-remove-all">Remove all</a>
+      {% endif %}
     </div>
   </div>
 </div>
