@@ -112,7 +112,7 @@ async function sortFilterRenderSections(searchParams) {
       id: "collection-filters",
       shopifyId: "",
       elementsToRender:
-        ".sort-by-container,.collection-filters-results-counter,.collection-active-filters",
+        ".filter-by-container,.sort-by-container,.collection-filters-results-counter,.collection-active-filters",
     },
     {
       id: "products-grid-container",

@@ -160,7 +160,7 @@ async function sortFilterRenderSections(searchParams) {
   const sectionsToRender = [{
     id: "collection-filters",
     shopifyId: "",
-    elementsToRender: ".sort-by-container,.collection-filters-results-counter,.collection-active-filters"
+    elementsToRender: ".filter-by-container,.sort-by-container,.collection-filters-results-counter,.collection-active-filters"
   }, {
     id: "products-grid-container",
     shopifyId: "",
