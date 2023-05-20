@@ -151,21 +151,43 @@ function indexHeroHeight() {
 
 async function fetchShopifySection(url) {
   const response = await fetch(url);
-  const responseText = await response.json();
-  return responseText;
+  const responseJson = await response.json();
+  return responseJson;
 }
-function sortFilterRenderSection(searchParams) {
+async function sortFilterRenderSections(searchParams) {
   searchParams === undefined ? searchParams = "" : searchParams = "&" + searchParams;
-  const sections = "someSectionsToRender";
-  const url = `${window.location.pathname}?sections=${sections}${searchParams}`;
-  console.log("url", url);
+  // const sectionsIds = ["collection-filters", "products-grid-container"];
+  const sectionsToRender = [{
+    id: "collection-filters",
+    shopifyId: "",
+    elementsToRender: ".sort-by-container,.collection-filters-results-counter,.collection-active-filters"
+  }, {
+    id: "products-grid-container",
+    shopifyId: "",
+    elementsToRender: ".products-grid-container"
+  }];
+  const sectionsShopifyIds = [];
+  for (const section of sectionsToRender) {
+    section.shopifyId = document.getElementById(section.id).dataset.sectionId;
+    sectionsShopifyIds.push(section.shopifyId);
+  }
+  const url = `${window.location.pathname}?sections=${sectionsShopifyIds}${searchParams}`;
+  const htmlToRenderObject = await fetchShopifySection(url);
+  for (const section of sectionsToRender) {
+    const sectionHtml = new DOMParser().parseFromString(htmlToRenderObject[section.shopifyId], "text/html");
+    for (const element of section.elementsToRender.split(",")) {
+      document.querySelector(element).innerHTML = sectionHtml.querySelector(element).innerHTML;
+    }
+  }
+
+  // loading
 }
+
 function sortFilterFormHandler(e, form) {
-  const clickedElement = e.target;
+  // const clickedElement = e.target;
   const formData = new FormData(form);
   const formSearchParams = new URLSearchParams(formData).toString();
-  console.log("formSearchParams ", formSearchParams);
-  sortFilterRenderSection(formSearchParams);
+  sortFilterRenderSections(formSearchParams);
 }
 
 //////////////////////////////////////////////////////////////
@@ -260,13 +282,15 @@ function init() {
     toggleMobileNav(".nav-mobile-close", "remove");
   }
   indexHeroHeight();
-  document.querySelectorAll(".filter-by-group").forEach(filterGroup => {
-    filterGroup.addEventListener("click", function (e) {
-      filterGroupHandler(e, filterGroup);
-    });
-  });
-  document.querySelector(".collection-filters-form").addEventListener("input", function (e) {
+  const collectionFiltersFrom = document.querySelector(".collection-filters-form");
+  collectionFiltersFrom.addEventListener("input", function (e) {
     sortFilterFormHandler(e, this);
+  });
+  collectionFiltersFrom.addEventListener("click", function (e) {
+    if (e.target.closest(".filter-by-group")) {
+      const filterGroup = e.target.closest(".filter-by-group");
+      filterGroupHandler(e, filterGroup);
+    }
   });
   bodyPaddingTop();
   addBodyScrolled();
