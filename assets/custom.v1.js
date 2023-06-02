@@ -68,6 +68,17 @@ const _mainHeader = document.querySelector(".main-header");
 const bodyWidth = _body.offsetWidth;
 const mainHeaderheight = _mainHeader.offsetHeight;
 const _selectSortBy = document.querySelector("#sort-by-select");
+function debounce(fn, wait) {
+  var _this = this;
+  let t;
+  return function () {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+    clearTimeout(t);
+    t = setTimeout(() => fn.apply(_this, args), wait);
+  };
+}
 function toggleMobileNav(button, action) {
   document.querySelector(button).addEventListener("click", function (e) {
     e.preventDefault();
@@ -96,168 +107,53 @@ function indexHeroHeight() {
     document.querySelector(".index-hero .hero-inner").style.height = "calc(100vh - " + mainHeaderheight + "px)";
   }
 }
-
-// LEGACY FUNCTION THAT WORKS, BUT IS WAY UGLIER AND MESSIER THAN THE ONE CURRENTLY IN USE
-// function sortProducts() {
-//   if (_selectSortBy) {
-//     Shopify.queryParamsArray = [];
-//     let sortByFlag = false;
-
-//     // if any parameters are already provided - preserve them
-//     if (location.search.length) {
-//       const existingParamsArray = location.search.substring(1).split("&");
-
-//       for (let i = 0; i < existingParamsArray.length; i++) {
-//         const existingParamKeyAndValueArray = existingParamsArray[i].split("=");
-
-//         Shopify.queryParamsArray[i] = [
-//           existingParamKeyAndValueArray[0] + "=",
-//           existingParamKeyAndValueArray[1] +
-//             `${i < existingParamsArray.length - 1 ? "&" : ""}`,
-//         ];
-//       }
-//     }
-
-//     _selectSortBy.addEventListener("change", function (e) {
-//       // Shopify.queryParams.sort_by = e.target.value;
-
-//       if (Shopify.queryParamsArray.length > 0) {
-//         for (let i = 0; i < Shopify.queryParamsArray.length; i++) {
-//           if (Shopify.queryParamsArray[i][0].includes("sort_by")) {
-//             Shopify.queryParamsArray[i][1] =
-//               e.target.value +
-//               `${i < Shopify.queryParamsArray.length - 1 ? "&" : ""}`;
-//             sortByFlag = true;
-//           }
-//         }
-//         if (sortByFlag === true) {
-//           location.search = new URLSearchParams(
-//             Shopify.queryParamsArray.toString().replaceAll(",", "")
-//           );
-//         } else {
-//           location.search = new URLSearchParams(
-//             "sort_by=" +
-//               e.target.value +
-//               "&" +
-//               Shopify.queryParamsArray.toString().replaceAll(",", "")
-//           );
-//         }
-//       } else {
-//         location.search = new URLSearchParams("sort_by=" + e.target.value);
-//       }
-//     });
-//   }
-// }
-
 async function fetchShopifySection(url) {
   const response = await fetch(url);
-  const responseJson = await response.json();
-  return responseJson;
+  const responseText = await response.text();
+  return responseText;
 }
-async function sortFilterRenderSections(searchParams) {
+async function sortFilterRenderSections(e, searchParams) {
+  const mainCollectionProducts = document.querySelector(".main-collection-products");
+  const productsGrid = document.querySelector(".products-grid-container");
+  const filterResultsCounter = document.querySelector(".collection-filters-results-counter");
+  const activeFilters = document.querySelector(".collection-active-filters");
+  const clickedFilter = e.target.closest(".filter-by-group");
   searchParams === undefined ? searchParams = "" : searchParams = "&" + searchParams;
-  // const sectionsIds = ["collection-filters", "products-grid-container"];
-  const sectionsToRender = [{
-    id: "collection-filters",
-    shopifyId: "",
-    elementsToRender: ".filter-by-container,.sort-by-container,.collection-filters-results-counter,.collection-active-filters"
-  }, {
-    id: "products-grid-container",
-    shopifyId: "",
-    elementsToRender: ".products-grid-container"
-  }];
-  const sectionsShopifyIds = [];
-  for (const section of sectionsToRender) {
-    section.shopifyId = document.getElementById(section.id).dataset.sectionId;
-    sectionsShopifyIds.push(section.shopifyId);
+  const shopifySectionId = productsGrid.dataset.sectionId;
+  const url = `${window.location.pathname}?section_id=${shopifySectionId}${searchParams}`;
+  mainCollectionProducts.classList.add("loading");
+  const htmlText = await fetchShopifySection(url);
+  const htmlToRender = new DOMParser().parseFromString(htmlText, "text/html");
+  const filtersToRender = htmlToRender.querySelectorAll(".filter-by-group");
+  const productsGridToRender = htmlToRender.querySelector(".products-grid-container");
+  const filterResultsCounterToRender = htmlToRender.querySelector(".collection-filters-results-counter");
+  const activeFiltersToRender = htmlToRender.querySelector(".collection-active-filters");
+  if (clickedFilter) {
+    filtersToRender.forEach(filter => {
+      if (filter.dataset.filterIndex === clickedFilter.dataset.filterIndex) {
+        clickedFilter.querySelector(".filter-by-group-options-header").innerHTML = filter.querySelector(".filter-by-group-options-header").innerHTML;
+      } else if (filter.dataset.filterIndex !== clickedFilter.dataset.filterIndex) {
+        document.querySelector(`.filter-by-group[data-filter-index='${filter.dataset.filterIndex}']`).innerHTML = filter.innerHTML;
+      }
+    });
+  } else {
+    filtersToRender.forEach(filter => {
+      document.querySelector(`.filter-by-group[data-filter-index='${filter.dataset.filterIndex}']`).innerHTML = filter.innerHTML;
+    });
   }
-  const url = `${window.location.pathname}?sections=${sectionsShopifyIds}${searchParams}`;
-  const htmlToRenderObject = await fetchShopifySection(url);
-  for (const section of sectionsToRender) {
-    const sectionHtml = new DOMParser().parseFromString(htmlToRenderObject[section.shopifyId], "text/html");
-    for (const element of section.elementsToRender.split(",")) {
-      document.querySelector(element).innerHTML = sectionHtml.querySelector(element).innerHTML;
-    }
-  }
-
-  // loading
+  filterResultsCounter.innerHTML = filterResultsCounterToRender.innerHTML;
+  activeFilters.innerHTML = activeFiltersToRender.innerHTML;
+  productsGrid.innerHTML = productsGridToRender.innerHTML;
+  mainCollectionProducts.classList.remove("loading");
 }
-
 function sortFilterFormHandler(e, form) {
-  // const clickedElement = e.target;
   const formData = new FormData(form);
   const formSearchParams = new URLSearchParams(formData).toString();
-  sortFilterRenderSections(formSearchParams);
+  sortFilterRenderSections(e, formSearchParams);
 }
-
-//////////////////////////////////////////////////////////////
-
-async function renderShopifySections(sections, urlParams) {
-  const sectionsIds = sections.split(",");
-  let shopifySectionsIdsArray = [];
-  for (const sectionId of sectionsIds) {
-    shopifySectionsIdsArray.push(document.getElementById(sectionId).dataset.sectionid);
-  }
-  const shopifySectionsIds = shopifySectionsIdsArray.join();
-  urlParams === undefined ? urlParams = "" : urlParams = "&" + urlParams;
-  const url = `${window.location.pathname}?sections=${shopifySectionsIds}${urlParams}`;
-  const fetchResponse = await fetchShopifySection(url);
-  for (const [key, value] of Object.entries(fetchResponse)) {
-    // console.log(" ###\n\n\n\n " + value);
-    const sectionHtmlToRender = new DOMParser().parseFromString(value, "text/html").getElementById("shopify-section-" + key).innerHTML;
-    document.getElementById("shopify-section-" + key).innerHTML = sectionHtmlToRender;
-    // console.log(sectionHtmlToRender);
-  }
-}
-
-function collectionFiltersFormHandler(e) {
-  const _form = e.target;
-  const formData = new FormData(_form);
-  const formSearchParams = new URLSearchParams(formData).toString();
-  const currentSortValue = "sort_by=" + _selectSortBy.value;
-  // const newSearchParams = new URLSearchParams(currentSortValue + "&" + formSearchParams);
-  const newSearchParams = currentSortValue + "&" + formSearchParams;
-  renderShopifySections("main-collection-products,collection-filters", newSearchParams);
-}
-function collectionSortProductsHandler(e) {
-  const newSortValue = e.target.value;
-  const existingParams = new URLSearchParams(location.search);
-  const newParams = [];
-  if (location.search) {
-    for (let param of existingParams) {
-      let paramKey = param[0];
-      let paramValue = param[1];
-      paramKey !== "sort_by" && newParams.push(paramKey + "=" + paramValue);
-    }
-    newParams.unshift("sort_by=" + newSortValue);
-    location.search = new URLSearchParams(newParams.join("&"));
-  } else {
-    location.search = new URLSearchParams("sort_by=" + e.target.value);
-  }
-}
-function sortFilterHandler(e) {
-  const _this = e.target;
-  const filtersForm = document.querySelector(".filter-by-form");
-  const filtersData = new FormData(filtersForm);
-  const sortData = document.querySelector(".sort-by-select").value;
-  const filtersSearchParams = new URLSearchParams(filtersData).toString();
-  const sortSearchParams = "sort_by=" + sortData;
-  console.log("_formData", filtersData);
-  if (location.search) {
-    if (filtersData) {
-      const newParams = filtersSearchParams + "&" + sortSearchParams;
-      location.search = new URLSearchParams(newParams);
-    } else {
-      location.search = new URLSearchParams("sort_by=" + sortData);
-    }
-  } else {
-    if (_this.getAttribute("id") === "sort-by-select") {
-      location.search = new URLSearchParams("sort_by=" + sortData);
-    } else {
-      location.search = new URLSearchParams(filtersData).toString();
-    }
-  }
-}
+const sortFilterFormDebounce = debounce((e, form) => {
+  sortFilterFormHandler(e, form);
+}, 500);
 function filterGroupHandler(e, group) {
   const filterGroup = group;
   const filterGroupOptions = filterGroup.querySelector(".filter-by-group-options");
@@ -270,6 +166,11 @@ function filterGroupHandler(e, group) {
     filterGroup.classList.add("open");
     filterGroupOptions.classList.add("show");
   }
+}
+function filterResetHandler(e) {
+  e.preventDefault();
+  const resetUrl = e.target.href.indexOf("?") == -1 ? "" : e.target.href.slice(e.target.href.indexOf("?") + 1);
+  sortFilterRenderSections(e, resetUrl);
 }
 function onScroll() {
   document.addEventListener("scroll", function () {
@@ -284,12 +185,15 @@ function init() {
   indexHeroHeight();
   const collectionFiltersFrom = document.querySelector(".collection-filters-form");
   collectionFiltersFrom.addEventListener("input", function (e) {
-    sortFilterFormHandler(e, this);
+    sortFilterFormDebounce(e, this);
   });
   collectionFiltersFrom.addEventListener("click", function (e) {
     if (e.target.closest(".filter-by-group")) {
       const filterGroup = e.target.closest(".filter-by-group");
       filterGroupHandler(e, filterGroup);
+    }
+    if (e.target.closest(".filters-reset-button")) {
+      filterResetHandler(e);
     }
   });
   bodyPaddingTop();
@@ -304,12 +208,12 @@ init();
 //   history.pushState({ searchParams }, '', `${window.location.pathname}${searchParams && '?'.concat(searchParams)}`);
 // }
 
-// change filters from on submit to on input change
-// debounce
 // render from cache?
 // section rendering on paginate
 // make if statements that check if filter event listeners are mounted only if elements are on the page (x.length > 0 or body.data-template = x)
 // mobile
+
+// fix price input: add max avlue to max input when value is inserterd only in the min input
 }();
 /******/ })()
 ;

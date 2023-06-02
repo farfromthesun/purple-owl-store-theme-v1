@@ -3,12 +3,9 @@
     "banner": {
       "type": "collections-all-hero"
     },
-    "filters": {
-      "type": "collection-filters"
-    },
     "products-grid": {
       "type": "main-collection-products-grid"
     }
   },
-  "order": ["banner", "filters", "products-grid"]
+  "order": ["banner", "products-grid"]
 }
