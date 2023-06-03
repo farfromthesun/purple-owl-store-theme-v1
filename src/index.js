@@ -52,6 +52,14 @@ function indexHeroHeight() {
   }
 }
 
+function sortFilterUpdateUrl(searchParams) {
+  window.history.pushState(
+    null,
+    "",
+    `${window.location.pathname}${searchParams && "?".concat(searchParams)}`
+  );
+}
+
 async function fetchShopifySection(url) {
   const response = await fetch(url);
   const responseText = await response.text();
@@ -68,11 +76,11 @@ async function sortFilterRenderSections(e, searchParams) {
   );
   const activeFilters = document.querySelector(".collection-active-filters");
   const clickedFilter = e.target.closest(".filter-by-group");
-  searchParams === undefined
-    ? (searchParams = "")
-    : (searchParams = "&" + searchParams);
+  // searchParams === undefined
+  //   ? (searchParams = "")
+  //   : (searchParams = "&" + searchParams);
   const shopifySectionId = productsGrid.dataset.sectionId;
-  const url = `${window.location.pathname}?section_id=${shopifySectionId}${searchParams}`;
+  const url = `${window.location.pathname}?section_id=${shopifySectionId}&${searchParams}`;
 
   mainCollectionProducts.classList.add("loading");
 
@@ -116,6 +124,7 @@ async function sortFilterRenderSections(e, searchParams) {
   filterResultsCounter.innerHTML = filterResultsCounterToRender.innerHTML;
   activeFilters.innerHTML = activeFiltersToRender.innerHTML;
   productsGrid.innerHTML = productsGridToRender.innerHTML;
+  sortFilterUpdateUrl(searchParams);
   mainCollectionProducts.classList.remove("loading");
 }
 
@@ -196,10 +205,7 @@ init();
 
 // TODO
 
-// static updateURLHash(searchParams) {
-//   history.pushState({ searchParams }, '', `${window.location.pathname}${searchParams && '?'.concat(searchParams)}`);
-// }
-
+// popstate
 // render from cache?
 // section rendering on paginate
 // make if statements that check if filter event listeners are mounted only if elements are on the page (x.length > 0 or body.data-template = x)
