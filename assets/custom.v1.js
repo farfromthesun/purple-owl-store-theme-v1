@@ -67,7 +67,6 @@ const _body = document.querySelector("body");
 const _mainHeader = document.querySelector(".main-header");
 const bodyWidth = _body.offsetWidth;
 const mainHeaderheight = _mainHeader.offsetHeight;
-const _selectSortBy = document.querySelector("#sort-by-select");
 function debounce(fn, wait) {
   var _this = this;
   let t;
@@ -178,6 +177,10 @@ function filterResetHandler(e) {
   const resetUrl = e.target.href.indexOf("?") == -1 ? "" : e.target.href.slice(e.target.href.indexOf("?") + 1);
   sortFilterRenderSections(e, resetUrl);
 }
+function sortFilterPopstateHandler(e) {
+  // searchParamsInitial = window.location.search.slice(1);
+  console.log(window.location.search.slice(1));
+}
 function onScroll() {
   document.addEventListener("scroll", function () {
     addBodyScrolled();
@@ -202,6 +205,11 @@ function init() {
       filterResetHandler(e);
     }
   });
+  if (_body.dataset.template == "collection") {
+    window.addEventListener("popstate", function (e) {
+      sortFilterPopstateHandler(e);
+    });
+  }
   bodyPaddingTop();
   addBodyScrolled();
   onScroll();
