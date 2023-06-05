@@ -1,13 +1,16 @@
 <a href="{{ product.url }}" title="{{ product.title }}" class="product-thumbnail">
   <div class="product-thumbnail-img">
     <picture>
-      <source media="(min-width: 768px)" srcset="{{ product.featured_image | img_url: '400x' }}">
+      <source media="(min-width: 768px)" srcset="{{ product.featured_image | image_url: width: 400, crop: center }}">
       <img
-        src="{{ product.featured_image | img_url: '300x300' }}"
+        src="{{ product | image_url: width: 300, height: 300, crop: center }}"
         alt="{{ product.title }}"
         class="product-thumbnail-img-file"
       >
     </picture>
+    {% if product.available == false %}
+      <small class="product-thumbnail-sold-out-badge">Sold out</small>
+    {% endif %}
   </div>
   <div class="product-thumbnail-info">
     <strong class="product-thumbnail-title">{{ product.title }}</strong>
