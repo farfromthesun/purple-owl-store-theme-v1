@@ -6,6 +6,8 @@ const _body = document.querySelector("body");
 const _mainHeader = document.querySelector(".main-header");
 const bodyWidth = _body.offsetWidth;
 const mainHeaderheight = _mainHeader.offsetHeight;
+let shopifySectionsCache = [];
+window.newarray = "";
 
 function debounce(fn, wait) {
   let t;
@@ -62,8 +64,12 @@ function renderUpdateUrl(searchParams) {
 async function fetchShopifySection(url) {
   const response = await fetch(url);
   const responseText = await response.text();
+  shopifySectionsCache = [...shopifySectionsCache, { responseText, url }];
+  newarray = [...newarray, { responseText, url }];
   return responseText;
 }
+
+function getShopifySectionsFromCache() {}
 
 async function productsGridRenderSections(e, searchParams, updateUrl = true) {
   const mainCollectionProducts = document.querySelector(
@@ -81,7 +87,10 @@ async function productsGridRenderSections(e, searchParams, updateUrl = true) {
 
   mainCollectionProducts.classList.add("loading");
 
-  const htmlText = await fetchShopifySection(url);
+  const htmlText = shopifySectionsCache.some((element) => element.url === url)
+    ? shopifySectionsCache.find((element) => element.url === url).responseText
+    : await fetchShopifySection(url);
+
   const htmlToRender = new DOMParser().parseFromString(htmlText, "text/html");
   const filtersToRender = htmlToRender.querySelectorAll(".filter-by-group");
   const productsGridToRender = htmlToRender.querySelector(
