@@ -1,0 +1,50 @@
+<div class="collection-active-filters">
+  {% for filter in collection.filters %}
+    {% for active_value in filter.active_values %}
+      <div class="active-filter-container">
+        <a
+          href="{{ active_value.url_to_remove }}"
+          role="button"
+          class="active-filter-button filters-reset-button"
+        >
+          {{- filter.label }}: {{ active_value.label -}}
+          <span class="material-symbols-rounded active-filter-close-icon">close</span>
+        </a>
+      </div>
+      {% assign active_filters_count = active_filters_count | plus: 1 %}
+    {% endfor %}
+    {% if filter.type == 'price_range' %}
+      {% if filter.min_value.value != null or filter.max_value.value != null %}
+        <div class="active-filter-container">
+          <a
+            href="{{ filter.url_to_remove }}"
+            role="button"
+            class="active-filter-button filters-reset-button"
+          >
+            {% if filter.min_value.value %}
+              {{- filter.min_value.value | money }}
+            {% else %}
+              {{ 0 | money }}
+            {% endif %}
+            -
+            {% if filter.max_value.value %}
+              {{- filter.max_value.value | money }}
+            {% else %}
+              {{ filter.range_max | money }}
+            {% endif %}
+            <span class="material-symbols-rounded active-filter-close-icon">close</span>
+          </a>
+        </div>
+        {% assign active_filters_count = active_filters_count | plus: 1 %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  {% if active_filters_count > 0 %}
+    <a
+      href="{{ collection.url }}"
+      title="Remove all"
+      class="collection-filters-remove-all filters-reset-button"
+      >Remove all</a
+    >
+  {% endif %}
+</div>
