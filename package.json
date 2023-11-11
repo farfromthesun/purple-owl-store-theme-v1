@@ -29,7 +29,7 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
-    "bootstrap": "^5.2.3",
+    "@glidejs/glide": "^3.6.0",
     "material-symbols": "^0.5.5"
   }
 }

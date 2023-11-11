@@ -1,0 +1,63 @@
+{%- liquid
+  assign variants_available_array = product.variants | map: 'available'
+  assign variants_option1_array = product.variants | map: 'option1'
+  assign variants_option2_array = product.variants | map: 'option2'
+  assign variants_option3_array = product.variants | map: 'option3'
+-%}
+
+{% unless product.has_only_default_variant %}
+  <div class="product-options" data-url="{{ product.url }}" data-section="{{ section.id }}">
+    <div class="product-options-inner">
+      {% for option in product.options_with_values %}
+        <div class="product-option">
+          <span class="product-option-title">{{ option.name }}</span>
+          <div class="product-option-values">
+            {% for option_value in option.values %}
+              {%- liquid
+                assign option_disabled = true
+
+                for option1_name in variants_option1_array
+                  case option.position
+                    when 1
+                      if variants_option1_array[forloop.index0] == option_value and variants_available_array[forloop.index0]
+                        assign option_disabled = false
+                      endif
+                    when 2
+                      if option1_name == product.selected_or_first_available_variant.option1 and variants_option2_array[forloop.index0] == option_value and variants_available_array[forloop.index0]
+                        assign option_disabled = false
+                      endif
+                    when 3
+                      if option1_name == product.selected_or_first_available_variant.option1 and variants_option2_array[forloop.index0] == product.selected_or_first_available_variant.option2 and variants_option3_array[forloop.index0] == option_value and variants_available_array[forloop.index0]
+                        assign option_disabled = false
+                      endif
+                  endcase
+                endfor
+              -%}
+
+              <input
+                type="radio"
+                id="{{ product.id }}-option-{{ option.position }}-{{ forloop.index }}"
+                name="{{ option.name }}"
+                value="{{ option_value }}"
+                form="{{ 'product-buy-form-' | append: product.id }}"
+                {% if option.selected_value == option_value %}
+                  checked
+                {% endif %}
+                class="product-option-value{% if option_disabled %} disabled{% endif %}"
+              >
+              <label
+                for="{{ product.id }}-option-{{ option.position }}-{{ forloop.index }}"
+                class="product-option-value-label"
+              >
+                {{ option_value }}
+              </label>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <script type="application/json">
+      {{ product.variants | json }}
+    </script>
+  </div>
+{% endunless %}

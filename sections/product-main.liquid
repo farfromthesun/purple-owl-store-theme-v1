@@ -1,8 +1,142 @@
-<div class="product-page">
+{%- capture product_images_sizes -%}
+  (min-width: 1600px) 700px, (min-width: 1200px) 600px, (min-width: 768px) 1000px, (min-width: 320px) 500px, 100vw
+{%- endcapture -%}
+{% assign media_count = product.media.size %}
+
+<div class="product-main">
   <div class="container">
-    {{ product.title -}}
-    <br>
-    {{ product.price | money_with_currency }}
-    <br>
+    <div class="product-main-inner">
+      <div class="product-gallery">
+        <div class="glide">
+          <div class="glide__track" data-glide-el="track">
+            <ul class="glide__slides">
+              {% for media in product.media %}
+                <li class="glide__slide">
+                  {% comment %}
+                    {{
+                      media.preview_image
+                      | image_url: width: 2000
+                      | image_tag: sizes: product_images_sizes, widths: '500, 600, 700, 1000'
+                    }}
+                  {% endcomment %}
+                  <picture>
+                    <source
+                      media="(min-width: 1600px)"
+                      srcset="{{ media.preview_image | image_url: width: 800, height: 700 }}"
+                    >
+                    <source
+                      media="(min-width: 1200px)"
+                      srcset="{{ media.preview_image | image_url: width: 700, height: 600 }}"
+                    >
+                    <img
+                      src="{{ media.preview_image | image_url: width: 500, height: 500 }}"
+                      alt="{{ product.title }}"
+                      class="product-gallery-img"
+                    >
+                  </picture>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% if media_count > 1 %}
+            <div class="glide__arrows" data-glide-el="controls">
+              <button class="glide__arrow glide__arrow--left" data-glide-dir="<">
+                <span class="material-symbols-rounded"> chevron_left </span>
+              </button>
+              <span class="slides-status">
+                <span class="slides-status-current">1</span>
+                <span class="slides-status-divider">/</span>
+                <span class="slides-status-total">{{ media_count }}</span>
+              </span>
+              <button class="glide__arrow glide__arrow--right" data-glide-dir=">">
+                <span class="material-symbols-rounded"> chevron_right </span>
+              </button>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="product-info">
+        <h1 class="product-title">
+          {{ product.title }}
+        </h1>
+        <div class="product-prices">
+          {% if product.selected_or_first_available_variant.compare_at_price %}
+            <span class="product-compare-at-price">
+              {{ product.selected_or_first_available_variant.compare_at_price | money_with_currency }}
+            </span>
+          {% endif %}
+          <span class="product-price">
+            {{ product.selected_or_first_available_variant.price | money_with_currency }}
+          </span>
+          {%- if product.selected_or_first_available_variant.available == false -%}
+            <small class="product-badge sold-out">Sold out</small>
+          {% else %}
+            {% if product.selected_or_first_available_variant.compare_at_price
+                > product.selected_or_first_available_variant.price
+            %}
+              <small class="product-badge sale">Sale</small>
+            {% endif %}
+          {% endif %}
+        </div>
+        {% if shop.taxes_included %}
+          <span class="product-tax-included">Tax included. </span>
+        {% endif %}
+        {% render 'product-main-variant-picker' %}
+        <div class="product-quantity">
+          <span class="product-quantity title">Quantity</span>
+          <div class="product-quantity-selector">
+            <button class="product-quantity-button" type="button" data-action="decrease">
+              <span class="material-symbols-rounded product-quantity-button-icon"> remove </span>
+            </button>
+            <input
+              class="product-quantity-input"
+              type="number"
+              name="quantity"
+              min="1"
+              id=""
+              value="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
+              form="{{ 'product-buy-form-' | append: product.id }}"
+            >
+            <button class="product-quantity-button" type="button" data-action="increase">
+              <span class="material-symbols-rounded product-quantity-button-icon"> add </span>
+            </button>
+          </div>
+        </div>
+        {% assign product_form_id = 'product-buy-form-' | append: product.id %}
+        {% if product %}
+          <div class="product-buy">
+            {% form 'product', product, id: product_form_id, class: 'product-buy-form', novalidate: 'novalidate' %}
+              <input
+                type="hidden"
+                name="id"
+                value="{{ product.selected_or_first_available_variant.id }}"
+              >
+              <button
+                id="product-buy-atc-{{ product.id }}"
+                type="submit"
+                name="add"
+                class="btn product-buy-atc"
+                {% if product.selected_or_first_available_variant.available == false %}
+                  disabled
+                {% endif %}
+              >
+                <span>
+                  {%- if product.selected_or_first_available_variant.available == false -%}
+                    Sold out
+                  {%- else -%}
+                    Add to cart
+                  {%- endif -%}
+                </span>
+              </button>
+            {% endform %}
+          </div>
+        {% endif %}
+        {%- if product.description != blank -%}
+          <div class="product-description">
+            {{ product.description }}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
   </div>
 </div>
