@@ -1,4 +1,5 @@
 import "./styles/main.scss";
+import Glide from "@glidejs/glide";
 
 ("use strict");
 
@@ -7,7 +8,6 @@ const _mainHeader = document.querySelector(".main-header");
 const bodyWidth = _body.offsetWidth;
 const mainHeaderheight = _mainHeader.offsetHeight;
 let shopifySectionsCache = [];
-window.newarray = "";
 
 function debounce(fn, wait) {
   let t;
@@ -65,11 +65,8 @@ async function fetchShopifySection(url) {
   const response = await fetch(url);
   const responseText = await response.text();
   shopifySectionsCache = [...shopifySectionsCache, { responseText, url }];
-  newarray = [...newarray, { responseText, url }];
   return responseText;
 }
-
-function getShopifySectionsFromCache() {}
 
 async function productsGridRenderSections(e, searchParams, updateUrl = true) {
   const mainCollectionProducts = document.querySelector(
@@ -215,6 +212,120 @@ function filterMobileBackHandler(e) {
   _this.closest(".filter-by-group").classList.remove("open");
 }
 
+function productQuantityButtonHandler(e) {
+  e.preventDefault();
+  const button = e.currentTarget;
+  const input = button
+    .closest(".product-quantity-selector")
+    .querySelector(".product-quantity-input");
+  const currentValue = input.value;
+
+  button.dataset.action === "decrease" ? input.stepDown() : input.stepUp();
+
+  const changeEvent = new Event("change");
+  if (currentValue !== input.value) input.dispatchEvent(changeEvent);
+}
+
+function productQuantityInputRulesHandler(input) {
+  const button = input
+    .closest(".product-quantity-selector")
+    .querySelector(".product-quantity-button[data-action=decrease]");
+  const min = parseInt(input.min);
+  const value = parseInt(input.value);
+  if (min) {
+    if (value <= min) {
+      button.disabled = true;
+    } else {
+      button.disabled = false;
+    }
+  }
+}
+
+function productQuantityInputChangeHandler(e) {
+  const input = e.target;
+
+  productQuantityInputRulesHandler(input);
+}
+
+function productGetPickedVariant(e) {
+  const optionsContainer = e.currentTarget;
+  const allVariants = JSON.parse(
+    optionsContainer.querySelector("script").textContent
+  );
+  const checkedOptionsArray = [];
+
+  optionsContainer.querySelectorAll("input:checked").forEach((option) => {
+    checkedOptionsArray.push(option.value);
+  });
+  const pickedVariantData = allVariants.find((variant) => {
+    const optionsComparisonArray = [];
+    for (const [index, option] of variant.options.entries()) {
+      optionsComparisonArray.push(checkedOptionsArray[index] === option);
+    }
+    return !optionsComparisonArray.includes(false);
+  });
+  return pickedVariantData;
+}
+
+function productChangeATCStatus(disable) {
+  const atcButton = document.querySelector(".product-buy-atc");
+
+  if (!atcButton) return;
+  disable
+    ? atcButton.setAttribute("disabled", "disabled")
+    : atcButton.removeAttribute("disabled");
+}
+
+function productOptionsChangeUpdateUrl(e, variantID) {
+  window.history.replaceState(
+    {},
+    "",
+    `${e.currentTarget.dataset.url}?variant=${variantID}`
+  );
+}
+
+async function productOptionsChangeUpdateInfo(e, variantID) {
+  const productOptionsContainer = e.currentTarget;
+  const url = `${productOptionsContainer.dataset.url}?variant=${variantID}&section_id=${productOptionsContainer.dataset.section}`;
+  const htmlText = shopifySectionsCache.some((element) => element.url === url)
+    ? shopifySectionsCache.find((element) => element.url === url).responseText
+    : await fetchShopifySection(url);
+  const htmlToRender = new DOMParser().parseFromString(htmlText, "text/html");
+  const productInfoContainer = productOptionsContainer.closest(".product-info");
+  const productPrices = productInfoContainer.querySelector(".product-prices");
+  const productOptionsInner = productInfoContainer.querySelector(
+    ".product-options-inner"
+  );
+  const productBuy = productInfoContainer.querySelector(".product-buy");
+
+  const productInfoContainerToRender =
+    htmlToRender.querySelector(".product-info");
+  const productPricesToRender =
+    productInfoContainerToRender.querySelector(".product-prices");
+  const productOptionsInnerToRender =
+    productInfoContainerToRender.querySelector(".product-options-inner");
+  const productBuyToRender =
+    productInfoContainerToRender.querySelector(".product-buy");
+
+  productPrices.innerHTML = productPricesToRender.innerHTML;
+  productOptionsInner.innerHTML = productOptionsInnerToRender.innerHTML;
+  productBuy.innerHTML = productBuyToRender.innerHTML;
+}
+
+function productOptionsChangeHandler(e) {
+  productChangeATCStatus(true);
+  const pickedVariant = productGetPickedVariant(e);
+
+  if (pickedVariant) {
+    productOptionsChangeUpdateUrl(e, pickedVariant.id);
+    productOptionsChangeUpdateInfo(e, pickedVariant.id);
+    // update hidden form input with variant id
+    // add id to quantity input
+  } else {
+    // productSetUnavailable()
+  }
+}
+
 function onScroll() {
   document.addEventListener("scroll", function () {
     addBodyScrolled();
@@ -300,10 +411,39 @@ function init() {
         mobileSortFilterDrawerHandler(e);
       });
   }
+
+  if (_body.dataset.template == "product") {
+    if (document.querySelector(".product-gallery")) {
+      var glide = new Glide(".glide");
+      glide.on("move.after", function () {
+        document
+          .querySelector(".product-gallery")
+          .querySelector(".slides-status-current").innerHTML = glide.index + 1;
+      });
+      glide.mount();
+    }
+
+    document.querySelectorAll(".product-quantity-button").forEach((button) => {
+      button.addEventListener("click", function (e) {
+        productQuantityButtonHandler(e);
+      });
+    });
+    document
+      .querySelector(".product-quantity-input")
+      .addEventListener("change", function (e) {
+        productQuantityInputChangeHandler(e);
+      });
+
+    document.querySelectorAll(".product-quantity-input").forEach((input) => {
+      productQuantityInputRulesHandler(input);
+    });
+
+    document
+      .querySelector(".product-options")
+      .addEventListener("change", function (e) {
+        productOptionsChangeHandler(e);
+      });
+  }
 }
 
 init();
-
-// TODO
-
-// render from cache?

@@ -1,21 +1,28 @@
 <a href="{{ product.url }}" title="{{ product.title }}" class="product-thumbnail">
   <div class="product-thumbnail-img">
     <picture>
-      <source media="(min-width: 768px)" srcset="{{ product.featured_image | image_url: width: 400, crop: center }}">
+      <source media="(min-width: 768px)" srcset="{{ product.featured_image | image_url: width: 400, height: 400 }}">
       <img
-        src="{{ product | image_url: width: 300, height: 300, crop: center }}"
+        src="{{ product | image_url: width: 300, height: 300 }}"
         alt="{{ product.title }}"
         class="product-thumbnail-img-file"
       >
     </picture>
     {% if product.available == false %}
-      <small class="product-thumbnail-sold-out-badge">Sold out</small>
+      <small class="product-thumbnail-badge sold-out">Sold out</small>
+    {% elsif product.compare_at_price > product.price and product.available %}
+      <small class="product-thumbnail-badge sale">Sale</small>
     {% endif %}
   </div>
   <div class="product-thumbnail-info">
     <strong class="product-thumbnail-title">{{ product.title }}</strong>
-    <div class="produtc-thumbnail-prices">
-      <span class="price">{{ product.price | money_with_currency }}</span>
+    <div class="product-thumbnail-prices">
+      <span class="price">
+        {% if product.price_varies %}
+          <span class="price-varies">From</span>
+        {% endif %}
+        {{ product.price | money_with_currency }}
+      </span>
     </div>
   </div>
 </a>
