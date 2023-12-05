@@ -32,9 +32,17 @@
       <div class="icons-container">
         <ul>
           <li>
-            <a href="#" title="Cart" class="icon-link">
-              <span class="material-symbols-rounded"> shopping_cart </span>
-            </a>
+            {% comment %}
+              <a href="{{ routes.cart_url }}" title="Cart" class="icon-link header-cart-drawer-button">
+                <span class="material-symbols-rounded icon"> shopping_cart </span>
+                {%- if cart != empty -%}
+                  <div class="header-cart-drawer-button-count">
+                    <span aria-hidden="true">{{ cart.item_count }}</span>
+                  </div>
+                {%- endif -%}
+              </a>
+            {% endcomment %}
+            {% render 'header-cart-drawer-button' %}
           </li>
         </ul>
       </div>

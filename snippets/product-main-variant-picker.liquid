@@ -39,7 +39,7 @@
                 id="{{ product.id }}-option-{{ option.position }}-{{ forloop.index }}"
                 name="{{ option.name }}"
                 value="{{ option_value }}"
-                form="{{ 'product-buy-form-' | append: product.id }}"
+                form="{{ 'product-buy-form-' | append: section.id }}"
                 {% if option.selected_value == option_value %}
                   checked
                 {% endif %}

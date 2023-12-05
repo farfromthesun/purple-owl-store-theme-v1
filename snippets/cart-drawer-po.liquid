@@ -1,0 +1,130 @@
+<div class="cart-drawer-container">
+  <div class="cart-drawer-overlay"></div>
+  <div class="cart-drawer{% if cart == empty %} is-empty{% endif %}" id="cart-drawer">
+    <div class="cart-drawer-inner">
+      <div class="cart-drawer-header">
+        <div class="cart-drawer-header-top">
+          <span class="cart-drawer-header-title">Your cart</span>
+          <button type="button" class="cart-drawer-header-close">
+            <span class="material-symbols-rounded icon">close</span>
+          </button>
+        </div>
+
+        <div class="cart-drawer-header-labels">
+          <span class="cart-drawer-header-label">Product</span>
+          <span class="cart-drawer-header-label">Total</span>
+        </div>
+      </div>
+      {% if cart == empty %}
+        <div class="cart-drawer-empty">
+          <span class="cart-drawer-empty-slogan">Your cart is empty</span>
+        </div>
+      {% else %}
+        <div class="cart-drawer-items">
+          <form
+            action="{{ routes.cart_url }}"
+            id="cart-drawer-form"
+            class="cart-drawer-items-form"
+            method="post"
+          >
+            {% for item in cart.items %}
+              <div class="cart-drawer-item">
+                {% if item.image %}
+                  <div class="cart-drawer-item-image">
+                    <a href="{{ item.url }}" class="" aria-hidden="true">
+                      <img
+                        src="{{ item.image | image_url: width: 300 }}"
+                        alt="{{ item.product.title }}"
+                        loading="lazy"
+                        width="150"
+                      >
+                    </a>
+                  </div>
+                {% endif %}
+                <div class="cart-drawer-item-info">
+                  <a href="{{ item.url }}" class="cart-drawer-item-title">
+                    {{ item.product.title }}
+                  </a>
+                  <div class="cart-drawer-item-price">
+                    {{ item.original_price | money }}
+                  </div>
+                  <div class="cart-drawer-item-options">
+                    {%- if item.product.has_only_default_variant == false -%}
+                      {%- for option in item.options_with_values -%}
+                        <div class="cart-drawer-item-option">
+                          <span class="cart-drawer-item-option-name">{{ option.name }}:</span>
+                          <span class="cart-drawer-item-option-value">
+                            {{ option.value -}}
+                            {%- unless forloop.last %}, {% endunless %}
+                          </span>
+                        </div>
+                      {%- endfor -%}
+                    {%- endif -%}
+                  </div>
+                  <a href="{{ item.url_to_remove }}">Remove</a>
+                </div>
+                <div class="cart-drawer-item-total-price">
+                  {{ item.original_line_price | money }}
+                </div>
+                <div class="product-quantity cart-drawer-item-quantity">
+                  <div class="product-quantity-selector">
+                    <button class="product-quantity-button" type="button" data-action="decrease">
+                      <span class="material-symbols-rounded product-quantity-button-icon"> remove </span>
+                    </button>
+                    <input
+                      class="product-quantity-input cart-drawer-item-quantity-input"
+                      type="number"
+                      name="quantity"
+                      min="1"
+                      id="{{ 'cart-drawer-item-quantity-input-' | append: item.id }}"
+                      value="{{ item.quantity }}"
+                      form="cart-drawer-form"
+                    >
+                    <button class="product-quantity-button" type="button" data-action="increase">
+                      <span class="material-symbols-rounded product-quantity-button-icon"> add </span>
+                    </button>
+                  </div>
+                  <div class="cart-drawer-item-remove">
+                    <button
+                      type="button"
+                      class="cart-drawer-item-remove-button"
+                      id="cart-drawer-item-remove-button-{{ item.index | plus: 1 }}"
+                      data-index="{{ item.index | plus: 1 }}"
+                    >
+                      <span class="material-symbols-rounded icon">delete</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </form>
+        </div>
+        <div class="cart-drawer-footer">
+          <div class="cart-drawer-footer-subtotal">
+            <span class="cart-drawer-footer-subtotal-title">Subtotal</span>
+            <span class="cart-drawer-footer-subtotal-value">{{ cart.total_price | money_with_currency }}</span>
+          </div>
+          {% if shop.taxes_included %}
+            <div class="cart-drawer-footer-tax">
+              <span class="cart-drawer-footer-tax-text">Tax included and shipping calculated at checkout</span>
+            </div>
+          {% endif %}
+          <div class="cart-drawer-checkout">
+            <button
+              type="submit"
+              id="cart-drawer-checkout-button"
+              class="btn cart-drawer-checkout-button"
+              name="checkout"
+              form="cart-drawer-form"
+              {% if cart == empty %}
+                disabled
+              {% endif %}
+            >
+              Check out
+            </button>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

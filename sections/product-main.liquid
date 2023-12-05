@@ -2,59 +2,101 @@
   (min-width: 1600px) 700px, (min-width: 1200px) 600px, (min-width: 768px) 1000px, (min-width: 320px) 500px, 100vw
 {%- endcapture -%}
 {% assign media_count = product.media.size %}
+{% assign product_form_id = 'product-buy-form-' | append: section.id %}
 
 <div class="product-main">
   <div class="container">
     <div class="product-main-inner">
-      <div class="product-gallery">
-        <div class="glide">
-          <div class="glide__track" data-glide-el="track">
-            <ul class="glide__slides">
-              {% for media in product.media %}
-                <li class="glide__slide">
-                  {% comment %}
-                    {{
-                      media.preview_image
-                      | image_url: width: 2000
-                      | image_tag: sizes: product_images_sizes, widths: '500, 600, 700, 1000'
-                    }}
-                  {% endcomment %}
-                  <picture>
-                    <source
-                      media="(min-width: 1600px)"
-                      srcset="{{ media.preview_image | image_url: width: 800, height: 700 }}"
-                    >
-                    <source
-                      media="(min-width: 1200px)"
-                      srcset="{{ media.preview_image | image_url: width: 700, height: 600 }}"
-                    >
-                    <img
-                      src="{{ media.preview_image | image_url: width: 500, height: 500 }}"
-                      alt="{{ product.title }}"
-                      class="product-gallery-img"
-                    >
-                  </picture>
-                </li>
-              {% endfor %}
-            </ul>
+      <div class="product-images">
+        {%- if product.selected_or_first_available_variant.featured_media != null -%}
+          <div class="product-variant-featured-media">
+            <picture>
+              <source
+                media="(min-width: 1600px)"
+                srcset="{{ product.selected_or_first_available_variant.featured_media.preview_image | image_url: width: 800, height: 700 }}"
+              >
+              <source
+                media="(min-width: 1200px)"
+                srcset="{{ product.selected_or_first_available_variant.featured_media.preview_image | image_url: width: 700, height: 600 }}"
+              >
+              <img
+                src="{{ product.selected_or_first_available_variant.featured_media.preview_image | image_url: width: 500, height: 500 }}"
+                alt="{{ product.title }}"
+                class="product-gallery-img"
+              >
+            </picture>
           </div>
+        {% else %}
           {% if media_count > 1 %}
-            <div class="glide__arrows" data-glide-el="controls">
-              <button class="glide__arrow glide__arrow--left" data-glide-dir="<">
-                <span class="material-symbols-rounded"> chevron_left </span>
-              </button>
-              <span class="slides-status">
-                <span class="slides-status-current">1</span>
-                <span class="slides-status-divider">/</span>
-                <span class="slides-status-total">{{ media_count }}</span>
-              </span>
-              <button class="glide__arrow glide__arrow--right" data-glide-dir=">">
-                <span class="material-symbols-rounded"> chevron_right </span>
-              </button>
+            <div class="product-gallery">
+              <div class="glide">
+                <div class="glide__track" data-glide-el="track">
+                  <ul class="glide__slides">
+                    {% for media in product.media %}
+                      <li class="glide__slide">
+                        {% comment %}
+                          {{
+                            media.preview_image
+                            | image_url: width: 2000
+                            | image_tag: sizes: product_images_sizes, widths: '500, 600, 700, 1000'
+                          }}
+                        {% endcomment %}
+                        <picture>
+                          <source
+                            media="(min-width: 1600px)"
+                            srcset="{{ media.preview_image | image_url: width: 800, height: 700 }}"
+                          >
+                          <source
+                            media="(min-width: 1200px)"
+                            srcset="{{ media.preview_image | image_url: width: 700, height: 600 }}"
+                          >
+                          <img
+                            src="{{ media.preview_image | image_url: width: 500, height: 500 }}"
+                            alt="{{ product.title }}"
+                            class="product-gallery-img"
+                          >
+                        </picture>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                <div class="glide__arrows" data-glide-el="controls">
+                  <button class="glide__arrow glide__arrow--left" data-glide-dir="<">
+                    <span class="material-symbols-rounded"> chevron_left </span>
+                  </button>
+                  <span class="slides-status">
+                    <span class="slides-status-current">1</span>
+                    <span class="slides-status-divider">/</span>
+                    <span class="slides-status-total">{{ media_count }}</span>
+                  </span>
+                  <button class="glide__arrow glide__arrow--right" data-glide-dir=">">
+                    <span class="material-symbols-rounded"> chevron_right </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          {% else %}
+            <div class="product-featured-media">
+              <picture>
+                <source
+                  media="(min-width: 1600px)"
+                  srcset="{{ product.featured_media.preview_image | image_url: width: 800, height: 700 }}"
+                >
+                <source
+                  media="(min-width: 1200px)"
+                  srcset="{{ product.featured_media.preview_image | image_url: width: 700, height: 600 }}"
+                >
+                <img
+                  src="{{ product.featured_media.preview_image | image_url: width: 500, height: 500 }}"
+                  alt="{{ product.title }}"
+                  class="product-gallery-img"
+                >
+              </picture>
             </div>
           {% endif %}
-        </div>
+        {% endif %}
       </div>
+
       <div class="product-info">
         <h1 class="product-title">
           {{ product.title }}
@@ -79,11 +121,17 @@
           {% endif %}
         </div>
         {% if shop.taxes_included %}
-          <span class="product-tax-included">Tax included. </span>
+          <span class="product-tax-included">Tax included.</span>
         {% endif %}
         {% render 'product-main-variant-picker' %}
         <div class="product-quantity">
-          <span class="product-quantity title">Quantity</span>
+          <div class="product-quantity-title-container">
+            {% assign cart_quantity = cart | item_count_for_variant: product.selected_or_first_available_variant.id %}
+            <span class="product-quantity-title">Quantity</span>
+            {% if cart_quantity > 0 %}
+              <span class="product-quantity-in-cart">({{ cart_quantity }} in cart)</span>
+            {% endif %}
+          </div>
           <div class="product-quantity-selector">
             <button class="product-quantity-button" type="button" data-action="decrease">
               <span class="material-symbols-rounded product-quantity-button-icon"> remove </span>
@@ -93,18 +141,21 @@
               type="number"
               name="quantity"
               min="1"
-              id=""
+              id="{{ 'product-quantity-input-' | append: section.id }}"
               value="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
-              form="{{ 'product-buy-form-' | append: product.id }}"
+              form="{{ product_form_id }}"
             >
             <button class="product-quantity-button" type="button" data-action="increase">
               <span class="material-symbols-rounded product-quantity-button-icon"> add </span>
             </button>
           </div>
         </div>
-        {% assign product_form_id = 'product-buy-form-' | append: product.id %}
         {% if product %}
           <div class="product-buy">
+            <div class="product-buy-error-container">
+              <span class="material-symbols-rounded icon"> error </span>
+              <span class="product-buy-error-message"></span>
+            </div>
             {% form 'product', product, id: product_form_id, class: 'product-buy-form', novalidate: 'novalidate' %}
               <input
                 type="hidden"
@@ -112,7 +163,7 @@
                 value="{{ product.selected_or_first_available_variant.id }}"
               >
               <button
-                id="product-buy-atc-{{ product.id }}"
+                id="product-buy-atc-{{ section.id }}"
                 type="submit"
                 name="add"
                 class="btn product-buy-atc"
