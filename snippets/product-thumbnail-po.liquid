@@ -3,7 +3,7 @@
     <picture>
       <source media="(min-width: 768px)" srcset="{{ product.featured_image | image_url: width: 400, height: 400 }}">
       <img
-        src="{{ product | image_url: width: 300, height: 300 }}"
+        src="{{ product.featured_image | image_url: width: 300, height: 300 }}"
         alt="{{ product.title }}"
         class="product-thumbnail-img-file"
       >
