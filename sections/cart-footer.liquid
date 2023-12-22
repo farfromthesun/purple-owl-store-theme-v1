@@ -1,0 +1,29 @@
+<div class="cart-footer-container" id="cart-footer-container">
+  <div class="container">
+    <div class="cart-footer cart-page-footer{% if cart == empty %} is-empty{% endif %}">
+      <div class="cart-footer-subtotal">
+        <span class="cart-footer-subtotal-title">Subtotal</span>
+        <span class="cart-footer-subtotal-value">{{ cart.total_price | money_with_currency }}</span>
+      </div>
+      {% if shop.taxes_included %}
+        <div class="cart-footer-tax">
+          <span class="cart-footer-tax-text">Tax included and shipping calculated at checkout</span>
+        </div>
+      {% endif %}
+      <div class="cart-checkout">
+        <button
+          type="submit"
+          id="cart-drawer-checkout-button"
+          class="btn cart-checkout-button"
+          name="checkout"
+          form="cart-drawer-form"
+          {% if cart == empty %}
+            disabled
+          {% endif %}
+        >
+          Check out
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,25 +1,20 @@
-<div class="cart-drawer-container">
-  <div class="cart-drawer-overlay"></div>
-  <div class="cart-drawer">
-    <div class="cart-drawer-inner{% if cart == empty %} is-empty{% endif %}" id="cart-drawer-inner">
-      <div class="cart-drawer-header">
-        <div class="cart-drawer-header-top">
-          <span class="cart-drawer-header-title">Your cart</span>
-          <button type="button" class="cart-drawer-header-close">
-            <span class="material-symbols-rounded icon">close</span>
-          </button>
-        </div>
-
-        <div class="cart-header-labels">
-          <span class="cart-header-label">Product</span>
-          <span class="cart-header-label">Total</span>
-        </div>
-      </div>
+<div class="cart-container">
+  <div class="container">
+    <div class="cart" id="cart">
       {% if cart == empty %}
         <div class="cart-empty">
           <span class="cart-empty-slogan">Your cart is empty</span>
         </div>
       {% else %}
+        <div class="cart-header">
+          <h1 class="cart-header-title">Your cart</h1>
+          <div class="cart-header-labels">
+            <span class="cart-header-label">Product</span>
+            <span class="cart-header-label spacer"></span>
+            <span class="cart-header-label quantity">Quantity</span>
+            <span class="cart-header-label">Total</span>
+          </div>
+        </div>
         <div class="cart-items">
           <form
             action="{{ routes.cart_url }}"
@@ -61,9 +56,6 @@
                       {%- endfor -%}
                     {%- endif -%}
                   </div>
-                </div>
-                <div class="cart-item-total-price">
-                  {{ item.original_line_price | money }}
                 </div>
                 <div class="product-quantity cart-item-quantity">
                   <div class="cart-item-quantity-inner">
@@ -110,34 +102,12 @@
                     <span class="cart-item-error-message"></span>
                   </div>
                 </div>
+                <div class="cart-item-total-price">
+                  {{ item.original_line_price | money }}
+                </div>
               </div>
             {% endfor %}
           </form>
-        </div>
-        <div class="cart-footer">
-          <div class="cart-footer-subtotal">
-            <span class="cart-footer-subtotal-title">Subtotal</span>
-            <span class="cart-footer-subtotal-value">{{ cart.total_price | money_with_currency }}</span>
-          </div>
-          {% if shop.taxes_included %}
-            <div class="cart-footer-tax">
-              <span class="cart-footer-tax-text">Tax included and shipping calculated at checkout</span>
-            </div>
-          {% endif %}
-          <div class="cart-checkout">
-            <button
-              type="submit"
-              id="cart-drawer-checkout-button"
-              class="btn cart-checkout-button"
-              name="checkout"
-              form="cart-drawer-form"
-              {% if cart == empty %}
-                disabled
-              {% endif %}
-            >
-              Check out
-            </button>
-          </div>
         </div>
       {% endif %}
     </div>
