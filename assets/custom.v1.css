@@ -2006,6 +2006,22 @@ body.overflowHidden {
   justify-content: center;
   align-items: center;
 }
+.cart .cart-empty {
+  padding: 30px 0 80px;
+  font-size: 16px;
+}
+@media (min-width: 1200px) {
+  .cart .cart-empty {
+    padding: 60px 0 140px;
+    font-size: 20px;
+  }
+}
+@media (min-width: 1750px) {
+  .cart .cart-empty {
+    padding: 100px 0 200px;
+    font-size: 26px;
+  }
+}
 
 .cart-items {
   flex: 1;
@@ -2141,6 +2157,166 @@ body.overflowHidden {
   text-transform: uppercase;
   font-size: 11px;
   padding-right: 10px;
+}
+
+.cart {
+  padding-top: 50px;
+}
+@media (min-width: 1200px) {
+  .cart {
+    padding-top: 80px;
+  }
+}
+@media (min-width: 1750px) {
+  .cart {
+    padding-top: 100px;
+  }
+}
+.cart .cart-header {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+.cart .cart-header .cart-header-title {
+  font-weight: 400;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 26px;
+}
+@media (min-width: 1200px) {
+  .cart .cart-header .cart-header-title {
+    font-size: 30px;
+  }
+}
+.cart .cart-header .cart-header-labels {
+  display: grid;
+  grid-template-columns: 15% 1fr 1fr 15%;
+}
+@media (min-width: 1440px) {
+  .cart .cart-header .cart-header-labels {
+    grid-template-columns: 10% 1fr 1fr 10%;
+  }
+}
+.cart .cart-header .cart-header-labels .cart-header-label.spacer {
+  display: none;
+}
+@media (min-width: 768px) {
+  .cart .cart-header .cart-header-labels .cart-header-label.spacer {
+    display: inline;
+    padding-left: 15px;
+  }
+}
+.cart .cart-header .cart-header-labels .cart-header-label.quantity {
+  display: none;
+}
+@media (min-width: 768px) {
+  .cart .cart-header .cart-header-labels .cart-header-label.quantity {
+    display: inline;
+    padding-left: 20px;
+  }
+}
+@media (min-width: 1440px) {
+  .cart .cart-header .cart-header-labels .cart-header-label.quantity {
+    padding-left: 30px;
+  }
+}
+.cart .cart-header .cart-header-labels .cart-header-label:last-child {
+  text-align: right;
+}
+.cart .cart-items .cart-item {
+  margin-bottom: 30px;
+}
+@media (min-width: 768px) {
+  .cart .cart-items .cart-item {
+    grid-template-rows: auto;
+    grid-template-columns: 15% 1fr 1fr 15%;
+  }
+}
+@media (min-width: 1440px) {
+  .cart .cart-items .cart-item {
+    grid-template-columns: 10% 1fr 1fr 10%;
+  }
+}
+@media (min-width: 768px) {
+  .cart .cart-items .cart-item .cart-item-image {
+    grid-row: auto;
+  }
+}
+@media (min-width: 768px) {
+  .cart .cart-items .cart-item .cart-item-info {
+    grid-column: auto;
+  }
+}
+.cart .cart-items .cart-item .cart-item-quantity {
+  grid-row: 2/3;
+}
+@media (min-width: 768px) {
+  .cart .cart-items .cart-item .cart-item-quantity {
+    grid-column: auto;
+    grid-row: auto;
+  }
+}
+@media (min-width: 768px) {
+  .cart .cart-items .cart-item .cart-item-total-price {
+    padding-top: 10px;
+  }
+}
+
+.cart-page-footer {
+  padding-top: 40px;
+  padding-bottom: 50px;
+}
+.cart-page-footer.is-empty {
+  display: none;
+}
+@media (min-width: 1200px) {
+  .cart-page-footer {
+    padding-top: 60px;
+    padding-bottom: 80px;
+  }
+}
+@media (min-width: 1750px) {
+  .cart-page-footer {
+    padding-bottom: 100px;
+  }
+}
+@media (min-width: 768px) {
+  .cart-page-footer .cart-footer-subtotal {
+    justify-content: flex-end;
+    gap: 20px;
+  }
+}
+@media (min-width: 1440px) {
+  .cart-page-footer .cart-footer-subtotal {
+    margin-bottom: 15px;
+  }
+}
+@media (min-width: 768px) {
+  .cart-page-footer .cart-footer-tax {
+    text-align: right;
+  }
+}
+@media (min-width: 1440px) {
+  .cart-page-footer .cart-footer-tax {
+    margin-bottom: 15px;
+  }
+}
+@media (min-width: 768px) {
+  .cart-page-footer .cart-checkout {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+.cart-page-footer .cart-checkout .cart-checkout-button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+.cart-page-footer .cart-checkout .cart-checkout-button:disabled:hover {
+  background-color: #999;
+}
+@media (min-width: 768px) {
+  .cart-page-footer .cart-checkout .cart-checkout-button {
+    max-width: 350px;
+  }
 }
 
 /*# sourceMappingURL=custom.v1.css.map*/

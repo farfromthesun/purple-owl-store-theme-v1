@@ -3977,6 +3977,8 @@ const _mainHeader = document.querySelector(".main-header");
 const bodyWidth = _body.offsetWidth;
 const mainHeaderheight = _mainHeader.offsetHeight;
 let shopifySectionsCache = [];
+const isPageCart = _body.dataset.template === "cart";
+const isPageProduct = _body.dataset.template === "product";
 function debounce(fn, wait) {
   var _this2 = this;
   let t;
@@ -4345,8 +4347,7 @@ function cartItemQuantityChangeErrorsHandler(input) {
     errorContainer.classList.remove("show");
   }
 }
-function cartItemQuantityChange(input, itemID, itemLine, quantity) {
-  let additionalSectionsToUpdate = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
+function cartItemQuantityChange(input, itemLine, quantity) {
   const cartDrawerInner = document.getElementById("cart-drawer-inner");
   const basicSectionsToUpdate = [{
     sectionName: "cart-drawer-po",
@@ -4355,6 +4356,8 @@ function cartItemQuantityChange(input, itemID, itemLine, quantity) {
     sectionName: "header-cart-drawer-button",
     htmlId: "header-cart-drawer-button"
   }];
+  let additionalSectionsToUpdate = [];
+  if (isPageCart) additionalSectionsToUpdate = cartAdditionalSectionsToUpdate();
   const sectionsToUpdate = [...basicSectionsToUpdate, ...additionalSectionsToUpdate];
   fetch(window.Shopify.routes.root + "cart/change.js", {
     method: "POST",
@@ -4374,7 +4377,6 @@ function cartItemQuantityChange(input, itemID, itemLine, quantity) {
       input.value = input.getAttribute("value");
       quantityInputRulesHandler(input);
     } else {
-      // console.log("Cart changed, response:", response);
       sectionsToUpdate.forEach(section => {
         const htmlToInject = new DOMParser().parseFromString(response.sections[section.sectionName], "text/html").getElementById(section.htmlId);
         document.getElementById(section.htmlId).innerHTML = htmlToInject.innerHTML;
@@ -4382,11 +4384,13 @@ function cartItemQuantityChange(input, itemID, itemLine, quantity) {
       if (response.item_count === 0) {
         cartDrawerInner.classList.add("is-empty");
       } else {
-        cartDrawerInner.querySelectorAll(".cart-item-quantity-input").forEach(input => {
+        let inputsToRunRulesOn;
+        isPageCart ? inputsToRunRulesOn = document.querySelectorAll(".cart-item-quantity-input") : inputsToRunRulesOn = cartDrawerInner.querySelectorAll(".cart-item-quantity-input");
+        inputsToRunRulesOn.forEach(input => {
           quantityInputRulesHandler(input);
         });
       }
-      productQuantityTitleUpdate();
+      isPageProduct && productQuantityTitleUpdate();
     }
   }).catch(error => {
     console.log("Error: ", error);
@@ -4394,21 +4398,9 @@ function cartItemQuantityChange(input, itemID, itemLine, quantity) {
 }
 function cartItemInputQuantityChangeHandler(e) {
   const input = e.target;
-  const itemID = input.dataset.itemVariantId;
   const quantity = input.value;
   const itemLine = input.dataset.index;
-  // const additionalSectionsToUpdate = [
-  //   {
-  //     sectionName: "dfgd",
-  //     htmlId: "khkj",
-  //   },
-  //   {
-  //     sectionName: "tut",
-  //     htmlId: "werwew333",
-  //   },
-  // ];
-
-  cartItemQuantityChange(input, itemID, itemLine, quantity);
+  cartItemQuantityChange(input, itemLine, quantity);
 }
 const cartItemQuantityChangeDebounce = debounce(e => {
   cartItemInputQuantityChangeHandler(e);
@@ -4416,10 +4408,19 @@ const cartItemQuantityChangeDebounce = debounce(e => {
 function cartItemRemoveHandler(e) {
   const input = e.target.closest(".product-quantity").querySelector(".product-quantity-input");
   const quantity = 0;
-  const itemID = input.dataset.itemVariantId;
   const itemLine = input.dataset.index;
   e.preventDefault();
-  cartItemQuantityChange(input, itemID, itemLine, quantity);
+  cartItemQuantityChange(input, itemLine, quantity);
+}
+function cartAdditionalSectionsToUpdate() {
+  const additionalSectionsToUpdate = [{
+    sectionName: "cart-main",
+    htmlId: "cart"
+  }, {
+    sectionName: "cart-footer",
+    htmlId: "cart-footer-container"
+  }];
+  return additionalSectionsToUpdate;
 }
 function onScroll() {
   document.addEventListener("scroll", function () {
@@ -4489,7 +4490,7 @@ function init() {
       mobileSortFilterDrawerHandler(e);
     });
   }
-  if (_body.dataset.template == "product") {
+  if (isPageProduct) {
     productGlideInit();
     document.querySelector(".product-options").addEventListener("change", function (e) {
       productOptionsChangeHandler(e);
@@ -4530,19 +4531,20 @@ function init() {
   });
 
   // CART
-  document.querySelector(".cart").addEventListener("click", function (e) {
-    if (e.target.closest(".cart-item-remove")) {
-      cartItemRemoveHandler(e);
-    } else if (e.target.closest(".cart-item-quantity-button")) {
-      productQuantityButtonHandler(e);
-    }
-  });
-  document.querySelector(".cart").addEventListener("change", function (e) {
-    quantityInputRulesHandler(e.target);
-    // cartItemQuantityChangeDebounce(e);
-  });
+  if (isPageCart) {
+    document.querySelector(".cart").addEventListener("click", function (e) {
+      if (e.target.closest(".cart-item-remove")) {
+        cartItemRemoveHandler(e);
+      } else if (e.target.closest(".cart-item-quantity-button")) {
+        productQuantityButtonHandler(e);
+      }
+    });
+    document.querySelector(".cart").addEventListener("change", function (e) {
+      quantityInputRulesHandler(e.target);
+      cartItemQuantityChangeDebounce(e);
+    });
+  }
 }
-
 init();
 }();
 /******/ })()

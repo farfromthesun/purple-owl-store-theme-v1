@@ -1,16 +1,17 @@
 <div class="cart-container">
   <div class="container">
-    <div class="cart">
+    <div class="cart" id="cart">
       {% if cart == empty %}
         <div class="cart-empty">
           <span class="cart-empty-slogan">Your cart is empty</span>
         </div>
       {% else %}
         <div class="cart-header">
-          <h1 class="cart-title">Your cart</h1>
+          <h1 class="cart-header-title">Your cart</h1>
           <div class="cart-header-labels">
             <span class="cart-header-label">Product</span>
-            <span class="cart-header-label">Quantity</span>
+            <span class="cart-header-label spacer"></span>
+            <span class="cart-header-label quantity">Quantity</span>
             <span class="cart-header-label">Total</span>
           </div>
         </div>
@@ -56,9 +57,6 @@
                     {%- endif -%}
                   </div>
                 </div>
-                <div class="cart-item-total-price">
-                  {{ item.original_line_price | money }}
-                </div>
                 <div class="product-quantity cart-item-quantity">
                   <div class="cart-item-quantity-inner">
                     <div class="product-quantity-selector">
@@ -103,6 +101,9 @@
                     <span class="material-symbols-rounded icon"> error </span>
                     <span class="cart-item-error-message"></span>
                   </div>
+                </div>
+                <div class="cart-item-total-price">
+                  {{ item.original_line_price | money }}
                 </div>
               </div>
             {% endfor %}
