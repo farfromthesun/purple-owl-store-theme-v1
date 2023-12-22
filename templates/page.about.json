@@ -3,7 +3,7 @@
     "main": {
       "type": "page-about-main",
       "settings": {
-        "padding_top": 28,
+        "padding_top": 22,
         "padding_bottom": 28
       }
     },
