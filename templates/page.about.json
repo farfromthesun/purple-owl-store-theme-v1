@@ -3,13 +3,10 @@
     "main": {
       "type": "page-about-main",
       "settings": {
-        "padding_top": 22,
-        "padding_bottom": 28
+        "title_test": "bzzz title",
+        "halo_halo": "bzz"
       }
-    },
-    "banner": {
-      "type": "index-hero"
     }
   },
-  "order": ["main", "banner"]
+  "order": ["main"]
 }

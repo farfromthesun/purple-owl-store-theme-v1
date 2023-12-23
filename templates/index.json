@@ -3,8 +3,11 @@
     "index_hero": {
       "type": "index-hero",
       "settings": {
-        "hero_main_text": "Hero text",
-        "hero_button_text": "Shop nao!"
+        "classes": "index-hero",
+        "title": "stylist picks beat the heatf",
+        "isButton": true,
+        "buttonText": "Shop now",
+        "buttonLink": "/collections/all"
       }
     },
     "index_arrivals": {

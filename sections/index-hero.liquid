@@ -13,8 +13,41 @@
 
 {% render 'hero',
   classes: 'index-hero',
-  title: 'stylist picks beat the heat',
+  title: section.settings.title,
   isButton: true,
   buttonText: 'Shop now',
   buttonLink: '/collections/all'
 %}
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "classes",
+      "label": "classes"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title"
+    },
+    {
+      "type": "checkbox",
+      "id": "isButton",
+      "label": "isButton"
+    },
+    {
+      "type": "text",
+      "id": "buttonText",
+      "label": "buttonText"
+    },
+    {
+      "type": "url",
+      "id": "buttonLink",
+      "label": "buttonLink"
+    }
+  ]
+}
+{% endschema %}
