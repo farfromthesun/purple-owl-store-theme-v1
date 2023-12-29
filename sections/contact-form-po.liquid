@@ -44,6 +44,7 @@
             autocapitalize="off"
             value="{% if form.email %}{{ form.email }}{% endif %}"
             placeholder="{{ 'templates.contact.form.email' | t }}"
+            aria-required="true"
           >
           {%- if form.errors contains 'email' -%}
             <small class="contact__field-error" id="ContactForm-email-error">
