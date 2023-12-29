@@ -1,0 +1,80 @@
+<style>
+  .{{ section.settings.bgName }}-hero {
+    background: url({{section.settings.bgName|append:'-hero-bg-mobile.jpg'|file_url}}) no-repeat center top;
+    background-size: cover;
+  }
+  @media (min-width: 768px) {
+    .{{ section.settings.bgName }}-hero {
+      background: url({{section.settings.bgName|append:'-hero-bg-desktop.jpg'|file_url}}) no-repeat center top;
+      background-size: cover;
+    }
+  }
+</style>
+
+<div class="hero {{ section.settings.classes }}">
+  {% if section.settings.isDimmer %}
+    <div class="hero-dimmer"></div>
+  {% endif %}
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        {% if section.settings.title == 'about' %}
+          <h1 class="hero-title">
+            {{ section.settings.title }}
+            {{ shop.name }}
+          </h1>
+        {% else %}
+          <h1 class="hero-title">{{ section.settings.title }}</h1>
+        {% endif %}
+        {% if section.settings.isButton %}
+          <a href="{{ section.settings.buttonLink }}" title="{{ section.settings.buttonText }}" class="btn hero-button">
+            {{- section.settings.buttonText -}}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "classes",
+      "label": "classes"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title"
+    },
+    {
+      "type": "checkbox",
+      "id": "isButton",
+      "label": "isButton"
+    },
+    {
+      "type": "text",
+      "id": "buttonText",
+      "label": "buttonText"
+    },
+    {
+      "type": "url",
+      "id": "buttonLink",
+      "label": "buttonLink"
+    },
+    {
+      "type": "text",
+      "id": "bgName",
+      "label": "bgName"
+    },
+    {
+      "type": "checkbox",
+      "id": "isDimmer",
+      "label": "isDimmer"
+    }
+  ]
+}
+{% endschema %}

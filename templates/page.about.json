@@ -1,12 +1,20 @@
 {
   "sections": {
-    "main": {
-      "type": "page-about-main",
+    "hero": {
+      "type": "hero",
       "settings": {
-        "title_test": "bzzz title",
-        "halo_halo": "bzz"
+        "classes": "page-about-hero",
+        "title": "about",
+        "bgName": "page-about",
+        "isDimmer": true
       }
+    },
+    "main": {
+      "type": "page-about-main"
+    },
+    "founders": {
+      "type": "page-about-founders"
     }
   },
-  "order": ["main"]
+  "order": ["hero", "main", "founders"]
 }
