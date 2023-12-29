@@ -1,13 +1,14 @@
 {
   "sections": {
     "index_hero": {
-      "type": "index-hero",
+      "type": "hero",
       "settings": {
         "classes": "index-hero",
-        "title": "stylist picks beat the heatf",
+        "title": "stylist picks beat the heat",
         "isButton": true,
         "buttonText": "Shop now",
-        "buttonLink": "/collections/all"
+        "buttonLink": "/collections/all",
+        "bgName": "index"
       }
     },
     "index_arrivals": {

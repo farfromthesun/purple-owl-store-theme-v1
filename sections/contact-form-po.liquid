@@ -1,0 +1,91 @@
+<div class="container">
+  <div class="page-contact-form-inner">
+    {% form 'contact', id: 'contactForm', class: 'contact-form' %}
+      {%- if form.posted_successfully? -%}
+        <p class="contact-form-message success">
+          {{ 'templates.contact.form.post_success' | t }}
+        </p>
+      {%- elsif form.errors -%}
+        <p class="contact-form-message error">
+          {{ 'templates.contact.form.error_heading' | t }}
+        </p>
+        <ul class="contact-form-status-list">
+          <li>
+            <a href="#contactFormEmail" class="link">
+              {{ form.errors.translated_fields.email | capitalize }}
+              {{ form.errors.messages.email }}
+            </a>
+          </li>
+        </ul>
+      {%- endif -%}
+
+      <div class="contact-form-fields">
+        <div class="contact-form-field">
+          <label class="contact-form-label" for="contactFormName">{{ 'templates.contact.form.name' | t }}</label>
+          <input
+            class="contact-form-input"
+            autocomplete="name"
+            type="text"
+            id="contactFormName"
+            name="name"
+            value="{% if form.name %}{{ form.name }}{% endif %}"
+            placeholder="{{ 'templates.contact.form.name' | t }}"
+          >
+        </div>
+        <div class="contact-form-field">
+          <label class="contact-form-label" for="contactFormEmail">{{ 'templates.contact.form.email' | t }}</label>
+          <input
+            autocomplete="email"
+            type="email"
+            id="contactFormEmail"
+            class="contact-form-input"
+            name="email"
+            spellcheck="false"
+            autocapitalize="off"
+            value="{% if form.email %}{{ form.email }}{% endif %}"
+            placeholder="{{ 'templates.contact.form.email' | t }}"
+          >
+          {%- if form.errors contains 'email' -%}
+            <small class="contact__field-error" id="ContactForm-email-error">
+              <span class="form__message">
+                {%- render 'icon-error' -%}
+                {{- form.errors.translated_fields.email | capitalize }}
+                {{ form.errors.messages.email -}}
+              </span>
+            </small>
+          {%- endif -%}
+        </div>
+        <div class="contact-form-field">
+          <label class="contact-form-label" for="contactFormPhone">{{ 'templates.contact.form.phone' | t }}</label>
+          <input
+            type="tel"
+            id="contactFormPhone"
+            class="contact-form-input"
+            autocomplete="tel"
+            name="phone"
+            pattern="[0-9\-]*"
+            value="{% if form.phone %}{{ form.phone }}{% endif %}"
+            placeholder="{{ 'templates.contact.form.phone' | t }}"
+          >
+        </div>
+        <div class="contact-form-field">
+          <label class="contact-form-label" for="contactFormMessage">{{ 'templates.contact.form.comment' | t }}</label>
+          <textarea
+            rows="10"
+            id="contactFormMessage"
+            class="contact-form-input text-area"
+            name="message"
+            placeholder="{{ 'templates.contact.form.comment' | t }}"
+          >
+            {{- form.body -}}
+          </textarea>
+        </div>
+      </div>
+      <div class="contact-form-button-container">
+        <button type="submit" class="btn contact-form-button">
+          {{ 'templates.contact.form.send' | t }}
+        </button>
+      </div>
+    {% endform %}
+  </div>
+</div>

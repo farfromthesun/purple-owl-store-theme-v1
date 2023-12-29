@@ -1,11 +1,17 @@
 {
   "sections": {
-    "banner": {
-      "type": "collections-all-hero"
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "classes": "collection-all-hero",
+        "title": "shop our products",
+        "bgName": "collection-all",
+        "isDimmer": true
+      }
     },
     "products-grid": {
       "type": "main-collection-products-grid"
     }
   },
-  "order": ["banner", "products-grid"]
+  "order": ["hero", "products-grid"]
 }
