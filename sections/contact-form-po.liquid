@@ -1,3 +1,21 @@
+{%- if form.posted_successfully? -%}
+  <p class="contact-form-message success">
+    {{ 'templates.contact.form.post_success' | t }}
+  </p>
+{%- elsif form.errors -%}
+  <p class="contact-form-message error">
+    {{ 'templates.contact.form.error_heading' | t }}
+  </p>
+  <ul class="contact-form-status-list">
+    <li>
+      <a href="#contactFormEmail" class="link">
+        {{ form.errors.translated_fields.email | capitalize }}
+        {{ form.errors.messages.email }}
+      </a>
+    </li>
+  </ul>
+{%- endif -%}
+
 {% form 'contact' %}
   {{ form.errors | default_errors }}
 
