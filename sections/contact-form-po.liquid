@@ -47,13 +47,13 @@
             aria-required="true"
           >
           {%- if form.errors contains 'email' -%}
-            <small class="contact__field-error" id="ContactForm-email-error">
-              <span class="form__message">
-                {%- render 'icon-error' -%}
+            <div class="contact-form-field-error">
+              <span class="contact-form-field-error-message">
                 {{- form.errors.translated_fields.email | capitalize }}
                 {{ form.errors.messages.email -}}
               </span>
-            </small>
+              <span class="material-symbols-rounded icon"> error </span>
+            </div>
           {%- endif -%}
         </div>
         <div class="contact-form-field">
