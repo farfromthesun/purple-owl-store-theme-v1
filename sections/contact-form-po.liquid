@@ -27,7 +27,7 @@
             autocomplete="name"
             type="text"
             id="contactFormName"
-            name="name"
+            name="contact[{{ 'templates.contact.form.name' | t }}]"
             value="{% if form.name %}{{ form.name }}{% endif %}"
             placeholder="{{ 'templates.contact.form.name' | t }}"
           >
@@ -39,7 +39,7 @@
             type="email"
             id="contactFormEmail"
             class="contact-form-input"
-            name="email"
+            name="contact[email]"
             spellcheck="false"
             autocapitalize="off"
             value="{% if form.email %}{{ form.email }}{% endif %}"
@@ -63,7 +63,7 @@
             id="contactFormPhone"
             class="contact-form-input"
             autocomplete="tel"
-            name="phone"
+            name="contact[{{ 'templates.contact.form.phone' | t }}]"
             pattern="[0-9\-]*"
             value="{% if form.phone %}{{ form.phone }}{% endif %}"
             placeholder="{{ 'templates.contact.form.phone' | t }}"
@@ -75,7 +75,7 @@
             rows="10"
             id="contactFormMessage"
             class="contact-form-input text-area"
-            name="message"
+            name="contact[{{ 'templates.contact.form.comment' | t }}]"
             placeholder="{{ 'templates.contact.form.comment' | t }}"
           >
             {{- form.body -}}

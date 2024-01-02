@@ -2503,4 +2503,22 @@ body.overflowHidden {
   }
 }
 
+.shopify-challenge__container {
+  margin: 7rem auto;
+}
+.shopify-challenge__container .shopify-challenge__button {
+  margin-top: 1.5rem;
+  background-color: #222;
+  color: #f7f7f7;
+}
+@media (min-width: 1200px) {
+  .shopify-challenge__container .shopify-challenge__button {
+    cursor: pointer;
+  }
+  .shopify-challenge__container .shopify-challenge__button:hover {
+    background-color: #cb13a9;
+    color: #fff;
+  }
+}
+
 /*# sourceMappingURL=custom.v1.css.map*/
