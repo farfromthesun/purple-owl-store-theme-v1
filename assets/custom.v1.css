@@ -2521,4 +2521,22 @@ body.overflowHidden {
   }
 }
 
+.contact-form-field-error {
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+}
+@media (min-width: 1200px) {
+  .contact-form-field-error {
+    font-size: 12px;
+  }
+}
+.contact-form-field-error .icon {
+  font-size: 20px;
+  color: #eb001b;
+  font-variation-settings: "FILL" 1;
+}
+
 /*# sourceMappingURL=custom.v1.css.map*/

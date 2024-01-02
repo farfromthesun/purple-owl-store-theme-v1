@@ -2402,3 +2402,21 @@ body {
     }
   }
 }
+
+.contact-form-field-error {
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+
+  @media (min-width: 1200px) {
+    font-size: 12px;
+  }
+
+  .icon {
+    font-size: 20px;
+    color: #eb001b;
+    font-variation-settings: "FILL" 1;
+  }
+}
