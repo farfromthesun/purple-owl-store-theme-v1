@@ -2383,3 +2383,22 @@ body {
     }
   }
 }
+
+.shopify-challenge__container {
+  margin: 7rem auto;
+
+  .shopify-challenge__button {
+    margin-top: 1.5rem;
+    background-color: $main-dark;
+    color: $main-bright;
+
+    @media (min-width: 1200px) {
+      cursor: pointer;
+
+      &:hover {
+        background-color: $main-purple;
+        color: #fff;
+      }
+    }
+  }
+}
