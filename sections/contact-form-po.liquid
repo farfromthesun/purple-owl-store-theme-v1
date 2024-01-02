@@ -48,11 +48,11 @@
           >
           {%- if form.errors contains 'email' -%}
             <div class="contact-form-field-error">
+              <span class="material-symbols-rounded icon"> error </span>
               <span class="contact-form-field-error-message">
                 {{- form.errors.translated_fields.email | capitalize }}
                 {{ form.errors.messages.email -}}
               </span>
-              <span class="material-symbols-rounded icon"> error </span>
             </div>
           {%- endif -%}
         </div>
