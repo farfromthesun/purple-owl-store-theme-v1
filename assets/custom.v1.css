@@ -2589,4 +2589,46 @@ body.overflowHidden {
   }
 }
 
+.product-extra-wrapping {
+  margin-bottom: 30px;
+}
+@media (min-width: 1200px) {
+  .product-extra-wrapping {
+    margin-bottom: 35px;
+  }
+}
+.product-extra-wrapping .product-extra-wrapping-input {
+  display: none;
+}
+.product-extra-wrapping .product-extra-wrapping-input:checked + .product-extra-wrapping-label .product-extra-wrapping-label-checkbox .icon {
+  opacity: 1;
+  visibility: visible;
+}
+.product-extra-wrapping .product-extra-wrapping-label {
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+}
+.product-extra-wrapping .product-extra-wrapping-label .product-extra-wrapping-label-checkbox {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+  border: 1px solid #222;
+  align-items: center;
+  justify-content: center;
+}
+@media (min-width: 1200px) {
+  .product-extra-wrapping .product-extra-wrapping-label .product-extra-wrapping-label-checkbox {
+    width: 25px;
+    height: 25px;
+  }
+}
+.product-extra-wrapping .product-extra-wrapping-label .product-extra-wrapping-label-checkbox .icon {
+  transition: all 0.3s ease;
+  font-size: 20px;
+  opacity: 0;
+  visibility: hidden;
+}
+
 /*# sourceMappingURL=custom.v1.css.map*/

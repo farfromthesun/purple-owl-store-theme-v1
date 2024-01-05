@@ -149,6 +149,27 @@
               <span class="material-symbols-rounded product-quantity-button-icon"> add </span>
             </button>
           </div>
+          {% comment %} {% if product.metafields.custom.extra_wrapping %} {% endcomment %}
+          <div class="product-extra-wrapping">
+            <input
+              class="product-extra-wrapping-input"
+              type="checkbox"
+              name="properties[Extra wrapping]"
+              id="{{ 'product-extra-wrapping-input-' | append: section.id }}"
+              value="yes"
+              form="{{ product_form_id }}"
+            >
+            <label
+              class="product-extra-wrapping-label"
+              for="{{ 'product-extra-wrapping-input-' | append: section.id }}"
+            >
+              <span class="product-extra-wrapping-label-checkbox">
+                <span class="material-symbols-rounded icon"> done </span>
+              </span>
+              Add extra wrapping for this product?
+            </label>
+          </div>
+          {% comment %} {% endif %} {% endcomment %}
         </div>
         {% if product %}
           <div class="product-buy">
