@@ -1682,7 +1682,7 @@ body.overflowHidden {
 .product-main .product-main-inner .product-info .product-options-inner .product-option .product-option-title {
   font-size: 12px;
 }
-@media (min-width: 1300px) {
+@media (min-width: 1200px) {
   .product-main .product-main-inner .product-info .product-options-inner .product-option .product-option-title {
     font-size: 14px;
   }
@@ -1800,7 +1800,7 @@ body.overflowHidden {
 .product-quantity-title-container {
   font-size: 12px;
 }
-@media (min-width: 1300px) {
+@media (min-width: 1200px) {
   .product-quantity-title-container {
     font-size: 14px;
   }
@@ -2589,27 +2589,28 @@ body.overflowHidden {
   }
 }
 
-.product-extra-wrapping {
+.product-add-on {
   margin-bottom: 30px;
 }
 @media (min-width: 1200px) {
-  .product-extra-wrapping {
+  .product-add-on {
     margin-bottom: 35px;
   }
 }
-.product-extra-wrapping .product-extra-wrapping-input {
+.product-add-on .product-add-on-input {
   display: none;
 }
-.product-extra-wrapping .product-extra-wrapping-input:checked + .product-extra-wrapping-label .product-extra-wrapping-label-checkbox .icon {
+.product-add-on .product-add-on-input:checked + .product-add-on-label .product-add-on-label-checkbox .icon {
   opacity: 1;
   visibility: visible;
 }
-.product-extra-wrapping .product-extra-wrapping-label {
+.product-add-on .product-add-on-label {
   display: flex;
-  gap: 10px;
+  gap: 15px;
   cursor: pointer;
+  align-items: center;
 }
-.product-extra-wrapping .product-extra-wrapping-label .product-extra-wrapping-label-checkbox {
+.product-add-on .product-add-on-label .product-add-on-label-checkbox {
   display: flex;
   width: 20px;
   height: 20px;
@@ -2618,17 +2619,44 @@ body.overflowHidden {
   align-items: center;
   justify-content: center;
 }
-@media (min-width: 1200px) {
-  .product-extra-wrapping .product-extra-wrapping-label .product-extra-wrapping-label-checkbox {
-    width: 25px;
-    height: 25px;
-  }
-}
-.product-extra-wrapping .product-extra-wrapping-label .product-extra-wrapping-label-checkbox .icon {
+.product-add-on .product-add-on-label .product-add-on-label-checkbox .icon {
   transition: all 0.3s ease;
   font-size: 20px;
   opacity: 0;
   visibility: hidden;
+}
+
+.product-add-ons {
+  padding-bottom: 15px;
+}
+@media (min-width: 1200px) {
+  .product-add-ons {
+    padding-bottom: 20px;
+  }
+}
+.product-add-ons .product-add-ons-title {
+  font-size: 12px;
+  display: block;
+  margin-bottom: 5px;
+}
+@media (min-width: 1200px) {
+  .product-add-ons .product-add-ons-title {
+    font-size: 14px;
+  }
+}
+.product-add-ons .product-add-on {
+  margin-bottom: 20px;
+}
+@media (min-width: 1200px) {
+  .product-add-ons .product-add-on {
+    margin-bottom: 25px;
+  }
+}
+.product-add-ons .product-add-on .product-add-on-label-checkbox {
+  margin-right: 5px;
+}
+.product-add-ons .product-add-on .product-add-on-pic-file {
+  display: block;
 }
 
 /*# sourceMappingURL=custom.v1.css.map*/
