@@ -10,6 +10,7 @@ const mainHeaderheight = _mainHeader.offsetHeight;
 let shopifySectionsCache = [];
 const isPageCart = _body.dataset.template === "cart";
 const isPageProduct = _body.dataset.template === "product";
+const isPageCollection = _body.dataset.template == "collection";
 
 function debounce(fn, wait) {
   let t;
@@ -324,6 +325,9 @@ async function productOptionsChangeUpdateInfo(
     .closest(".product-main-inner")
     .querySelector(".product-images");
   // const productBuy = productInfoContainer.querySelector(".product-buy");
+  const oosStatus = productInfoContainer.querySelector(
+    ".regional-out-of-stock-status"
+  );
 
   // if (shopifySectionsCache.some((element) => element.url === url)) {
   //   htmlText = shopifySectionsCache.find(
@@ -354,6 +358,9 @@ async function productOptionsChangeUpdateInfo(
     .querySelector(".product-images");
   // const productBuyToRender =
   //   productInfoContainerToRender.querySelector(".product-buy");
+  const oosStatusToRender = productInfoContainerToRender.querySelector(
+    ".regional-out-of-stock-status"
+  );
 
   productPrices.innerHTML = productPricesToRender.innerHTML;
   productOptionsInner.innerHTML = productOptionsInnerToRender.innerHTML;
@@ -367,6 +374,7 @@ async function productOptionsChangeUpdateInfo(
     productGlideInit();
   }
   // productBuy.innerHTML = productBuyToRender.innerHTML;
+  oosStatus.innerHTML = oosStatusToRender.innerHTML;
   document.querySelectorAll("form[action='/cart/add']").forEach((form) => {
     form.querySelector("input[name='id']").value = variantID;
   });
@@ -381,7 +389,11 @@ async function productOptionsChangeUpdateInfo(
     (variant) => variant.id === variantID
   );
   if (selectedVariantData.available) {
-    productChangeATCStatus(false, "Add to cart");
+    if (await regionalOutOfStockATCHandler("boolean")) {
+      productChangeATCStatus(true, "Sold out");
+    } else {
+      productChangeATCStatus(false, "Add to cart");
+    }
   } else {
     productChangeATCStatus(true, "Sold out");
   }
@@ -442,13 +454,14 @@ function productAddToCartErrorsHandler(errorDescription = false) {
 async function productQuantityTitleUpdate() {
   const productInfo = document.querySelector(".product-info");
   const productOptions = productInfo.querySelector(".product-options");
+  const productQuantity = productInfo.querySelector(".product-quantity");
   const productQuantityTitleContainer = productInfo.querySelector(
     ".product-quantity-title-container"
   );
   const variantID = productInfo
     .querySelector("form[action='/cart/add']")
     .querySelector("input[name='id']").value;
-  const url = `${productOptions.dataset.url}?variant=${variantID}&section_id=${productOptions.dataset.section}`;
+  const url = `${productQuantity.dataset.url}?variant=${variantID}&section_id=${productQuantity.dataset.section}`;
 
   const htmlText = await fetchShopifySection(url);
   const htmlToRender = new DOMParser().parseFromString(htmlText, "text/html");
@@ -495,6 +508,7 @@ function productAddToCart(e) {
       if (response.status) {
         productAddToCartErrorsHandler(response.description);
       } else {
+        productAddOnsHandler();
         sectionsToUpdate.forEach((section) => {
           const htmlToInject = new DOMParser()
             .parseFromString(
@@ -661,6 +675,58 @@ function cartAdditionalSectionsToUpdate() {
   return additionalSectionsToUpdate;
 }
 
+function productAddOnsHandler() {
+  const addOnsContainer = document.querySelector(".product-add-ons");
+  const addOnsChecked = {};
+
+  if (!isPageProduct || !addOnsContainer) return;
+
+  addOnsContainer.querySelectorAll(".product-add-on-input").forEach((addOn) => {
+    if (addOn.checked) addOnsChecked[addOn.value] = 1;
+  });
+
+  if (Object.keys(addOnsChecked).length > 0) {
+    fetch(window.Shopify.routes.root + "cart/update.js", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ updates: addOnsChecked }),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log("Add-ons fetch response", response);
+      })
+      .catch((error) => {
+        console.log("Error: ", error);
+      });
+  }
+}
+
+function getVisitorCountry() {
+  return fetch(window.Shopify.routes.root + "browsing_context_suggestions.json")
+    .then((response) => response.json())
+    .then((response) => response.detected_values.country.handle);
+}
+async function regionalOutOfStockATCHandler(option) {
+  const countryISO = await getVisitorCountry();
+  const oosStatusClasses = document
+    .querySelector(".product-info")
+    .querySelector(".regional-out-of-stock-status")
+    .querySelector(".regional-out-of-stock-status-classes");
+
+  if (
+    countryISO === "PL" &&
+    oosStatusClasses.classList.contains("out-of-stock-for-japan")
+  ) {
+    if (option === "boolean") {
+      return true;
+    } else if (option === "action") {
+      productChangeATCStatus(true, "Sold out");
+    }
+  }
+}
+
 function onScroll() {
   document.addEventListener("scroll", function () {
     addBodyScrolled();
@@ -689,7 +755,7 @@ function init() {
       cartDrawerVisibilityHandler("hide");
     });
 
-  if (_body.dataset.template == "collection") {
+  if (isPageCollection) {
     const collectionFiltersFrom = document.querySelector(
       ".collection-filters-form"
     );
@@ -761,10 +827,11 @@ function init() {
 
   if (isPageProduct) {
     productGlideInit();
+    regionalOutOfStockATCHandler("action");
 
-    document
-      .querySelector(".product-options")
-      .addEventListener("change", function (e) {
+    const productOptions = document.querySelector(".product-options");
+    productOptions &&
+      productOptions.addEventListener("change", function (e) {
         productOptionsChangeHandler(e);
       });
     document

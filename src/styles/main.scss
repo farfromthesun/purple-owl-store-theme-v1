@@ -1578,7 +1578,7 @@ body {
           .product-option-title {
             font-size: 12px;
 
-            @media (min-width: 1300px) {
+            @media (min-width: 1200px) {
               font-size: 14px;
             }
           }
@@ -1701,7 +1701,7 @@ body {
 .product-quantity-title-container {
   font-size: 12px;
 
-  @media (min-width: 1300px) {
+  @media (min-width: 1200px) {
     font-size: 14px;
   }
 }
@@ -2467,30 +2467,28 @@ body {
   }
 }
 
-.product-extra-wrapping {
+.product-add-on {
   margin-bottom: 30px;
 
   @media (min-width: 1200px) {
     margin-bottom: 35px;
   }
 
-  .product-extra-wrapping-input {
+  .product-add-on-input {
     display: none;
 
-    &:checked
-      + .product-extra-wrapping-label
-      .product-extra-wrapping-label-checkbox
-      .icon {
+    &:checked + .product-add-on-label .product-add-on-label-checkbox .icon {
       opacity: 1;
       visibility: visible;
     }
   }
-  .product-extra-wrapping-label {
+  .product-add-on-label {
     display: flex;
-    gap: 10px;
+    gap: 15px;
     cursor: pointer;
+    align-items: center;
 
-    .product-extra-wrapping-label-checkbox {
+    .product-add-on-label-checkbox {
       display: flex;
       width: 20px;
       height: 20px;
@@ -2499,17 +2497,45 @@ body {
       align-items: center;
       justify-content: center;
 
-      @media (min-width: 1200px) {
-        width: 25px;
-        height: 25px;
-      }
-
       .icon {
         transition: all 0.3s ease;
         font-size: 20px;
         opacity: 0;
         visibility: hidden;
       }
+    }
+  }
+}
+
+.product-add-ons {
+  padding-bottom: 15px;
+
+  @media (min-width: 1200px) {
+    padding-bottom: 20px;
+  }
+
+  .product-add-ons-title {
+    font-size: 12px;
+    display: block;
+    margin-bottom: 5px;
+
+    @media (min-width: 1200px) {
+      font-size: 14px;
+    }
+  }
+
+  .product-add-on {
+    margin-bottom: 20px;
+
+    @media (min-width: 1200px) {
+      margin-bottom: 25px;
+    }
+
+    .product-add-on-label-checkbox {
+      margin-right: 5px;
+    }
+    .product-add-on-pic-file {
+      display: block;
     }
   }
 }
