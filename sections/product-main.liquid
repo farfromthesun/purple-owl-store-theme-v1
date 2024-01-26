@@ -211,13 +211,15 @@
             {% endfor %}
           </div>
         {% endif %}
-        <div class="regional-out-of-stock-status">
-          {% assign out_of_stock_classes = '' %}
-          {% if product.selected_or_first_available_variant.metafields.custom.out_of_stock_for_japan %}
-            {% assign out_of_stock_classes = out_of_stock_classes | append: ' out-of-stock-for-japan ' %}
-          {% endif %}
-          <span class="regional-out-of-stock-status-classes {{ out_of_stock_classes }}"></span>
-        </div>
+        {% comment %}
+          <div class="regional-out-of-stock-status">
+            {% assign out_of_stock_classes = '' %}
+            {% if product.selected_or_first_available_variant.metafields.custom.out_of_stock_for_japan %}
+              {% assign out_of_stock_classes = out_of_stock_classes | append: ' out-of-stock-for-japan ' %}
+            {% endif %}
+            <span class="regional-out-of-stock-status-classes {{ out_of_stock_classes }}"></span>
+          </div>
+        {% endcomment %}
         {% if product %}
           <div class="product-buy">
             <div class="product-buy-error-container">

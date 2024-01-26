@@ -4195,7 +4195,9 @@ async function productOptionsChangeUpdateInfo(e, variantID, variantFeaturedMedia
   const productOptionsInner = productInfoContainer.querySelector(".product-options-inner");
   const productImages = productOptionsContainer.closest(".product-main-inner").querySelector(".product-images");
   // const productBuy = productInfoContainer.querySelector(".product-buy");
-  const oosStatus = productInfoContainer.querySelector(".regional-out-of-stock-status");
+  // const oosStatus = productInfoContainer.querySelector(
+  //   ".regional-out-of-stock-status"
+  // );
 
   // if (shopifySectionsCache.some((element) => element.url === url)) {
   //   htmlText = shopifySectionsCache.find(
@@ -4216,7 +4218,10 @@ async function productOptionsChangeUpdateInfo(e, variantID, variantFeaturedMedia
   const productImagesToRender = productInfoContainerToRender.closest(".product-main-inner").querySelector(".product-images");
   // const productBuyToRender =
   //   productInfoContainerToRender.querySelector(".product-buy");
-  const oosStatusToRender = productInfoContainerToRender.querySelector(".regional-out-of-stock-status");
+  // const oosStatusToRender = productInfoContainerToRender.querySelector(
+  //   ".regional-out-of-stock-status"
+  // );
+
   productPrices.innerHTML = productPricesToRender.innerHTML;
   productOptionsInner.innerHTML = productOptionsInnerToRender.innerHTML;
   productQuantityTitle.innerHTML = productQuantityTitleToRender.innerHTML;
@@ -4225,7 +4230,7 @@ async function productOptionsChangeUpdateInfo(e, variantID, variantFeaturedMedia
     productGlideInit();
   }
   // productBuy.innerHTML = productBuyToRender.innerHTML;
-  oosStatus.innerHTML = oosStatusToRender.innerHTML;
+  // oosStatus.innerHTML = oosStatusToRender.innerHTML;
   document.querySelectorAll("form[action='/cart/add']").forEach(form => {
     form.querySelector("input[name='id']").value = variantID;
   });
@@ -4238,11 +4243,12 @@ async function productOptionsChangeUpdateInfo(e, variantID, variantFeaturedMedia
   const allVariants = allProductVariantsJSON();
   const selectedVariantData = allVariants.find(variant => variant.id === variantID);
   if (selectedVariantData.available) {
-    if (await regionalOutOfStockATCHandler("boolean")) {
-      productChangeATCStatus(true, "Sold out");
-    } else {
-      productChangeATCStatus(false, "Add to cart");
-    }
+    // if (await regionalOutOfStockATCHandler("boolean")) {
+    //   productChangeATCStatus(true, "Sold out");
+    // } else {
+    //   productChangeATCStatus(false, "Add to cart");
+    // }
+    productChangeATCStatus(false, "Add to cart");
   } else {
     productChangeATCStatus(true, "Sold out");
   }
@@ -4454,20 +4460,31 @@ function productAddOnsHandler() {
     });
   }
 }
-function getVisitorCountry() {
-  return fetch(window.Shopify.routes.root + "browsing_context_suggestions.json").then(response => response.json()).then(response => response.detected_values.country.handle);
-}
-async function regionalOutOfStockATCHandler(option) {
-  const countryISO = await getVisitorCountry();
-  const oosStatusClasses = document.querySelector(".product-info").querySelector(".regional-out-of-stock-status").querySelector(".regional-out-of-stock-status-classes");
-  if (countryISO === "PL" && oosStatusClasses.classList.contains("out-of-stock-for-japan")) {
-    if (option === "boolean") {
-      return true;
-    } else if (option === "action") {
-      productChangeATCStatus(true, "Sold out");
-    }
-  }
-}
+
+// function getVisitorCountry() {
+//   return fetch(window.Shopify.routes.root + "browsing_context_suggestions.json")
+//     .then((response) => response.json())
+//     .then((response) => response.detected_values.country.handle);
+// }
+// async function regionalOutOfStockATCHandler(option) {
+//   const countryISO = await getVisitorCountry();
+//   const oosStatusClasses = document
+//     .querySelector(".product-info")
+//     .querySelector(".regional-out-of-stock-status")
+//     .querySelector(".regional-out-of-stock-status-classes");
+
+//   if (
+//     countryISO === "PL" &&
+//     oosStatusClasses.classList.contains("out-of-stock-for-japan")
+//   ) {
+//     if (option === "boolean") {
+//       return true;
+//     } else if (option === "action") {
+//       productChangeATCStatus(true, "Sold out");
+//     }
+//   }
+// }
+
 function onScroll() {
   document.addEventListener("scroll", function () {
     addBodyScrolled();
@@ -4538,7 +4555,8 @@ function init() {
   }
   if (isPageProduct) {
     productGlideInit();
-    regionalOutOfStockATCHandler("action");
+    // regionalOutOfStockATCHandler("action");
+
     const productOptions = document.querySelector(".product-options");
     productOptions && productOptions.addEventListener("change", function (e) {
       productOptionsChangeHandler(e);
