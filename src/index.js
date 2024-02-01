@@ -473,7 +473,7 @@ async function productQuantityTitleUpdate() {
     productQuantityTitleContainerToRender.innerHTML;
 }
 
-function productAddToCart(e) {
+async function productAddToCart(e) {
   const form = e.currentTarget;
   const formData = new FormData(form);
   const cartDrawerInner = document.getElementById("cart-drawer-inner");
@@ -496,56 +496,52 @@ function productAddToCart(e) {
 
   productChangeATCStatus(true);
 
-  fetch(window.Shopify.routes.root + "cart/add.js", {
-    method: "POST",
-    headers: {
-      Accept: "application/javascript",
-      "X-Requested-With": "XMLHttpRequest",
-    },
-    body: formData,
-  })
-    .then((response) => response.json())
-    .then((response) => {
-      if (response.status) {
-        productAddToCartErrorsHandler(response.description);
-      } else {
-        productAddOnsHandler(sectionsToUpdateNames).then(
-          (addOnsHandlerResponse) => {
-            let finalResponse;
-            addOnsHandlerResponse
-              ? (finalResponse = addOnsHandlerResponse)
-              : (finalResponse = response);
-            sectionsToUpdate.forEach((section) => {
-              const htmlToInject = new DOMParser()
-                .parseFromString(
-                  finalResponse.sections[section.sectionName],
-                  "text/html"
-                )
-                .getElementById(section.htmlId);
-              document.getElementById(section.htmlId).innerHTML =
-                htmlToInject.innerHTML;
-            });
-            if (cartDrawerInner.classList.contains("is-empty"))
-              cartDrawerInner.classList.remove("is-empty");
-            productAddToCartErrorsHandler();
-            productQuantityInputReset();
-            productQuantityTitleUpdate();
-            cartDrawerInner
-              .querySelectorAll(".cart-item-quantity-input")
-              .forEach((input) => {
-                quantityInputRulesHandler(input);
-              });
-            cartDrawerVisibilityHandler("show");
-          }
-        );
-      }
-    })
-    .catch((error) => {
-      console.log("Error: ", error);
-    })
-    .finally(() => {
-      productChangeATCStatus(false);
-    });
+  const fetchResponse = await fetch(
+    window.Shopify.routes.root + "cart/add.js",
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/javascript",
+        "X-Requested-With": "XMLHttpRequest",
+      },
+      body: formData,
+    }
+  );
+  const primeResponse = await fetchResponse.json();
+  let response = primeResponse;
+  try {
+    if (response.status) {
+      productAddToCartErrorsHandler(response.description);
+    } else {
+      const addOnsHandlerResponse = await productAddOnsHandler(
+        sectionsToUpdateNames
+      );
+      if (addOnsHandlerResponse) response = addOnsHandlerResponse;
+
+      sectionsToUpdate.forEach((section) => {
+        const htmlToInject = new DOMParser()
+          .parseFromString(response.sections[section.sectionName], "text/html")
+          .getElementById(section.htmlId);
+        document.getElementById(section.htmlId).innerHTML =
+          htmlToInject.innerHTML;
+      });
+      if (cartDrawerInner.classList.contains("is-empty"))
+        cartDrawerInner.classList.remove("is-empty");
+      productAddToCartErrorsHandler();
+      productQuantityInputReset();
+      productQuantityTitleUpdate();
+      cartDrawerInner
+        .querySelectorAll(".cart-item-quantity-input")
+        .forEach((input) => {
+          quantityInputRulesHandler(input);
+        });
+      cartDrawerVisibilityHandler("show");
+    }
+  } catch (error) {
+    console.log("Error: ", error);
+  } finally {
+    productChangeATCStatus(false);
+  }
 }
 
 function atcFormSubmithandler(e) {
