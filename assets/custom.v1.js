@@ -4238,6 +4238,7 @@ async function productOptionsChangeUpdateInfo(e, variantID, variantFeaturedMedia
   // productChangeATCStatus(false);
   productQuantityInputReset();
   productAddToCartErrorsHandler();
+  clearProductProperitesInputs();
 
   // Can also be done with section rendering
   const allVariants = allProductVariantsJSON();
@@ -4326,6 +4327,9 @@ async function productAddToCart(e) {
     if (response.status) {
       productAddToCartErrorsHandler(response.description);
     } else {
+      // Addons can also be done with regular inputs,
+      // change name to name="items[<index of an item>][id]" and add form="<form_name>"
+      // - check product-main for reference
       const addOnsHandlerResponse = await productAddOnsHandler(sectionsToUpdateNames);
       if (addOnsHandlerResponse) response = addOnsHandlerResponse;
       sectionsToUpdate.forEach(section => {
@@ -4336,6 +4340,7 @@ async function productAddToCart(e) {
       productAddToCartErrorsHandler();
       productQuantityInputReset();
       productQuantityTitleUpdate();
+      clearProductProperitesInputs();
       cartDrawerInner.querySelectorAll(".cart-item-quantity-input").forEach(input => {
         quantityInputRulesHandler(input);
       });
@@ -4474,6 +4479,14 @@ async function productAddOnsHandler(sectionsToUpdateNames) {
     } catch (error) {
       console.log("Error: ", error);
     }
+  }
+}
+function clearProductProperitesInputs() {
+  const properitesInputs = document.querySelector(".product-info").querySelectorAll("input[name^='properties']");
+  if (properitesInputs.length > 0) {
+    properitesInputs.forEach(input => {
+      if (input.checked) input.checked = false;
+    });
   }
 }
 async function cartDrawerClear(e) {
