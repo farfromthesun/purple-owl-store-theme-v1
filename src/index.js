@@ -477,39 +477,30 @@ async function productAddToCart(e) {
   const form = e.currentTarget;
   const formData = new FormData(form);
   const cartDrawerInner = document.getElementById("cart-drawer-inner");
-  const sectionsToUpdate = [
-    {
-      sectionName: "cart-drawer-po",
-      htmlId: "cart-drawer-inner",
-    },
-    {
-      sectionName: "header-cart-drawer-button",
-      htmlId: "header-cart-drawer-button",
-    },
-  ];
-  const sectionsToUpdateNames = sectionsToUpdate.map(
-    (section) => section.sectionName
-  );
+  const sectionsToUpdateData = cartBasicSectionsToUpdate();
+  const sectionsToUpdate = sectionsToUpdateData.sectionsObjects;
+  const sectionsToUpdateNames = sectionsToUpdateData.sectionsNames;
 
   formData.append("sections", sectionsToUpdateNames);
   formData.append("sections_url", window.location.pathname);
 
   productChangeATCStatus(true);
 
-  const fetchResponse = await fetch(
-    window.Shopify.routes.root + "cart/add.js",
-    {
-      method: "POST",
-      headers: {
-        Accept: "application/javascript",
-        "X-Requested-With": "XMLHttpRequest",
-      },
-      body: formData,
-    }
-  );
-  const primeResponse = await fetchResponse.json();
-  let response = primeResponse;
   try {
+    const fetchResponse = await fetch(
+      window.Shopify.routes.root + "cart/add.js",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/javascript",
+          "X-Requested-With": "XMLHttpRequest",
+        },
+        body: formData,
+      }
+    );
+    const primeResponse = await fetchResponse.json();
+    let response = primeResponse;
+
     if (response.status) {
       productAddToCartErrorsHandler(response.description);
     } else {
@@ -565,16 +556,9 @@ function cartItemQuantityChangeErrorsHandler(input, errorDescription = false) {
 
 function cartItemQuantityChange(input, itemLine, quantity) {
   const cartDrawerInner = document.getElementById("cart-drawer-inner");
-  const basicSectionsToUpdate = [
-    {
-      sectionName: "cart-drawer-po",
-      htmlId: "cart-drawer-inner",
-    },
-    {
-      sectionName: "header-cart-drawer-button",
-      htmlId: "header-cart-drawer-button",
-    },
-  ];
+
+  const sectionsToUpdateData = cartBasicSectionsToUpdate();
+  const basicSectionsToUpdate = sectionsToUpdateData.sectionsObjects;
   let additionalSectionsToUpdate = [];
 
   if (isPageCart) additionalSectionsToUpdate = cartAdditionalSectionsToUpdate();
@@ -679,6 +663,27 @@ function cartAdditionalSectionsToUpdate() {
   return additionalSectionsToUpdate;
 }
 
+function cartBasicSectionsToUpdate() {
+  const sectionsToUpdate = [
+    {
+      sectionName: "cart-drawer-po",
+      htmlId: "cart-drawer-inner",
+    },
+    {
+      sectionName: "header-cart-drawer-button",
+      htmlId: "header-cart-drawer-button",
+    },
+  ];
+  const basicSectionsToUpdateNames = sectionsToUpdate.map(
+    (section) => section.sectionName
+  );
+
+  return {
+    sectionsObjects: sectionsToUpdate,
+    sectionsNames: basicSectionsToUpdateNames,
+  };
+}
+
 async function productAddOnsHandler(sectionsToUpdateNames) {
   const addOnsContainer = document.querySelector(".product-add-ons");
   const addOnsChecked = {};
@@ -706,10 +711,51 @@ async function productAddOnsHandler(sectionsToUpdateNames) {
         }
       );
       const responseJSON = await response.json();
+      addOnsContainer
+        .querySelectorAll(".product-add-on-input")
+        .forEach((input) => {
+          input.checked = false;
+        });
       return responseJSON;
     } catch (error) {
       console.log("Error: ", error);
     }
+  }
+}
+
+async function cartDrawerClear(e) {
+  const sectionsToUpdateData = cartBasicSectionsToUpdate();
+  const sectionsToUpdate = sectionsToUpdateData.sectionsObjects;
+  const sectionsToUpdateNames = sectionsToUpdateData.sectionsNames;
+  const cartDrawerInner = document.getElementById("cart-drawer-inner");
+
+  e.preventDefault();
+
+  try {
+    const response = await fetch(window.Shopify.routes.root + "cart/clear.js", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sections: sectionsToUpdateNames,
+        sections_url: window.location.pathname,
+      }),
+    });
+    const responseJSON = await response.json();
+    sectionsToUpdate.forEach((section) => {
+      const htmlToInject = new DOMParser()
+        .parseFromString(
+          responseJSON.sections[section.sectionName],
+          "text/html"
+        )
+        .getElementById(section.htmlId);
+      document.getElementById(section.htmlId).innerHTML =
+        htmlToInject.innerHTML;
+    });
+    cartDrawerInner.classList.add("is-empty");
+  } catch (error) {
+    console.log("Error: ", error);
   }
 }
 
@@ -879,6 +925,8 @@ function init() {
         cartItemRemoveHandler(e);
       } else if (e.target.closest(".cart-item-quantity-button")) {
         productQuantityButtonHandler(e);
+      } else if (e.target.closest(".cart-drawer-clear")) {
+        cartDrawerClear(e);
       }
     });
 
