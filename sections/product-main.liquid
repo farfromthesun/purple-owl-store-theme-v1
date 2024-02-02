@@ -1,6 +1,8 @@
-{%- capture product_images_sizes -%}
-  (min-width: 1600px) 700px, (min-width: 1200px) 600px, (min-width: 768px) 1000px, (min-width: 320px) 500px, 100vw
-{%- endcapture -%}
+{% comment %}
+  {%- capture product_images_sizes -%}
+    (min-width: 1600px) 700px, (min-width: 1200px) 600px, (min-width: 768px) 1000px, (min-width: 320px) 500px, 100vw
+  {%- endcapture -%}
+{% endcomment %}
 {% assign media_count = product.media.size %}
 {% assign product_form_id = 'product-buy-form-' | append: section.id %}
 
@@ -23,6 +25,8 @@
                 src="{{ product.selected_or_first_available_variant.featured_media.preview_image | image_url: width: 500, height: 500 }}"
                 alt="{{ product.title }}"
                 class="product-gallery-img"
+                width=""
+                height=""
               >
             </picture>
           </div>
@@ -54,6 +58,8 @@
                             src="{{ media.preview_image | image_url: width: 500, height: 500 }}"
                             alt="{{ product.title }}"
                             class="product-gallery-img"
+                            width=""
+                            height=""
                           >
                         </picture>
                       </li>
@@ -90,6 +96,8 @@
                   src="{{ product.featured_media.preview_image | image_url: width: 500, height: 500 }}"
                   alt="{{ product.title }}"
                   class="product-gallery-img"
+                  width=""
+                  height=""
                 >
               </picture>
             </div>
@@ -151,7 +159,7 @@
           </div>
         </div>
         {% comment %} {% if product.metafields.custom.extra_wrapping %} {% endcomment %}
-        <div class="product-add-on product-add-on-properties">
+        <div class="product-add-on product-properties">
           <input
             class="product-add-on-input"
             type="checkbox"
@@ -179,11 +187,11 @@
                 <input
                   class="product-add-on-input"
                   type="checkbox"
-                  name="product-add-on-{{ forloop.index }}"
-                  {% comment %} name="items[{{ forloop.index0 }}][id]" {% endcomment %}
+                  {% comment %} name="product-add-on-{{ forloop.index }}" {% endcomment %}
+                  name="items[{{ forloop.index0 }}][id]"
                   id="{{ 'product-add-on-input-' | append: add_on.id }}"
                   value="{{ add_on.first_available_variant.id }}"
-                  {% comment %} form="{{ product_form_id }}" {% endcomment %}
+                  form="{{ product_form_id }}"
                 >
                 <label
                   class="product-add-on-label"
@@ -202,6 +210,8 @@
                         src="{{ add_on.featured_image | image_url: width: 40, height: 40 }}"
                         alt="{{ add_on.title }}"
                         class="product-add-on-pic-file"
+                        width=""
+                        height=""
                       >
                     </picture>
                   </div>

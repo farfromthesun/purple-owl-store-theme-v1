@@ -4327,11 +4327,13 @@ async function productAddToCart(e) {
     if (response.status) {
       productAddToCartErrorsHandler(response.description);
     } else {
-      // Addons can also be done with regular inputs,
-      // change name to name="items[<index of an item>][id]" and add form="<form_name>"
-      // - check product-main for reference
-      const addOnsHandlerResponse = await productAddOnsHandler(sectionsToUpdateNames);
-      if (addOnsHandlerResponse) response = addOnsHandlerResponse;
+      // In case of willing to switch this on, remember to fix the add-ons inputs
+      // and remove clearProductAddOnsInputs() call some lines below
+      // const addOnsHandlerResponse = await productAddOnsHandler(
+      //   sectionsToUpdateNames
+      // );
+      // if (addOnsHandlerResponse) response = addOnsHandlerResponse;
+
       sectionsToUpdate.forEach(section => {
         const htmlToInject = new DOMParser().parseFromString(response.sections[section.sectionName], "text/html").getElementById(section.htmlId);
         document.getElementById(section.htmlId).innerHTML = htmlToInject.innerHTML;
@@ -4341,6 +4343,7 @@ async function productAddToCart(e) {
       productQuantityInputReset();
       productQuantityTitleUpdate();
       clearProductProperitesInputs();
+      clearProductAddOnsInputs();
       cartDrawerInner.querySelectorAll(".cart-item-quantity-input").forEach(input => {
         quantityInputRulesHandler(input);
       });
@@ -4453,9 +4456,10 @@ function cartBasicSectionsToUpdate() {
 }
 async function productAddOnsHandler(sectionsToUpdateNames) {
   const addOnsContainer = document.querySelector(".product-add-ons");
+  const addOnsInputs = addOnsContainer.querySelectorAll(".product-add-on-input");
   const addOnsChecked = {};
   if (!isPageProduct || !addOnsContainer) return;
-  addOnsContainer.querySelectorAll(".product-add-on-input").forEach(addOn => {
+  addOnsInputs.forEach(addOn => {
     if (addOn.checked) addOnsChecked[addOn.value] = 1;
   });
   if (Object.keys(addOnsChecked).length > 0) {
@@ -4472,7 +4476,7 @@ async function productAddOnsHandler(sectionsToUpdateNames) {
         })
       });
       const responseJSON = await response.json();
-      addOnsContainer.querySelectorAll(".product-add-on-input").forEach(input => {
+      addOnsInputs.forEach(input => {
         input.checked = false;
       });
       return responseJSON;
@@ -4480,6 +4484,14 @@ async function productAddOnsHandler(sectionsToUpdateNames) {
       console.log("Error: ", error);
     }
   }
+}
+function clearProductAddOnsInputs() {
+  const addOnsContainer = document.querySelector(".product-add-ons");
+  if (!addOnsContainer) return;
+  const addOnsInputs = addOnsContainer.querySelectorAll(".product-add-on-input");
+  addOnsInputs.forEach(input => {
+    input.checked = false;
+  });
 }
 function clearProductProperitesInputs() {
   const properitesInputs = document.querySelector(".product-info").querySelectorAll("input[name^='properties']");
