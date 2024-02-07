@@ -1818,6 +1818,9 @@ body.overflowHidden {
     margin-bottom: 35px;
   }
 }
+.product-quantity-selector.product-quantity-selector-hide {
+  display: none;
+}
 .product-quantity-selector .product-quantity-button {
   background-color: transparent;
   border: none;
@@ -2134,13 +2137,18 @@ body.overflowHidden {
 .cart-items .cart-item .cart-item-remove {
   display: flex;
   align-items: center;
-  padding-left: 10px;
+  padding-left: 16px;
+}
+.cart-items .cart-item .cart-item-remove.no-product-quantity {
+  padding-left: 0;
 }
 .cart-items .cart-item .cart-item-remove .cart-item-remove-button {
   background-color: transparent;
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
+  padding-left: 0;
+  padding-right: 0;
 }
 @media (min-width: 1200px) {
   .cart-items .cart-item .cart-item-remove .cart-item-remove-button:hover {

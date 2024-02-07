@@ -57,20 +57,22 @@
                         {%- endfor -%}
                       {% endif %}
                       {%- for property in item.properties -%}
-                        <div class="cart-item-option">
-                          <span class="cart-item-option-name">{{ property.first }}:</span>
-                          <span class="cart-item-option-value">
-                            {{ property.last -}}
-                            {%- unless forloop.last %}, {% endunless %}
-                          </span>
-                        </div>
+                        {% unless property.first == 'Free' %}
+                          <div class="cart-item-option">
+                            <span class="cart-item-option-name">{{ property.first }}:</span>
+                            <span class="cart-item-option-value">
+                              {{ property.last -}}
+                              {%- unless forloop.last %}, {% endunless %}
+                            </span>
+                          </div>
+                        {% endunless %}
                       {%- endfor -%}
                     </div>
                   {%- endif -%}
                 </div>
                 <div class="product-quantity cart-item-quantity">
                   <div class="cart-item-quantity-inner">
-                    <div class="product-quantity-selector">
+                    <div class="product-quantity-selector{% if item.product.type == 'Free item' %} product-quantity-selector-hide{% endif %}">
                       <button
                         class="product-quantity-button cart-item-quantity-button"
                         type="button"
@@ -88,6 +90,9 @@
                         form="cart-drawer-form"
                         data-item-variant-id="{{ item.variant.id }}"
                         data-index="{{ item.index | plus: 1 }}"
+                        {% if item.properties.Free == 'true' %}
+                          data-free-item="true"
+                        {% endif %}
                       >
                       <button
                         class="product-quantity-button cart-item-quantity-button"
@@ -97,7 +102,7 @@
                         <span class="material-symbols-rounded product-quantity-button-icon"> add </span>
                       </button>
                     </div>
-                    <div class="cart-item-remove">
+                    <div class="cart-item-remove{% if item.product.type == 'Free item' %} no-product-quantity{% endif %}">
                       <button
                         type="button"
                         class="cart-item-remove-button"

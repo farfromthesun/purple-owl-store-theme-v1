@@ -4126,11 +4126,13 @@ function productQuantityButtonHandler(e) {
   const button = e.target.closest(".product-quantity-button");
   const input = button.closest(".product-quantity-selector").querySelector(".product-quantity-input");
   const currentValue = input.value;
-  button.dataset.action === "decrease" ? input.stepDown() : input.stepUp();
-  const changeEvent = new Event("change", {
-    bubbles: true
-  });
-  if (currentValue !== input.value) input.dispatchEvent(changeEvent);
+  if (input.getAttribute("data-free-item") != "true") {
+    button.dataset.action === "decrease" ? input.stepDown() : input.stepUp();
+    const changeEvent = new Event("change", {
+      bubbles: true
+    });
+    if (currentValue !== input.value) input.dispatchEvent(changeEvent);
+  }
 }
 function quantityInputRulesHandler(input) {
   const button = input.closest(".product-quantity-selector").querySelector(".product-quantity-button[data-action=decrease]");
@@ -4334,6 +4336,8 @@ async function productAddToCart(e) {
       // );
       // if (addOnsHandlerResponse) response = addOnsHandlerResponse;
 
+      const freeItemOnTotalPriceResponse = await freeItemOnTotalPriceHandler(sectionsToUpdateNames, "increase");
+      if (freeItemOnTotalPriceResponse) response = freeItemOnTotalPriceResponse;
       sectionsToUpdate.forEach(section => {
         const htmlToInject = new DOMParser().parseFromString(response.sections[section.sectionName], "text/html").getElementById(section.htmlId);
         document.getElementById(section.htmlId).innerHTML = htmlToInject.innerHTML;
@@ -4370,31 +4374,44 @@ function cartItemQuantityChangeErrorsHandler(input) {
     errorContainer.classList.remove("show");
   }
 }
-function cartItemQuantityChange(input, itemLine, quantity) {
+async function cartItemQuantityChange(input, itemLine, quantity) {
   const cartDrawerInner = document.getElementById("cart-drawer-inner");
   const sectionsToUpdateData = cartBasicSectionsToUpdate();
   const basicSectionsToUpdate = sectionsToUpdateData.sectionsObjects;
   let additionalSectionsToUpdate = [];
+  const inputValueAttribute = input.getAttribute("value");
+  let cartOpeartionType;
+  if (quantity == 0 || inputValueAttribute > quantity) {
+    cartOpeartionType = "decrease";
+  } else {
+    cartOpeartionType = "increase";
+  }
   if (isPageCart) additionalSectionsToUpdate = cartAdditionalSectionsToUpdate();
   const sectionsToUpdate = [...basicSectionsToUpdate, ...additionalSectionsToUpdate];
-  fetch(window.Shopify.routes.root + "cart/change.js", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: `application/json`
-    },
-    body: JSON.stringify({
-      line: itemLine,
-      quantity: quantity,
-      sections: sectionsToUpdate.map(section => section.sectionName),
-      sections_url: window.location.pathname
-    })
-  }).then(response => response.json()).then(response => {
+  const sectionsToUpdateNames = sectionsToUpdate.map(section => section.sectionName);
+  try {
+    const fetchResponse = await fetch(window.Shopify.routes.root + "cart/change.js", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: `application/json`
+      },
+      body: JSON.stringify({
+        line: itemLine,
+        quantity: quantity,
+        sections: sectionsToUpdateNames,
+        sections_url: window.location.pathname
+      })
+    });
+    const primeResponse = await fetchResponse.json();
+    let response = primeResponse;
     if (response.status) {
       cartItemQuantityChangeErrorsHandler(input, response.description);
-      input.value = input.getAttribute("value");
+      input.value = inputValueAttribute;
       quantityInputRulesHandler(input);
     } else {
+      const freeitemOnTotalPriceResponse = await freeItemOnTotalPriceHandler(sectionsToUpdateNames, cartOpeartionType);
+      if (freeitemOnTotalPriceResponse) response = freeitemOnTotalPriceResponse;
       sectionsToUpdate.forEach(section => {
         const htmlToInject = new DOMParser().parseFromString(response.sections[section.sectionName], "text/html").getElementById(section.htmlId);
         document.getElementById(section.htmlId).innerHTML = htmlToInject.innerHTML;
@@ -4410,23 +4427,26 @@ function cartItemQuantityChange(input, itemLine, quantity) {
       }
       isPageProduct && productQuantityTitleUpdate();
     }
-  }).catch(error => {
+  } catch (error) {
     console.log("Error: ", error);
-  });
+  }
 }
 function cartItemInputQuantityChangeHandler(e) {
   const input = e.target;
   const quantity = input.value;
   const itemLine = input.dataset.index;
-  cartItemQuantityChange(input, itemLine, quantity);
+  if (input.getAttribute("data-free-item") != "true") {
+    cartItemQuantityChange(input, itemLine, quantity);
+  }
 }
 const cartItemQuantityChangeDebounce = debounce(e => {
   cartItemInputQuantityChangeHandler(e);
 }, 500);
 function cartItemRemoveHandler(e) {
+  const button = e.target.closest(".cart-item-remove-button");
   const input = e.target.closest(".product-quantity").querySelector(".product-quantity-input");
   const quantity = 0;
-  const itemLine = input.dataset.index;
+  const itemLine = button.dataset.index;
   e.preventDefault();
   cartItemQuantityChange(input, itemLine, quantity);
 }
@@ -4499,6 +4519,77 @@ function clearProductProperitesInputs() {
     properitesInputs.forEach(input => {
       if (input.checked) input.checked = false;
     });
+  }
+}
+async function getCart() {
+  try {
+    const response = await fetch(window.Shopify.routes.root + "cart.js", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    const reponseJSON = response.json();
+    return reponseJSON;
+  } catch (error) {
+    console.log("Error: ", error);
+  }
+}
+async function freeItemOnTotalPriceHandler(sectionsToUpdateNames, cartOpeartionType) {
+  const cart = await getCart();
+  const cartTotalPrice = cart.total_price;
+  const cartItems = cart.items;
+  const freeItemID = 48040974025013;
+  const freeItemIndex = cartItems.findIndex(item => item.id === freeItemID);
+  const amountForFreeItem = 5000;
+  const addFetchBody = {
+    items: [{
+      id: freeItemID,
+      quantity: 1,
+      properties: {
+        Free: true
+      }
+    }],
+    sections: sectionsToUpdateNames,
+    sections_url: window.location.pathname
+  };
+  const removeFetchBody = {
+    line: freeItemIndex + 1,
+    quantity: 0,
+    sections: sectionsToUpdateNames,
+    sections_url: window.location.pathname
+  };
+  const cartOpeartionTypeCheck = cartOpeartionType || "";
+  if (freeItemIndex < 0 && cartTotalPrice >= amountForFreeItem && cartOpeartionTypeCheck !== "decrease") {
+    try {
+      const addResponse = await fetch(window.Shopify.routes.root + "cart/add.js", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest"
+        },
+        body: JSON.stringify(addFetchBody)
+      });
+      const addResponseJSON = await addResponse.json();
+      return addResponseJSON;
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  } else if (freeItemIndex >= 0 && cartTotalPrice < amountForFreeItem) {
+    try {
+      const removeResponse = await fetch(window.Shopify.routes.root + "cart/change.js", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest"
+        },
+        body: JSON.stringify(removeFetchBody)
+      });
+      const removeResponseJSON = removeResponse.json();
+      return removeResponseJSON;
+    } catch (error) {
+      console.log("Error: ", error);
+    }
   }
 }
 async function cartDrawerClear(e) {

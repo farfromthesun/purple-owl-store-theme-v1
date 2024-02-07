@@ -1717,6 +1717,10 @@ body {
     margin-bottom: 35px;
   }
 
+  &.product-quantity-selector-hide {
+    display: none;
+  }
+
   .product-quantity-button {
     background-color: transparent;
     border: none;
@@ -2031,13 +2035,18 @@ body {
     .cart-item-remove {
       display: flex;
       align-items: center;
-      padding-left: 10px;
+      padding-left: 16px;
+
+      &.no-product-quantity {
+        padding-left: 0;
+      }
 
       .cart-item-remove-button {
         background-color: transparent;
         border: none;
         cursor: pointer;
         transition: $base-transition;
+        padding-inline: 0;
 
         @media (min-width: 1200px) {
           &:hover {
