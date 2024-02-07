@@ -1,18 +1,40 @@
+{% comment %}
+  <div class="container">
+    {% assign foundersNames = 'HM Jawad,Furqan Abid,Abdullah Ah,Abrar Khan' | split: ',' %}
+    <div class="page-about-founders">
+      <h2 class="page-subtitle">The Founders</h2>
+      <div class="page-about-founders-gallery">
+        {% for name in foundersNames %}
+          <div class="page-about-founder">
+            <div class="page-about-founder-pic">
+              <img
+                src="{{ "page-about-founder-" | append: forloop.index | append: ".jpg" | file_url }}"
+                alt="{{ name }}"
+                class="page-about-founder-pic-file"
+              >
+            </div>
+            <strong class="page-about-founder-name">{{ name }}</strong>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endcomment %}
+
 <div class="container">
-  {% assign foundersNames = 'HM Jawad,Furqan Abid,Abdullah Ah,Abrar Khan' | split: ',' %}
   <div class="page-about-founders">
     <h2 class="page-subtitle">The Founders</h2>
     <div class="page-about-founders-gallery">
-      {% for name in foundersNames %}
+      {% for founder in page.metafields.custom.founders.value %}
         <div class="page-about-founder">
           <div class="page-about-founder-pic">
             <img
-              src="{{ "page-about-founder-" | append: forloop.index | append: ".jpg" | file_url }}"
-              alt="{{ name }}"
+              src="{{ founder.picture | file_url }}"
+              alt="{{ founder.name }}"
               class="page-about-founder-pic-file"
             >
           </div>
-          <strong class="page-about-founder-name">{{ name }}</strong>
+          <strong class="page-about-founder-name">{{ founder.name }}</strong>
         </div>
       {% endfor %}
     </div>
