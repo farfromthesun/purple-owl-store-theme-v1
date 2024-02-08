@@ -57,7 +57,7 @@
                         {%- endfor -%}
                       {% endif %}
                       {%- for property in item.properties -%}
-                        {% unless property.first == 'Free' %}
+                        {% unless property.first == '_Free' %}
                           <div class="cart-item-option">
                             <span class="cart-item-option-name">{{ property.first }}:</span>
                             <span class="cart-item-option-value">
@@ -72,7 +72,7 @@
                 </div>
                 <div class="product-quantity cart-item-quantity">
                   <div class="cart-item-quantity-inner">
-                    <div class="product-quantity-selector{% if item.product.type == 'Free item' %} product-quantity-selector-hide{% endif %}">
+                    <div class="product-quantity-selector{% if item.properties._Free == 'true' %} product-quantity-selector-hide{% endif %}">
                       <button
                         class="product-quantity-button cart-item-quantity-button"
                         type="button"
@@ -90,7 +90,7 @@
                         form="cart-drawer-form"
                         data-item-variant-id="{{ item.variant.id }}"
                         data-index="{{ item.index | plus: 1 }}"
-                        {% if item.properties.Free == 'true' %}
+                        {% if item.properties._Free == 'true' %}
                           data-free-item="true"
                         {% endif %}
                       >
@@ -102,7 +102,7 @@
                         <span class="material-symbols-rounded product-quantity-button-icon"> add </span>
                       </button>
                     </div>
-                    <div class="cart-item-remove{% if item.product.type == 'Free item' %} no-product-quantity{% endif %}">
+                    <div class="cart-item-remove{% if item.properties._Free == 'true' %} no-product-quantity{% endif %}">
                       <button
                         type="button"
                         class="cart-item-remove-button"
