@@ -802,7 +802,9 @@ async function freeItemOnTotalPriceHandler(
   const cartTotalPrice = cart.total_price;
   const cartItems = cart.items;
   const freeItemID = 48040974025013;
-  const freeItemIndex = cartItems.findIndex((item) => item.id === freeItemID);
+  const freeItemIndex = cartItems.findIndex((item) => {
+    return item.id === freeItemID && item.properties._Free === true;
+  });
   const amountForFreeItem = 5000;
   const addFetchBody = {
     items: [
