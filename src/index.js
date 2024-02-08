@@ -810,7 +810,7 @@ async function freeItemOnTotalPriceHandler(
         id: freeItemID,
         quantity: 1,
         properties: {
-          Free: true,
+          _Free: true,
         },
       },
     ],
