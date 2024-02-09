@@ -2016,6 +2016,9 @@ body {
         padding-right: 5px;
       }
     }
+    .cart-item-price-crossed {
+      text-decoration: line-through;
+    }
     .cart-item-quantity {
       grid-column: 2/5;
       padding-left: 15px;

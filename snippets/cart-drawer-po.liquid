@@ -47,7 +47,11 @@
                     {{ item.product.title }}
                   </a>
                   <div class="cart-item-price">
-                    {{ item.original_price | money }}
+                    {% if item.final_price == 0 %}
+                      <span class="cart-item-price-crossed">{{ item.original_price | money }}</span> FREE
+                    {% else %}
+                      {{ item.final_price | money }}
+                    {% endif %}
                   </div>
                   {%- if item.product.has_only_default_variant == false or item.properties.size != 0 -%}
                     <div class="cart-item-options">
@@ -77,7 +81,11 @@
                   {%- endif -%}
                 </div>
                 <div class="cart-item-total-price">
-                  {{ item.original_line_price | money }}
+                  {% if item.final_line_price == 0 %}
+                    <span class="cart-item-price-crossed">{{ item.original_line_price | money }}</span> FREE
+                  {% else %}
+                    {{ item.final_line_price | money }}
+                  {% endif %}
                 </div>
                 <div class="product-quantity cart-item-quantity">
                   <div class="cart-item-quantity-inner">

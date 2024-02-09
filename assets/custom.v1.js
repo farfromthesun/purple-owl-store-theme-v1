@@ -4537,12 +4537,13 @@ async function getCart() {
 }
 async function freeItemOnTotalPriceHandler(sectionsToUpdateNames, cartOpeartionType) {
   const cart = await getCart();
-  const cartTotalPrice = cart.total_price;
+  let cartTotalPrice = cart.total_price;
   const cartItems = cart.items;
   const freeItemID = 48040974025013;
   const freeItemIndex = cartItems.findIndex(item => {
     return item.id === freeItemID && item.properties._Free === true;
   });
+  const cartOpeartionTypeCheck = cartOpeartionType || "";
   const amountForFreeItem = 5000;
   const addFetchBody = {
     items: [{
@@ -4561,7 +4562,7 @@ async function freeItemOnTotalPriceHandler(sectionsToUpdateNames, cartOpeartionT
     sections: sectionsToUpdateNames,
     sections_url: window.location.pathname
   };
-  const cartOpeartionTypeCheck = cartOpeartionType || "";
+  freeItemIndex >= 0 && (cartTotalPrice = cartTotalPrice - (cartItems[freeItemIndex].price - cartItems[freeItemIndex].total_discount));
   if (freeItemIndex < 0 && cartTotalPrice >= amountForFreeItem && cartOpeartionTypeCheck !== "decrease") {
     try {
       const addResponse = await fetch(window.Shopify.routes.root + "cart/add.js", {

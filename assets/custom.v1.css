@@ -2119,6 +2119,10 @@ body.overflowHidden {
     padding-right: 5px;
   }
 }
+.cart-items .cart-item .cart-item-price-crossed {
+  -webkit-text-decoration: line-through;
+  text-decoration: line-through;
+}
 .cart-items .cart-item .cart-item-quantity {
   grid-column: 2/5;
   padding-left: 15px;
