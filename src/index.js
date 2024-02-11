@@ -542,7 +542,7 @@ async function productAddToCart(e) {
       cartDrawerVisibilityHandler("show");
     }
   } catch (error) {
-    console.log("Error: ", error);
+    console.error("Error: ", error);
   } finally {
     productChangeATCStatus(false);
   }
@@ -650,7 +650,7 @@ async function cartItemQuantityChange(input, itemLine, quantity) {
       isPageProduct && productQuantityTitleUpdate();
     }
   } catch (error) {
-    console.log("Error: ", error);
+    console.error("Error: ", error);
   }
 }
 
@@ -751,7 +751,7 @@ async function productAddOnsHandler(sectionsToUpdateNames) {
       });
       return responseJSON;
     } catch (error) {
-      console.log("Error: ", error);
+      console.error("Error: ", error);
     }
   }
 }
@@ -790,7 +790,7 @@ async function getCart() {
     const reponseJSON = response.json();
     return reponseJSON;
   } catch (error) {
-    console.log("Error: ", error);
+    console.error("Error: ", error);
   }
 }
 
@@ -853,7 +853,7 @@ async function freeItemOnTotalPriceHandler(
       const addResponseJSON = await addResponse.json();
       return addResponseJSON;
     } catch (error) {
-      console.log("Error: ", error);
+      console.error("Error: ", error);
     }
   } else if (freeItemIndex >= 0 && cartTotalPrice < amountForFreeItem) {
     try {
@@ -871,7 +871,7 @@ async function freeItemOnTotalPriceHandler(
       const removeResponseJSON = removeResponse.json();
       return removeResponseJSON;
     } catch (error) {
-      console.log("Error: ", error);
+      console.error("Error: ", error);
     }
   }
 }
@@ -908,7 +908,7 @@ async function cartDrawerClear(e) {
     });
     cartDrawerInner.classList.add("is-empty");
   } catch (error) {
-    console.log("Error: ", error);
+    console.error("Error: ", error);
   }
 }
 
