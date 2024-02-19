@@ -4647,6 +4647,13 @@ async function cartDrawerClear(e) {
 //   }
 // }
 
+async function applyCoupon(e) {
+  e.preventDefault();
+  const couponValue = document.querySelector("#discount_code").value;
+  const response = await fetch("/discount/" + couponValue);
+  const responseJson = await response.json();
+  console.log(response);
+}
 function onScroll() {
   document.addEventListener("scroll", function () {
     addBodyScrolled();
@@ -4772,6 +4779,9 @@ function init() {
     document.querySelector(".cart").addEventListener("change", function (e) {
       quantityInputRulesHandler(e.target);
       cartItemQuantityChangeDebounce(e);
+    });
+    document.querySelector(".apply-discount-code").addEventListener("click", function (e) {
+      applyCoupon(e);
     });
   }
 }

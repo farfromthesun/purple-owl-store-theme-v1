@@ -18,8 +18,8 @@
         <div class="cart-items">
           <form
             action="{{ routes.cart_url }}"
-            id="cart-drawer-form"
-            class="cart-drawer-items-form"
+            id="cart-page-form"
+            class="cart-page-items-form"
             method="post"
           >
             {% for item in cart.items %}
@@ -91,7 +91,7 @@
                         min="1"
                         id="{{ 'cart-item-quantity-input-' | append: item.id }}"
                         value="{{ item.quantity }}"
-                        form="cart-drawer-form"
+                        form="cart-page-form"
                         data-item-variant-id="{{ item.variant.id }}"
                         data-index="{{ item.index | plus: 1 }}"
                         {% if item.properties._Free == 'true' %}
