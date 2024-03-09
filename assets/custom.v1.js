@@ -4576,7 +4576,9 @@ async function freeItemOnTotalPriceHandler(sectionsToUpdateNames, cartOpeartionT
     },
     sections: sectionsToUpdateNames,
     sections_url: window.location.pathname,
-    attributes: {}
+    attributes: {
+      GWPId: ""
+    }
   };
   freeItemIndex >= 0 && (cartTotalPrice = cartTotalPrice - (cartItems[freeItemIndex].price - cartItems[freeItemIndex].total_discount));
   if (freeItemIndex < 0 && cartTotalPrice >= amountForFreeItem && cartOpeartionTypeCheck !== "decrease") {
