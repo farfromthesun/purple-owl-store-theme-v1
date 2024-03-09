@@ -801,10 +801,14 @@ async function freeItemOnTotalPriceHandler(
   const cart = await getCart();
   let cartTotalPrice = cart.total_price;
   const cartItems = cart.items;
-  const freeItemID = 48040974025013;
+  // const freeItemID = 48040974025013;
+  const freeItemID = parseInt(sessionStorage.gwpVariantId);
+  if (!freeItemID) return;
   const freeItemIndex = cartItems.findIndex((item) => {
-    return item.id === freeItemID && item.properties._Free === true;
+    return item.id === freeItemID; //&& item.properties._Free === true;
   });
+  const freeItemKey =
+    freeItemIndex >= 0 && cartItems.find((item) => item.id === freeItemID).key;
   const cartOpeartionTypeCheck = cartOpeartionType || "";
   const amountForFreeItem = 5000;
   const addFetchBody = {
@@ -812,19 +816,30 @@ async function freeItemOnTotalPriceHandler(
       {
         id: freeItemID,
         quantity: 1,
-        properties: {
-          _Free: true,
-        },
+        // properties: {
+        //   _Free: true,
+        // },
       },
     ],
+    attributes: {
+      GWPId: freeItemID,
+    },
     sections: sectionsToUpdateNames,
     sections_url: window.location.pathname,
   };
+  // const removeFetchBody = {
+  //   line: freeItemIndex + 1,
+  //   quantity: 0,
+  //   sections: sectionsToUpdateNames,
+  //   sections_url: window.location.pathname,
+  // };
   const removeFetchBody = {
-    line: freeItemIndex + 1,
-    quantity: 0,
+    updates: {
+      [freeItemKey]: 0,
+    },
     sections: sectionsToUpdateNames,
     sections_url: window.location.pathname,
+    attributes: {},
   };
 
   freeItemIndex >= 0 &&
@@ -858,7 +873,7 @@ async function freeItemOnTotalPriceHandler(
   } else if (freeItemIndex >= 0 && cartTotalPrice < amountForFreeItem) {
     try {
       const removeResponse = await fetch(
-        window.Shopify.routes.root + "cart/change.js",
+        window.Shopify.routes.root + "cart/update.js",
         {
           method: "POST",
           headers: {
@@ -866,6 +881,14 @@ async function freeItemOnTotalPriceHandler(
             "X-Requested-With": "XMLHttpRequest",
           },
           body: JSON.stringify(removeFetchBody),
+          // body: JSON.stringify({
+          //   updates: {
+          //     [freeItemKey]: 0,
+          //   },
+          //   sections: sectionsToUpdateNames,
+          //   sections_url: window.location.pathname,
+          //   attributes: {},
+          // }),
         }
       );
       const removeResponseJSON = removeResponse.json();

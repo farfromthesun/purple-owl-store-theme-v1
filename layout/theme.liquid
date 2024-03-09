@@ -319,5 +319,13 @@
         <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
       {%- endif -%}
     {% endcomment %}
+
+    <script>
+      {% comment %} {% assign array = shop.metaobjects.gwp_variant['gwp-variant-unique'].item | split: '/' %}
+      const gwpVariantId = "{{ array | last }}"
+      sessionStorage.setItem('gwpVariantId', gwpVariantId); {% endcomment %}
+      const gwpVariantId = "{{ all_products['purple-owl-phone-case-gwp'].selected_or_first_available_variant.id }}"
+      sessionStorage.setItem('gwpVariantId', gwpVariantId);
+    </script>
   </body>
 </html>

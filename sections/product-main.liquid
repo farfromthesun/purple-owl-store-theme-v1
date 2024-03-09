@@ -134,138 +134,140 @@
           <span class="product-tax-included">Tax included.</span>
         {% endif %}
         {% render 'product-main-variant-picker' %}
-        <div class="product-quantity" data-url="{{ product.url }}" data-section="{{ section.id }}">
-          <div class="product-quantity-title-container">
-            {% assign cart_quantity = cart | item_count_for_variant: product.selected_or_first_available_variant.id %}
-            <span class="product-quantity-title">Quantity</span>
-            {% if cart_quantity > 0 %}
-              <span class="product-quantity-in-cart">({{ cart_quantity }} in cart)</span>
-            {% endif %}
+        {% unless product.tags contains 'GWP' %}
+          <div class="product-quantity" data-url="{{ product.url }}" data-section="{{ section.id }}">
+            <div class="product-quantity-title-container">
+              {% assign cart_quantity = cart | item_count_for_variant: product.selected_or_first_available_variant.id %}
+              <span class="product-quantity-title">Quantity</span>
+              {% if cart_quantity > 0 %}
+                <span class="product-quantity-in-cart">({{ cart_quantity }} in cart)</span>
+              {% endif %}
+            </div>
+            <div class="product-quantity-selector">
+              <button class="product-quantity-button" type="button" data-action="decrease">
+                <span class="material-symbols-rounded product-quantity-button-icon"> remove </span>
+              </button>
+              <input
+                class="product-quantity-input"
+                type="number"
+                name="quantity"
+                min="1"
+                id="{{ 'product-quantity-input-' | append: section.id }}"
+                value="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
+                form="{{ product_form_id }}"
+              >
+              <button class="product-quantity-button" type="button" data-action="increase">
+                <span class="material-symbols-rounded product-quantity-button-icon"> add </span>
+              </button>
+            </div>
           </div>
-          <div class="product-quantity-selector">
-            <button class="product-quantity-button" type="button" data-action="decrease">
-              <span class="material-symbols-rounded product-quantity-button-icon"> remove </span>
-            </button>
+          {% comment %} {% if product.metafields.custom.extra_wrapping %} {% endcomment %}
+          <div class="product-add-on product-properties">
             <input
-              class="product-quantity-input"
-              type="number"
-              name="quantity"
-              min="1"
-              id="{{ 'product-quantity-input-' | append: section.id }}"
-              value="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
+              class="product-add-on-input"
+              type="checkbox"
+              name="properties[Extra wrapping]"
+              id="{{ 'product-extra-wrapping-input-' | append: section.id }}"
+              value="yes"
               form="{{ product_form_id }}"
             >
-            <button class="product-quantity-button" type="button" data-action="increase">
-              <span class="material-symbols-rounded product-quantity-button-icon"> add </span>
-            </button>
+            <label
+              class="product-add-on-label"
+              for="{{ 'product-extra-wrapping-input-' | append: section.id }}"
+            >
+              <span class="product-add-on-label-checkbox">
+                <span class="material-symbols-rounded icon"> done </span>
+              </span>
+              Add extra wrapping for this product?
+            </label>
           </div>
-        </div>
-        {% comment %} {% if product.metafields.custom.extra_wrapping %} {% endcomment %}
-        <div class="product-add-on product-properties">
-          <input
-            class="product-add-on-input"
-            type="checkbox"
-            name="properties[Extra wrapping]"
-            id="{{ 'product-extra-wrapping-input-' | append: section.id }}"
-            value="yes"
-            form="{{ product_form_id }}"
-          >
-          <label
-            class="product-add-on-label"
-            for="{{ 'product-extra-wrapping-input-' | append: section.id }}"
-          >
-            <span class="product-add-on-label-checkbox">
-              <span class="material-symbols-rounded icon"> done </span>
-            </span>
-            Add extra wrapping for this product?
-          </label>
-        </div>
-        {% comment %} {% endif %} {% endcomment %}
-        {% if product.metafields.custom.add_ons %}
-          <div class="product-add-ons">
-            <span class="product-add-ons-title">Add-ons</span>
-            {% for add_on in product.metafields.custom.add_ons.value %}
-              <div class="product-add-on">
-                <input
-                  class="product-add-on-input"
-                  type="checkbox"
-                  {% comment %} name="product-add-on-{{ forloop.index }}" {% endcomment %}
-                  name="items[{{ forloop.index0 }}][id]"
-                  id="{{ 'product-add-on-input-' | append: add_on.id }}"
-                  value="{{ add_on.first_available_variant.id }}"
-                  form="{{ product_form_id }}"
-                >
-                <label
-                  class="product-add-on-label"
-                  for="{{ 'product-add-on-input-' | append: add_on.id }}"
-                >
-                  <span class="product-add-on-label-checkbox">
-                    <span class="material-symbols-rounded icon"> done </span>
-                  </span>
-                  <div class="product-add-on-pic">
-                    <picture>
-                      <source
-                        media="(min-width: 768px)"
-                        srcset="{{ add_on.featured_image | image_url: width: 50, height: 50 }}"
-                      >
-                      <img
-                        src="{{ add_on.featured_image | image_url: width: 40, height: 40 }}"
-                        alt="{{ add_on.title }}"
-                        class="product-add-on-pic-file"
-                        width=""
-                        height=""
-                      >
-                    </picture>
-                  </div>
-                  <span class="product-add-on-label-title">{{ add_on.title }}</span>
-                  <span>-</span>
-                  <span class="product-add-on-label-price">{{ add_on.price | money_with_currency }}</span>
-                </label>
-              </div>
-            {% endfor %}
-          </div>
-        {% endif %}
-        {% comment %}
-          <div class="regional-out-of-stock-status">
-            {% assign out_of_stock_classes = '' %}
-            {% if product.selected_or_first_available_variant.metafields.custom.out_of_stock_for_japan %}
-              {% assign out_of_stock_classes = out_of_stock_classes | append: ' out-of-stock-for-japan ' %}
-            {% endif %}
-            <span class="regional-out-of-stock-status-classes {{ out_of_stock_classes }}"></span>
-          </div>
-        {% endcomment %}
-        {% if product %}
-          <div class="product-buy">
-            <div class="product-buy-error-container">
-              <span class="material-symbols-rounded icon"> error </span>
-              <span class="product-buy-error-message"></span>
+          {% comment %} {% endif %} {% endcomment %}
+          {% if product.metafields.custom.add_ons %}
+            <div class="product-add-ons">
+              <span class="product-add-ons-title">Add-ons</span>
+              {% for add_on in product.metafields.custom.add_ons.value %}
+                <div class="product-add-on">
+                  <input
+                    class="product-add-on-input"
+                    type="checkbox"
+                    {% comment %} name="product-add-on-{{ forloop.index }}" {% endcomment %}
+                    name="items[{{ forloop.index0 }}][id]"
+                    id="{{ 'product-add-on-input-' | append: add_on.id }}"
+                    value="{{ add_on.first_available_variant.id }}"
+                    form="{{ product_form_id }}"
+                  >
+                  <label
+                    class="product-add-on-label"
+                    for="{{ 'product-add-on-input-' | append: add_on.id }}"
+                  >
+                    <span class="product-add-on-label-checkbox">
+                      <span class="material-symbols-rounded icon"> done </span>
+                    </span>
+                    <div class="product-add-on-pic">
+                      <picture>
+                        <source
+                          media="(min-width: 768px)"
+                          srcset="{{ add_on.featured_image | image_url: width: 50, height: 50 }}"
+                        >
+                        <img
+                          src="{{ add_on.featured_image | image_url: width: 40, height: 40 }}"
+                          alt="{{ add_on.title }}"
+                          class="product-add-on-pic-file"
+                          width=""
+                          height=""
+                        >
+                      </picture>
+                    </div>
+                    <span class="product-add-on-label-title">{{ add_on.title }}</span>
+                    <span>-</span>
+                    <span class="product-add-on-label-price">{{ add_on.price | money_with_currency }}</span>
+                  </label>
+                </div>
+              {% endfor %}
             </div>
-            {% form 'product', product, id: product_form_id, class: 'product-buy-form', novalidate: 'novalidate' %}
-              <input
-                type="hidden"
-                name="id"
-                value="{{ product.selected_or_first_available_variant.id }}"
-              >
-              <button
-                id="product-buy-atc-{{ section.id }}"
-                type="submit"
-                name="add"
-                class="btn product-buy-atc"
-                {% if product_available == false %}
-                  disabled
-                {% endif %}
-              >
-                <span>
-                  {%- if product_available == false -%}
-                    Sold out
-                  {%- else -%}
-                    Add to cart
-                  {%- endif -%}
-                </span>
-              </button>
-            {% endform %}
-          </div>
-        {% endif %}
+          {% endif %}
+          {% comment %}
+            <div class="regional-out-of-stock-status">
+              {% assign out_of_stock_classes = '' %}
+              {% if product.selected_or_first_available_variant.metafields.custom.out_of_stock_for_japan %}
+                {% assign out_of_stock_classes = out_of_stock_classes | append: ' out-of-stock-for-japan ' %}
+              {% endif %}
+              <span class="regional-out-of-stock-status-classes {{ out_of_stock_classes }}"></span>
+            </div>
+          {% endcomment %}
+          {% if product %}
+            <div class="product-buy">
+              <div class="product-buy-error-container">
+                <span class="material-symbols-rounded icon"> error </span>
+                <span class="product-buy-error-message"></span>
+              </div>
+              {% form 'product', product, id: product_form_id, class: 'product-buy-form', novalidate: 'novalidate' %}
+                <input
+                  type="hidden"
+                  name="id"
+                  value="{{ product.selected_or_first_available_variant.id }}"
+                >
+                <button
+                  id="product-buy-atc-{{ section.id }}"
+                  type="submit"
+                  name="add"
+                  class="btn product-buy-atc"
+                  {% if product_available == false %}
+                    disabled
+                  {% endif %}
+                >
+                  <span>
+                    {%- if product_available == false -%}
+                      Sold out
+                    {%- else -%}
+                      Add to cart
+                    {%- endif -%}
+                  </span>
+                </button>
+              {% endform %}
+            </div>
+          {% endif %}
+        {% endunless %}
         {%- if product.description != blank -%}
           <div class="product-description">
             {{ product.description }}
