@@ -4546,7 +4546,6 @@ async function freeItemOnTotalPriceHandler(sectionsToUpdateNames, cartOpeartionT
     return item.id === freeItemID; //&& item.properties._Free === true;
   });
 
-  const freeItemKey = freeItemIndex >= 0 && cartItems.find(item => item.id === freeItemID).key;
   const cartOpeartionTypeCheck = cartOpeartionType || "";
   const amountForFreeItem = 5000;
   const addFetchBody = {
@@ -4558,27 +4557,14 @@ async function freeItemOnTotalPriceHandler(sectionsToUpdateNames, cartOpeartionT
       // },
     }],
 
-    attributes: {
-      GWPId: freeItemID
-    },
     sections: sectionsToUpdateNames,
     sections_url: window.location.pathname
   };
-  // const removeFetchBody = {
-  //   line: freeItemIndex + 1,
-  //   quantity: 0,
-  //   sections: sectionsToUpdateNames,
-  //   sections_url: window.location.pathname,
-  // };
   const removeFetchBody = {
-    updates: {
-      [freeItemKey]: 0
-    },
+    line: freeItemIndex + 1,
+    quantity: 0,
     sections: sectionsToUpdateNames,
-    sections_url: window.location.pathname,
-    attributes: {
-      GWPId: ""
-    }
+    sections_url: window.location.pathname
   };
   freeItemIndex >= 0 && (cartTotalPrice = cartTotalPrice - (cartItems[freeItemIndex].price - cartItems[freeItemIndex].total_discount));
   if (freeItemIndex < 0 && cartTotalPrice >= amountForFreeItem && cartOpeartionTypeCheck !== "decrease") {
@@ -4598,23 +4584,14 @@ async function freeItemOnTotalPriceHandler(sectionsToUpdateNames, cartOpeartionT
     }
   } else if (freeItemIndex >= 0 && cartTotalPrice < amountForFreeItem) {
     try {
-      const removeResponse = await fetch(window.Shopify.routes.root + "cart/update.js", {
+      const removeResponse = await fetch(window.Shopify.routes.root + "cart/change.js", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "X-Requested-With": "XMLHttpRequest"
         },
         body: JSON.stringify(removeFetchBody)
-        // body: JSON.stringify({
-        //   updates: {
-        //     [freeItemKey]: 0,
-        //   },
-        //   sections: sectionsToUpdateNames,
-        //   sections_url: window.location.pathname,
-        //   attributes: {},
-        // }),
       });
-
       const removeResponseJSON = removeResponse.json();
       return removeResponseJSON;
     } catch (error) {
