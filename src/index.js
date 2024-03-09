@@ -839,7 +839,9 @@ async function freeItemOnTotalPriceHandler(
     },
     sections: sectionsToUpdateNames,
     sections_url: window.location.pathname,
-    attributes: {},
+    attributes: {
+      GWPId: "",
+    },
   };
 
   freeItemIndex >= 0 &&
