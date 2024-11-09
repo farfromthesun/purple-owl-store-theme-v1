@@ -107,7 +107,7 @@ body {
   right: 0;
   z-index: 999;
   background-color: rgba(255, 255, 255, 1);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
   transition: $base-transition;
 
   .scrolled & {
@@ -189,6 +189,7 @@ body {
             text-transform: capitalize;
             transition: $base-transition;
             position: relative;
+            font-weight: 500;
 
             &:hover {
               color: $main-purple;
