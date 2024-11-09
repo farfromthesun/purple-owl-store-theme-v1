@@ -200,8 +200,8 @@ body.overflowHidden {
   right: 0;
   z-index: 999;
   background-color: rgb(255, 255, 255);
-  -webkit-backdrop-filter: blur(10px);
-          backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(20px);
+          backdrop-filter: blur(20px);
   transition: all 0.3s ease;
 }
 .scrolled .main-header {
@@ -283,6 +283,7 @@ body.overflowHidden {
   text-transform: capitalize;
   transition: all 0.3s ease;
   position: relative;
+  font-weight: 500;
 }
 .main-header .main-header-inner .nav-desktop-container nav ul .nav-link:hover {
   color: #cb13a9;

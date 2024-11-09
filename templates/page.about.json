@@ -4,7 +4,7 @@
       "type": "hero",
       "settings": {
         "classes": "page-about-hero",
-        "title": "about",
+        "title": "About",
         "bgName": "page-about",
         "isDimmer": true
       }
