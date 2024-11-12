@@ -464,7 +464,7 @@ body.overflowHidden {
 }
 
 .index-hero .hero-inner {
-  height: 80vh;
+  height: 100svh;
 }
 @media (min-width: 768px) {
   .index-hero .hero-inner {
