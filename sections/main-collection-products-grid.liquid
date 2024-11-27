@@ -52,13 +52,13 @@
 
             {% for filter in collection.filters %}
               <div data-filter-index="{{ forloop.index }}" class="filter-by-group">
-                <div class="filter-by-group-header">
+                <button class="filter-by-group-header">
                   <span class="filter-by-group-title">
                     {{ filter.label }}
                   </span>
                   <span class="material-symbols-rounded filter-by-group-header-icon-desktop"> expand_more </span>
                   <span class="material-symbols-rounded filter-by-group-header-icon-mobile"> chevron_right </span>
-                </div>
+                </button>
                 <div class="filter-by-group-options">
                   <div class="filter-by-group-options-header-mobile">
                     <a
