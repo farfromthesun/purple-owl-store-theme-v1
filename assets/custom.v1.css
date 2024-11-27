@@ -185,6 +185,7 @@ body.overflowHidden {
   text-decoration: none;
   transition: all 0.3s ease;
   border: none;
+  outline-offset: 3px;
 }
 @media (min-width: 1200px) {
   .btn:hover {
@@ -1072,6 +1073,14 @@ body.overflowHidden {
 .filter-by-group .filter-by-group-header {
   display: flex;
   cursor: pointer;
+  background-color: transparent;
+  align-items: center;
+  font-family: inherit;
+  letter-spacing: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  border: none;
+  padding: 0;
   transition: all 0.3s ease;
 }
 .filter-by-group .filter-by-group-header:hover {
@@ -1693,7 +1702,16 @@ body.overflowHidden {
   gap: 10px;
 }
 .product-main .product-main-inner .product-info .product-options-inner .product-option .product-option-values .product-option-value {
-  display: none;
+  clip: rect(0, 0, 0, 0);
+  overflow: hidden;
+  position: absolute;
+  height: 1px;
+  width: 1px;
+}
+.product-main .product-main-inner .product-info .product-options-inner .product-option .product-option-values .product-option-value:focus-visible + .product-option-value-label {
+  outline-color: #222;
+  outline-offset: 3px;
+  outline-style: auto;
 }
 .product-main .product-main-inner .product-info .product-options-inner .product-option .product-option-values .product-option-value.disabled + .product-option-value-label {
   -webkit-text-decoration: line-through;

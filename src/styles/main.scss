@@ -91,6 +91,7 @@ body {
   text-decoration: none;
   transition: $base-transition;
   border: none;
+  outline-offset: 3px;
 
   @media (min-width: 1200px) {
     &:hover {
@@ -963,6 +964,14 @@ body {
   .filter-by-group-header {
     display: flex;
     cursor: pointer;
+    background-color: transparent;
+    align-items: center;
+    font-family: inherit;
+    letter-spacing: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    border: none;
+    padding: 0;
     transition: $base-transition;
 
     &:hover {
@@ -1588,7 +1597,17 @@ body {
             gap: 10px;
 
             .product-option-value {
-              display: none;
+              clip: rect(0, 0, 0, 0);
+              overflow: hidden;
+              position: absolute;
+              height: 1px;
+              width: 1px;
+
+              &:focus-visible + .product-option-value-label {
+                outline-color: $main-dark;
+                outline-offset: 3px;
+                outline-style: auto;
+              }
 
               &.disabled + .product-option-value-label {
                 text-decoration: line-through;
