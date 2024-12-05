@@ -4404,6 +4404,7 @@ async function cartItemQuantityChange(input, itemLine, quantity) {
       })
     });
     const primeResponse = await fetchResponse.json();
+    console.log("primeResponse", primeResponse);
     let response = primeResponse;
     if (response.status) {
       cartItemQuantityChangeErrorsHandler(input, response.description);
@@ -4749,7 +4750,7 @@ function init() {
     }
     quantityInputRulesHandler(input);
   });
-  document.querySelectorAll("form[action='/cart/add']").forEach(form => {
+  document.querySelectorAll("form[action*='/cart/add']").forEach(form => {
     form.addEventListener("submit", function (e) {
       atcFormSubmithandler(e);
     });
