@@ -1,4 +1,4 @@
-{% assign active_filters_count = 0 %}
+{% comment %} {% assign active_filters_count = 0 %} {% endcomment %}
 
 <div class="main-collection-products" id="main-collection-products">
   <div class="loading-overlay"></div>
@@ -170,7 +170,7 @@
           </div>
           <div class="sort-by-container">
             <span class="sort-by-title">Sort by: </span>
-            {% assign currentSortOption = collection.sort_by | default: collection.default_sort_by %}
+            {% assign current_sort_option = collection.sort_by | default: collection.default_sort_by %}
             <div class="sort-by-select-container">
               <select
                 class="sort-by-select"
@@ -179,7 +179,7 @@
                 {% for option in collection.sort_options %}
                   <option
                     value="{{ option.value }}"
-                    {% if option.value == currentSortOption %}
+                    {% if option.value == current_sort_option %}
                       selected="selected"
                     {% endif %}
                   >
